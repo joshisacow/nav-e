@@ -13,13 +13,13 @@ class Main(Resource):
         return "Nav-E API", 200
     
 def abort_trip_dne(tripID):
-    # not sure why I get an error here "HTTPException.__init__() got an unexpected keyword argument 'message'"
+    # not printing my message -> keyError: 0
     if int(tripID) not in trips:
-        abort(404, message="Trip doesn't exist")
+        return "Trip does not exist", 404
 
 def abort_trip_exists(tripID):
     if int(tripID) in trips:
-        abort(409, message="Trip already exists")
+        return "Trip already exists", 409
 class Trips(Resource):
     def get(self, tripID):
         abort_trip_dne(tripID)
