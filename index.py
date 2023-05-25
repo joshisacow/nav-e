@@ -12,33 +12,27 @@ class Main(Resource):
     def get(self):
         return "Nav-E API", 200
     
-def abort_trip_dne(tripID):
-    # not printing my message -> keyError: 0
-    if int(tripID) not in trips:
-        return "Trip does not exist", 404
-
-def abort_trip_exists(tripID):
-    if int(tripID) in trips:
-        return "Trip already exists", 409
 class Trips(Resource):
     def get(self, tripID):
-        abort_trip_dne(tripID)
+        if int(tripID) not in trips:
+            return "Trip does not exist", 404
         return trips[int(tripID)], 200
     
     def post(self, tripID):
-        abort_trip_exists(tripID)
+        if int(tripID) in trips:
+            return "Trip already exists", 409
 
         # parse args
         trips_post_args = reqparse.RequestParser()
-        trips_post_args.add_argument("tripID", type=int, help="tripID is required", required=True)
-        trips_post_args.add_argument("trip", type=list, help="trip is required", required=True)
+        trips_post_args.add_argument("trip", type=str, action="append", help="trip is required", required=True)
         args = trips_post_args.parse_args()
 
         trips[int(tripID)] = args
         return trips[int(tripID)], 201
     
     def delete(self, tripID):
-        abort_trip_dne(tripID)
+        if int(tripID) not in trips:
+            return "Trip does not exist", 404
         del trips[int(tripID)]
         return '', 204
 
