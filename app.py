@@ -1,8 +1,15 @@
 from flask import Flask, jsonify, request, abort, make_response
 from flask_restful import Resource, Api, reqparse
+from firebase_admin import credentials, firestore, initialize_app
 
 app = Flask(__name__)
 api = Api(app)
+
+# Initialize Firestore DB
+cred = credentials.Certificate('key.json')
+default_app = initialize_app(cred)
+db = firestore.client()
+todo_ref = db.collection('todos')
 
 trips = { 1: ['no', 'josh'],
         2: 'yes'}
