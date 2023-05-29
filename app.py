@@ -9,7 +9,7 @@ api = Api(app)
 cred = credentials.Certificate('key.json')
 default_app = initialize_app(cred)
 db = firestore.client()
-todo_ref = db.collection('todos')
+trips_ref = db.collection('trips')
 
 trips = { 1: ['no', 'josh'],
         2: 'yes'}
@@ -21,30 +21,33 @@ class Main(Resource):
     
 class Trips(Resource):
     def get(self, tripID):
-        if int(tripID) not in trips:
-            return "Trip does not exist", 404
-        return trips[int(tripID)], 200
+        doc = trips_ref.document(str(tripID)).get()
+        if not doc.exists:
+            return "trip does not exist", 404
+        return doc.to_dict(), 200
+        
+            
+        
     
     def post(self, tripID):
-        if int(tripID) in trips:
-            return "Trip already exists", 409
 
         # parse args
         trips_post_args = reqparse.RequestParser()
         trips_post_args.add_argument("trip", type=str, action="append", help="trip is required", required=True)
         args = trips_post_args.parse_args()
 
-        trips[int(tripID)] = args
-        return trips[int(tripID)], 201
+        trips_ref.document(str(tripID)).set(args)
+        return "trip added", 200
     
     def delete(self, tripID):
-        if int(tripID) not in trips:
-            return "Trip does not exist", 404
-        del trips[int(tripID)]
-        return '', 204
+        doc = trips_ref.document(str(tripID)).get()
+        if not doc.exists:
+            return "trip does not exist", 404
+        trips_ref.document(tripID).delete()
+        return 'trip deleted', 200
 
 api.add_resource(Main, '/')
-api.add_resource(Trips, '/trips/<int:tripID>')
+api.add_resource(Trips, '/trips/<string:tripID>')
 
 # @app.route("/")
 # def index():
