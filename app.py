@@ -9,6 +9,7 @@ api = Api(app)
 cred = credentials.Certificate('key.json')
 default_app = initialize_app(cred)
 
+# import resources
 import resources.Trips as Trips 
 import resources.Login as Login
 
