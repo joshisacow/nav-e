@@ -10,7 +10,7 @@ cred = credentials.Certificate('key.json')
 default_app = initialize_app(cred)
 
 import resources.Trips as Trips 
-# import resources.Login as Login
+import resources.Login as Login
 
 class Main(Resource):
     def get(self):
@@ -19,8 +19,8 @@ class Main(Resource):
 
 api.add_resource(Main, '/')
 api.add_resource(Trips.Trips, '/trips/<string:tripID>')
-# api.add_resource(Login.Login, '/login')
-# api.add_resource(Login.SignUp, '/signup')    
+api.add_resource(Login.Login, '/login')
+api.add_resource(Login.SignUp, '/signup')    
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)

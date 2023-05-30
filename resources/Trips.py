@@ -1,4 +1,4 @@
-from firebase_admin import credentials, firestore, initialize_app, get_app
+from firebase_admin import credentials, firestore
 from flask import Flask, jsonify, request, abort, make_response, render_template
 from flask_restful import Resource, reqparse
 
