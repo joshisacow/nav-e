@@ -26,12 +26,12 @@ class Login(Resource):
         try: 
             doc = users_ref.document(username).get()
             if not doc.exists:
-                return "user does not exist", 401
+                return "login failed", 401
             if doc.to_dict()['password'] != password:
-                return "incorrect password", 401
+                return "login failed", 401
             return "login successful", 200
         except:
-            return "failed to login"
+            return "login failed"
 
 
 class SignUp(Resource):
@@ -51,7 +51,7 @@ class SignUp(Resource):
         try: 
             doc = users_ref.document(username).get()
             if doc.exists:
-                return "user already exists", 401
+                return "username already exists", 401
             users_ref.document(username).set({'password': password})
             return "account created", 200
         except:
