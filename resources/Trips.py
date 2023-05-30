@@ -1,12 +1,10 @@
-from firebase_admin import credentials, firestore, initialize_app
+from firebase_admin import credentials, firestore, initialize_app, get_app
 from flask import Flask, jsonify, request, abort, make_response, render_template
 from flask_restful import Resource, reqparse
 
 app = Flask(__name__)
 
 # Initialize Firestore DB
-cred = credentials.Certificate('key.json')
-default_app = initialize_app(cred)
 db = firestore.client()
 trips_ref = db.collection('trips')
 
