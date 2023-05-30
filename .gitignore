@@ -1,2 +1,5 @@
 # firestore key
 key.json
+
+# pycache
+__pycache__/
