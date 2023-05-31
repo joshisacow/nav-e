@@ -1,14 +1,17 @@
 from flask import Flask, jsonify, request, abort, make_response, render_template
 from flask_restful import Resource, reqparse
 
-from resources.datasource.firestore_methods import trips_get, trips_post, trips_del
+from resources.datasource.firestore_methods import *
 
 app = Flask(__name__)
 
 
 class Trips(Resource):
     def get(self, tripID):
-        return trips_get(tripID)
+        doc = fs_get('trips', tripID)
+        if not doc.exists:
+            return "trip does not exist", 404
+        return doc.to_dict(), 200
         
     
     def post(self, tripID):
@@ -18,7 +21,12 @@ class Trips(Resource):
         trips_post_args.add_argument("trip", type=str, action="append", help="trip is required", required=True)
         args = trips_post_args.parse_args()
 
-        return trips_post(tripID, args)
+        fs_post('trips', tripID, args)
+        return "trip added", 200
     
     def delete(self, tripID):
-        return trips_del(tripID)
+        doc = fs_get('trips', tripID)
+        if not doc.exists:
+            return "trip does not exist", 404
+        fs_delete('trips', tripID)
+        return 'trip deleted', 200
