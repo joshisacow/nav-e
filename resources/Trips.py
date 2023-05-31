@@ -9,9 +9,9 @@ app = Flask(__name__)
 class Trips(Resource):
     def get(self, tripID):
         doc = fs_get('trips', tripID)
-        if not doc.exists:
+        if doc == None:      
             return "trip does not exist", 404
-        return doc.to_dict(), 200
+        return doc, 200
         
     
     def post(self, tripID):
@@ -26,7 +26,7 @@ class Trips(Resource):
     
     def delete(self, tripID):
         doc = fs_get('trips', tripID)
-        if not doc.exists:
+        if doc == None:
             return "trip does not exist", 404
         fs_delete('trips', tripID)
         return 'trip deleted', 200

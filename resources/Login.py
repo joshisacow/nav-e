@@ -21,9 +21,9 @@ class Login(Resource):
         password = args['password']
         try: 
             doc = fs_get('users', username)
-            if not doc.exists:
+            if doc == None:
                 return "login failed", 401
-            if doc.to_dict()['password'] != password:
+            if doc['password'] != password:
                 return "login failed", 401
             return "login successful", 200
         except:
@@ -47,7 +47,7 @@ class SignUp(Resource):
         password = args['password']
         try: 
             doc = fs_get('users', username)
-            if doc.exists:
+            if doc != None:
                 return "username already exists", 401
             fs_post('users', username, {'password': password})
             return "account created", 200
