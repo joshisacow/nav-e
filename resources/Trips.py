@@ -9,7 +9,7 @@ app = Flask(__name__)
 class Trips(Resource):
     def get(self, tripID):
         doc = fs_get('trips', tripID)
-        if doc == None:      
+        if doc is None:      
             return "trip does not exist", 404
         return doc, 200
         
@@ -26,7 +26,7 @@ class Trips(Resource):
     
     def delete(self, tripID):
         doc = fs_get('trips', tripID)
-        if doc == None:
+        if doc is None:
             return "trip does not exist", 404
         fs_delete('trips', tripID)
         return 'trip deleted', 200
