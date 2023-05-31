@@ -1,13 +1,9 @@
 from flask import Flask, jsonify, make_response
 from flask_restful import Resource, reqparse
-from firebase_admin import credentials, firestore
+
+from resources.datasource.firestore_methods import *
 
 app = Flask(__name__)
-
-# Initialize Firestore DB
-db = firestore.client()
-users_ref = db.collection('users')
-
 
 class Login(Resource):
     def get(self):
@@ -24,14 +20,15 @@ class Login(Resource):
         username = args['username'].lower()
         password = args['password']
         try: 
-            doc = users_ref.document(username).get()
-            if not doc.exists:
+            doc = fs_get('users', username)
+            if doc is None:
                 return "login failed", 401
-            if doc.to_dict()['password'] != password:
+            if doc['password'] != password:
                 return "login failed", 401
             return "login successful", 200
         except:
             return "login failed"
+        
 
 
 class SignUp(Resource):
@@ -49,10 +46,11 @@ class SignUp(Resource):
         username = args['username'].lower()
         password = args['password']
         try: 
-            doc = users_ref.document(username).get()
-            if doc.exists:
+            doc = fs_get('users', username)
+            if doc is not None:
                 return "username already exists", 401
-            users_ref.document(username).set({'password': password})
+            fs_post('users', username, {'password': password})
             return "account created", 200
         except:
             return "failed to create account"
+        
