@@ -19,14 +19,10 @@ class Main(Resource):
 
 # test 
 
-# @app.route("/")
-# def hello() -> str:
-#     """Return a friendly HTTP greeting.
+@app.route("/test")
+def home():
+    return 'success', 200
 
-#     Returns:
-#         A string with the words 'Hello World!'.
-#     """
-#     return "Hello World!"
 
 api.add_resource(Main, '/')
 api.add_resource(Trips.Trips, '/trips/<string:tripID>')
