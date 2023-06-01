@@ -1,6 +1,6 @@
 key.json
 nav-e-387904-d81977688707.json
 __pycache__/
-
+.env
 # Ignore generated credentials from google-github-actions/auth
 gha-creds-*.json

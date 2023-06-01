@@ -5,8 +5,17 @@ from firebase_admin import credentials, firestore, initialize_app
 app = Flask(__name__)
 api = Api(app)
 
-# Initialize Firestore DB
-cred = credentials.Certificate('key.json')
+import json
+import base64
+import os
+from dotenv import load_dotenv, find_dotenv
+
+# Initialize Firestore DB and decode key
+load_dotenv(find_dotenv())
+encoded_key = os.getenv("SERVICE_ACCOUNT_KEY")
+SERVICE_ACCOUNT_JSON = json.loads(base64.b64decode(encoded_key).decode('utf-8'))
+
+cred = credentials.Certificate(SERVICE_ACCOUNT_JSON)
 default_app = initialize_app(cred)
 
 # import resources
