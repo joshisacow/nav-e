@@ -12,25 +12,15 @@ jobs:
       id-token: 'write'
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with: 
-          python-version: '3.11'
-      - name: Install requirements
-        run: pip install -r requirements.txt
-      - run: python main.py
-      - name: echo workspace
-        run: echo $GITHUB_WORKSPACE
-        shell: bash
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v1.1.1
         with:
-          
-        
+          workload_identity_provider: 'projects/262102611503/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
+          service_account: 'nav-e-387904@appspot.gserviceaccount.com'
       - name: Deploy to app engine
         uses: google-github-actions/deploy-appengine@v1.2.7
         with:
           project_id: 'nav-e-387904'
-          gcloud_version: '432.0.0'
 
       
       
