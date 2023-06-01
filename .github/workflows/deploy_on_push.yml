@@ -5,7 +5,7 @@ on:
     - main
     
 jobs:
-  test-flask:
+  deploy-app-engine:
     runs-on: windows-latest
     permissions:
       contents: 'read'
