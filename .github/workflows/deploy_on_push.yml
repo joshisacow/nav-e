@@ -5,7 +5,26 @@ on:
     - main
     
 jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with: 
+          python-version: '3.11'
+      - name: Install requirements
+        run: pip install -r requirements.txt
+      - name: run unit test
+        run: python test_app.py
+        env:
+          SERVICE_ACCOUNT_KEY: ${{ secrets.FIREBASE_KEY }}
+      - name: echo workspace
+        run: echo $GITHUB_WORKSPACE
+        shell: bash
   deploy-app-engine:
+    # only run if build is successful
+    needs: 
+      - build
     runs-on: windows-latest
     permissions:
       contents: 'read'
@@ -17,6 +36,7 @@ jobs:
         with:
           workload_identity_provider: 'projects/262102611503/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
           service_account: 'nav-e-387904@appspot.gserviceaccount.com'
+          project_id: 'nav-e-387904'
       - name: Deploy to app engine
         uses: google-github-actions/deploy-appengine@v1.2.7
         with:
