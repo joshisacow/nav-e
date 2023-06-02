@@ -1,7 +1,4 @@
 on:
-  push:
-    branches:
-    - main
   pull_request:
     branches:
     - main
@@ -16,17 +13,10 @@ jobs:
           python-version: '3.11'
       - name: Install requirements
         run: pip install -r requirements.txt
-      - name: execute main
-        run: python main.py
-        env:
-          SERVICE_ACCOUNT_KEY: ${{ secrets.FIREBASE_KEY }}
+      - name: run unit test
+        run: python test_app.py
       - name: echo workspace
         run: echo $GITHUB_WORKSPACE
         shell: bash
-      - name: health checkpoint
-        uses: lakuapik/gh-actions-http-status@v1
-        with: 
-          sites: '["http://127.0.0.1:8080/test"]'
-          expected: '[200]'
         
         
