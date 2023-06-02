@@ -15,6 +15,8 @@ jobs:
         run: pip install -r requirements.txt
       - name: run unit test
         run: python test_app.py
+        env:
+          SERVICE_ACCOUNT_KEY: ${{ secrets.FIREBASE_KEY }}
       - name: echo workspace
         run: echo $GITHUB_WORKSPACE
         shell: bash
