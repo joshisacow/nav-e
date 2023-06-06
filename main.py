@@ -30,6 +30,7 @@ api.add_resource(Main, '/')
 api.add_resource(Trips.Trips, '/trips/<string:tripID>')
 api.add_resource(Login.Login, '/login')
 api.add_resource(Login.SignUp, '/signup')   
+api.add_resource(Trips.Route, '/route/<string:tripID>')
 
 
 # test route
