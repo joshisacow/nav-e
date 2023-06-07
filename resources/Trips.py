@@ -22,6 +22,11 @@ class Trips(Resource):
         trips_post_args = reqparse.RequestParser()
         trips_post_args.add_argument("trip", type = list, action = "append", location = 'json', help="trip is required", required=True)
         args = trips_post_args.parse_args()
+
+        # trip must have at least start and end
+        if len(args['trip']) < 2:
+            return "invalid trip", 400
+        
         args = json.dumps(args['trip'])
         fs_post('trips', tripID, {'trip': args})
         return "trip added", 200
