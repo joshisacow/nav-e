@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, abort, make_response, render_template
+from flask import Flask, jsonify, Request, abort, make_response, render_template
 from flask_restful import Resource, reqparse
 import json
 
@@ -18,9 +18,9 @@ class Trips(Resource):
     
     def post(self, tripID):
 
-        # parse args
+        # parse args flask.Request.values
         trips_post_args = reqparse.RequestParser()
-        trips_post_args.add_argument("trip", type=str, action="append", help="trip is required", required=True)
+        trips_post_args.add_argument("trip", type = list, action = "append", location = 'json', help="trip is required", required=True)
         args = trips_post_args.parse_args()
         args = json.dumps(args['trip'])
         fs_post('trips', tripID, {'trip': args})
@@ -34,7 +34,7 @@ class Trips(Resource):
         return 'trip deleted', 200
     
 class Route(Resource):
-    def get(self, tripID):
+    def get(self):
         return "hi", 200
 
     def build_json(self, arr):
@@ -73,9 +73,11 @@ class Route(Resource):
         return json_data
         
 
-    def post(self, tripID):
-        doc = fs_get('trips', tripID)
-        if doc is None:      
-            return "trip does not exist", 404
-        json_data = self.build_json(doc['trip'])
-        return getRoute(tripID, json_data), 200
+    def post(self):
+        route_post_args = reqparse.RequestParser()
+        route_post_args.add_argument("trip", type=str, help="trip is required", required=True)
+        args = route_post_args.parse_args()
+        arr = json.loads(args['trip'])
+        json_data = self.build_json(arr)
+        return json_data, 200
+        # return getRoute(json_data), 200

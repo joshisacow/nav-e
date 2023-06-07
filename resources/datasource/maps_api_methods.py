@@ -10,7 +10,7 @@ MAP_KEY = os.getenv("GMAPS_KEY")
 # MAP_KEY = json.loads(base64.b64decode(encoded_key).decode('utf-8'))
 
 
-def getRoute(tripID, json_data):
+def getRoute(json_data):
 
     url = 'https://routes.googleapis.com/directions/v2:computeRoutes'
     
@@ -19,7 +19,7 @@ def getRoute(tripID, json_data):
         'X-Goog-Api-Key': MAP_KEY,
         'X-Goog-FieldMask': 'routes.duration,routes.distanceMeters,routes.polyline.encodedPolyline',
     }
-    r = requests.post(url, data=json_data, headers=headers)
+    r = requests.post(url, json=json_data, headers=headers)
     return r.json()
 
 # sample input json
