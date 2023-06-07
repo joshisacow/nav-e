@@ -15,6 +15,10 @@ def fs_post(colID, docID, args):
 
 def fs_delete(colID, docID):
     db.collection(str(colID)).document(str(docID)).delete()
+
+
+     
+
     
 
 
