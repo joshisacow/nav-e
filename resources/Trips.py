@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, Request, abort, make_response, render_template
 from flask_restful import Resource, reqparse
-import json
+import json, datetime
 
 from resources.datasource.firestore_methods import *
 from resources.datasource.maps_api_methods import *
@@ -43,13 +43,16 @@ class Route(Resource):
         return "hi", 200
 
     def build_json(self, arr):
+
         # initialize json body
+        curr = datetime.datetime.utcnow().isoformat() + 'Z'
+
         json_data = {
             'origin': { 'location': {'latLng': {}} },
             'destination': { 'location': {'latLng': {}} },
             "travelMode": "DRIVE",
             "routingPreference": "TRAFFIC_AWARE",
-            "departureTime": "2022-10-15T15:01:23.045123456Z", #TODO: change to current time
+            "departureTime": curr, 
             "computeAlternativeRoutes": False,
             "routeModifiers": {
                 "avoidTolls": False,
@@ -84,5 +87,5 @@ class Route(Resource):
         args = route_post_args.parse_args()
         arr = json.loads(args['trip'])
         json_data = self.build_json(arr)
-        return json_data, 200
-        # return getRoute(json_data), 200
+        # return json_data, 200
+        return getRoute(json_data), 200
