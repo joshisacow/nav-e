@@ -18,7 +18,6 @@ class Trips(Resource):
     
     def post(self, tripID):
 
-        # parse args flask.Request.values
         trips_post_args = reqparse.RequestParser()
         trips_post_args.add_argument("trip", type = list, action = "append", location = 'json', help="trip is required", required=True)
         args = trips_post_args.parse_args()
@@ -42,13 +41,9 @@ class Route(Resource):
     def get(self):
         return "hi", 200
 
-    def build_json(self, args):
+    def build_json(self, arr, mode, tolls):
 
-        # parse info
-        arr = json.loads(args['trip'])
         # curr = datetime.datetime.utcnow().isoformat() + 'Z'
-        mode = args['mode']
-        tolls = args['tolls']
 
         # initialize json body
         json_data = {
@@ -87,10 +82,21 @@ class Route(Resource):
     def post(self):
         route_post_args = reqparse.RequestParser()
         route_post_args.add_argument("trip", type=str, help="trip is required", required=True)
-        route_post_args.add_argument("mode", type=str, help="travel mode is required", required=True)
-        route_post_args.add_argument("tolls", type=bool, help="toll preference is required", required=True)
-        
+        route_post_args.add_argument("mode", type=str, help="travel mode is required")
+        route_post_args.add_argument("tolls", type=bool, help="toll preference is required")
         args = route_post_args.parse_args()
-        json_data = self.build_json(args)
+
+        # check if params are provided
+        if args["mode"] is None:
+            mode = 'DRIVE'
+        else:
+            mode = args["mode"]
+        if args["tolls"] is None:
+            tolls = False
+        else:
+            tolls = args["tolls"]
+
+        arr = json.loads(args['trip'])
+        json_data = self.build_json(arr, mode, tolls)
         # return json_data, 200
         return getRoute(json_data), 200
