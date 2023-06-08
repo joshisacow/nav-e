@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, make_response
+from flask import Flask
 from flask_restful import Resource, reqparse
 
 from resources.datasource.firestore_methods import *

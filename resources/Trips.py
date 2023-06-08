@@ -1,6 +1,6 @@
-from flask import Flask, jsonify, Request, abort, make_response, render_template
+from flask import Flask
 from flask_restful import Resource, reqparse
-import json
+import json, datetime
 
 from resources.datasource.firestore_methods import *
 from resources.datasource.maps_api_methods import *
@@ -18,7 +18,6 @@ class Trips(Resource):
     
     def post(self, tripID):
 
-        # parse args flask.Request.values
         trips_post_args = reqparse.RequestParser()
         trips_post_args.add_argument("trip", type = list, action = "append", location = 'json', help="trip is required", required=True)
         args = trips_post_args.parse_args()
@@ -42,22 +41,24 @@ class Route(Resource):
     def get(self):
         return "hi", 200
 
-    def build_json(self, arr):
+    def build_json(self, arr, mode, tolls):
+
+        # curr = datetime.datetime.utcnow().isoformat() + 'Z'
+
         # initialize json body
         json_data = {
             'origin': { 'location': {'latLng': {}} },
             'destination': { 'location': {'latLng': {}} },
-            "travelMode": "DRIVE",
-            "routingPreference": "TRAFFIC_AWARE",
-            "departureTime": "2022-10-15T15:01:23.045123456Z", #TODO: change to current time
+            "travelMode": mode,
+            "routingPreference": "TRAFFIC_UNAWARE",
+            # "departureTime": curr, 
             "computeAlternativeRoutes": False,
             "routeModifiers": {
-                "avoidTolls": False,
+                "avoidTolls": tolls,
                 "avoidHighways": False,
                 "avoidFerries": False
             },
-            "languageCode": "en-US",
-            "units": "IMPERIAL" 
+            "languageCode": "en-US"
         }
         # add origin and destination
         json_data['origin']['location']['latLng']['latitude'] = arr[0][0]
@@ -81,8 +82,21 @@ class Route(Resource):
     def post(self):
         route_post_args = reqparse.RequestParser()
         route_post_args.add_argument("trip", type=str, help="trip is required", required=True)
+        route_post_args.add_argument("mode", type=str, help="travel mode is required")
+        route_post_args.add_argument("tolls", type=bool, help="toll preference is required")
         args = route_post_args.parse_args()
+
+        # check if params are provided
+        if args["mode"] is None:
+            mode = 'DRIVE'
+        else:
+            mode = args["mode"]
+        if args["tolls"] is None:
+            tolls = False
+        else:
+            tolls = args["tolls"]
+
         arr = json.loads(args['trip'])
-        json_data = self.build_json(arr)
-        return json_data, 200
-        # return getRoute(json_data), 200
+        json_data = self.build_json(arr, mode, tolls)
+        # return json_data, 200
+        return getRoute(json_data), 200

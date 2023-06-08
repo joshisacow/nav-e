@@ -18,6 +18,7 @@ jobs:
         run: python test_app.py
         env:
           SERVICE_ACCOUNT_KEY: ${{ secrets.FIREBASE_KEY }}
+          GMAPS_KEY: ${{ secrets.GMAPS_KEY }}
       - name: echo workspace
         run: echo $GITHUB_WORKSPACE
         shell: bash

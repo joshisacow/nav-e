@@ -1,6 +1,5 @@
 from firebase_admin import credentials, firestore
-from flask import Flask, jsonify, request, abort, make_response, render_template
-
+from flask import Flask
 app = Flask(__name__)
 
 db = firestore.client()
