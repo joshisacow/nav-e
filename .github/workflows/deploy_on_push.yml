@@ -7,6 +7,9 @@ on:
 jobs:
   build:
     runs-on: windows-latest
+    defaults: 
+      run:
+        working-directory: './server'
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
@@ -42,7 +45,10 @@ jobs:
         uses: google-github-actions/deploy-appengine@v1.2.7
         with:
           project_id: 'nav-e-387904'
-          env_vars: SERVICE_ACCOUNT_KEY=${{ secrets.FIREBASE_KEY }}
+          working_directory: './server'
+          env_vars: |-
+            SERVICE_ACCOUNT_KEY=${{ secrets.FIREBASE_KEY }}
+            GMAPS_KEY=${{ secrets.GMAPS_KEY }}
 
       
       
