@@ -1,4 +1,4 @@
-from server.main import app
+from main import app
 
 with app.test_client() as c:
     response = c.get('/test')
