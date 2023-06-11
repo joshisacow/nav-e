@@ -26,6 +26,11 @@ body {
     rgb(var(--background-start-rgb));
 }
 
+.map-container{
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+}
 
 .wrapper {
   position: relative;

@@ -1,13 +1,9 @@
-import React, {useMemo} from 'react'
+import React, {useMemo, useCallback} from 'react'
 import {GoogleMap} from '@react-google-maps/api'
 import LocationPin from '@/components/LocationPin'
 
 const Map = () => {
-    const mapContainerStyle = {
-        width: '100%',
-        height: '100vh',
-    };
-
+    const mapRef = React.useRef();
     const center = useMemo( () => ({
         lat: 44,
         lng: -80,
@@ -17,13 +13,15 @@ const Map = () => {
         disableDefaultUI: true,
         mapId: "b6a8170c1c0be23f",
     }), []);
+    const onLoad = useCallback((map) => (mapRef.current = map), []);
 
     return (
         <GoogleMap 
             zoom ={10} 
             center={center} 
-            mapContainerStyle = {mapContainerStyle}
+            mapContainerClassName = "map-container"
             options = {options}
+            onLoad = {onLoad}
 
         >
             <LocationPin 

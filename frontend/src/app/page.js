@@ -9,6 +9,7 @@ import Map from '@/components/Map'
 export default function Home() {
   const { isLoaded, loadError } = useLoadScript({ 
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
+    // libraries: ['places']
   });
 
   if (!isLoaded) return 'Loading...';
@@ -18,7 +19,7 @@ export default function Home() {
     <div class = "wrapper">
       <Map />
       <div className="search-bar">
-        Nav-E
+        <h1>Nav-E</h1>
       </div>
     </div>
   )
