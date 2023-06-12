@@ -44,6 +44,11 @@ body {
   width: 100%;
   padding: 1rem;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column; /* Add this line to make elements appear in a column */
+  align-items: flex-start; /* Add this line to align elements to the left */
+}
+
+.combobox {
+  width: 100%;
+  padding: 0.5rem;
 }
