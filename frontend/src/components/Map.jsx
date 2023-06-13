@@ -1,10 +1,11 @@
-import React, {useMemo, useCallback} from 'react'
+import React, {useMemo, useCallback, useState} from 'react'
 import {GoogleMap} from '@react-google-maps/api'
 import LocationPin from '@/components/LocationPin'
 import SearchBar from '@/components/SearchBar'
 
 const Map = (props) => {
     const [pan, setPan] = React.useState();
+    const [tripArray, setTripArray] = useState([]);
     const mapRef = React.useRef();
     const center = useMemo( () => ({
         lat: 33.68,
@@ -23,12 +24,19 @@ const Map = (props) => {
 
     return (
         <div class="wrapper">
-            <div className="search-bar">
+            <div className="search-bar-container">
                 <h1>Nav-E</h1> 
-                <SearchBar setPan = {(position) => {
-                    setPan(position);
-                    mapRef.current?.panTo(position);
-                }} />
+                <SearchBar 
+                    setPan = {(position) => {
+                        setPan(position);
+                        mapRef.current?.panTo(position);
+                    }}
+                    setTripArray = {(position) => {
+                        setTripArray([...tripArray, position]);
+                        console.log(tripArray);
+                        <LocationPin position = {position} />
+                    }}
+                />
             </div>
             <GoogleMap 
                 zoom ={10} 
@@ -44,7 +52,15 @@ const Map = (props) => {
                     icon = {"http://maps.google.com/mapfiles/ms/icons/red-dot.png"}
                 />
             </GoogleMap>
+            <div className="markers"> 
+                {tripArray.map((position) => (
+                    <LocationPin position = {position} />
+                ))}
+            </div>
         </div>
+
+        // markers
+        
     )
 }
 

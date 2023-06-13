@@ -10,9 +10,21 @@ import {
   } from "@reach/combobox";
   import "@reach/combobox/styles.css";
 
-const SearchBar = ({setPan}) => {
+const SearchBar = ({setPan, setTripArray}) => {
     const {ready, value, setValue, suggestions: {status, data}, clearSuggestions} = usePlacesAutocomplete();
     
+    const [currentAddress, setCurrentAddress] = React.useState(null);
+
+    const handleClick = async () => {
+        if (currentAddress == null) {
+            alert("Please enter a destination!");
+        }
+        else {
+            setTripArray(currentAddress);
+        }
+
+    }
+
     const handleSelect = async (val) => {
 
         // get value from select
@@ -23,9 +35,11 @@ const SearchBar = ({setPan}) => {
         try {
             const results = await getGeocode({address: val});
             const {lat, lng} = await getLatLng(results[0]);
+            // center current address
             setPan({lat, lng});
+            setCurrentAddress({lat, lng});
             console.log(lat, lng);
-            // TODO: addToTrip(lat, lng);
+            //delete
         }
         catch(error) {
             console.log("Error: ", error);
@@ -34,7 +48,7 @@ const SearchBar = ({setPan}) => {
     
     return (
         // search bar
-        <div>
+        <div className = "search-bar">
             <Combobox onSelect ={handleSelect}>
                 <ComboboxInput 
                     value={value} 
@@ -42,6 +56,7 @@ const SearchBar = ({setPan}) => {
                     disabled={!ready} 
                     placeholder="Search destinations"
                     className="combobox"/>
+                
                 <ComboboxPopover> 
                     <ComboboxList>
                         {status === "OK" && data.map(({id, description}) => (
@@ -50,6 +65,11 @@ const SearchBar = ({setPan}) => {
                     </ComboboxList>
                 </ComboboxPopover>
             </Combobox>
+            
+            {/* search button */}
+            <button onClick = {handleClick} className="search-button">
+                Add
+            </button>
 
         </div>
     )
