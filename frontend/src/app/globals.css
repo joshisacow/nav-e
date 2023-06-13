@@ -25,9 +25,30 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
-.map-container {
-  position: relative;
-  width: 100%;
+
+.map-container{
   height: 100vh;
-  overflow: hidden;
+  width: 100vw;
+  position: relative;
+}
+
+.wrapper {
+  position: relative;
+}
+
+.search-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 100%;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column; /* Add this line to make elements appear in a column */
+  align-items: flex-start; /* Add this line to align elements to the left */
+}
+
+.combobox {
+  width: 100%;
+  padding: 0.5rem;
 }
