@@ -8,19 +8,22 @@ import {
     ComboboxOption,
     ComboboxOptionText,
   } from "@reach/combobox";
-  import "@reach/combobox/styles.css";
+import "@reach/combobox/styles.css";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const SearchBar = ({setPan, setTripArray}) => {
     const {ready, value, setValue, suggestions: {status, data}, clearSuggestions} = usePlacesAutocomplete();
     
     const [currentAddress, setCurrentAddress] = React.useState(null);
 
-    const handleClick = async () => {
+    const handleClick = () => {
         if (currentAddress == null) {
-            alert("Please enter a destination!");
+            toast.error("Please enter a destination!", {position: "top-center"});
         }
         else {
             setTripArray(currentAddress);
+            toast.success("destination added!", {position: "top-center"});
         }
 
     }
@@ -70,7 +73,8 @@ const SearchBar = ({setPan, setTripArray}) => {
             <button onClick = {handleClick} className="search-button">
                 Add
             </button>
-
+            <ToastContainer />
+            
         </div>
     )
 }

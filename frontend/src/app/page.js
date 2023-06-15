@@ -6,6 +6,7 @@ import { useLoadScript } from '@react-google-maps/api'
 import Map from '@/components/Map'
 import SearchBar from '@/components/SearchBar'
 
+const libraries = ['places'];
 
 export default function Home() {
   const { isLoaded, loadError } = useLoadScript({ 
@@ -16,7 +17,6 @@ export default function Home() {
   if (!isLoaded) return 'Loading...';
   if (loadError) return 'Error loading maps';
 
-  return ( <Map />
-  )
+  return ( <Map /> )
 }
 
