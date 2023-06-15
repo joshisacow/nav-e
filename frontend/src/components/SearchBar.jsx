@@ -17,7 +17,7 @@ const SearchBar = ({setPan, setTripArray}) => {
     
     const [currentAddress, setCurrentAddress] = React.useState(null);
 
-    const handleClick = () => {
+    const addDest = () => {
         if (currentAddress == null) {
             toast.error("Please enter a destination!", {position: "top-center"});
         }
@@ -28,10 +28,8 @@ const SearchBar = ({setPan, setTripArray}) => {
 
     }
 
-    const handleSelect = async (val) => {
+    const selectedDest = async (val) => {
 
-        // get value from select
-        setValue(val, false);
         clearSuggestions();
 
         // turn address into latlng
@@ -47,12 +45,15 @@ const SearchBar = ({setPan, setTripArray}) => {
         catch(error) {
             console.log("Error: ", error);
         }
+
+        // get value from select
+        setValue(val, false);
     }
     
     return (
         // search bar
         <div className = "search-bar">
-            <Combobox onSelect ={handleSelect}>
+            <Combobox onSelect ={selectedDest}>
                 <ComboboxInput 
                     value={value} 
                     onChange={(e) => setValue(e.target.value)} 
@@ -70,7 +71,7 @@ const SearchBar = ({setPan, setTripArray}) => {
             </Combobox>
             
             {/* search button */}
-            <button onClick = {handleClick} className="search-button">
+            <button onClick = {addDest} className="search-button">
                 Add
             </button>
             <ToastContainer />

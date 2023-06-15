@@ -4,9 +4,6 @@ import Image from 'next/image'
 import { useState } from 'react'
 import { useLoadScript } from '@react-google-maps/api'
 import Map from '@/components/Map'
-import SearchBar from '@/components/SearchBar'
-
-const libraries = ['places'];
 
 export default function Home() {
   const { isLoaded, loadError } = useLoadScript({ 

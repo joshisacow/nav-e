@@ -2,14 +2,17 @@ import {useMemo, useCallback, useState, useRef, useEffect} from 'react'
 import {GoogleMap} from '@react-google-maps/api'
 import LocationPin from '@/components/LocationPin'
 import SearchBar from '@/components/SearchBar'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
+const serverURL = 'https://nav-e-387904.uc.r.appspot.com/trips/1';
 
 // post method
 //TODO: check userID, generate tripID
 
 const postTrip = async (trip) => {
     console.log(JSON.stringify({"trip": trip}))
-    const response = await fetch('http://localhost:8080/trips/1', {
+    const response = await fetch(serverURL, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -36,13 +39,14 @@ const Map = (props) => {
         mapTypeControl: false,
         fullscreenControl: false,
         clickableIcons: false,
-        mapId: "b6a8170c1c0be23f",
+        mapId: process.env.NEXT_PUBLIC_MAPS_ID,
     }), []);
 
     const onLoad = useCallback((map) => (mapRef.current = map), []);
 
-    const handleClick = () => {
+    const saveTrip = () => {
         postTrip(tripArray);
+        toast.success("saved trip!", {position: "top-center"});
     }
 
     return (
@@ -60,7 +64,7 @@ const Map = (props) => {
                     }}
                 />
             </div>
-            <button className = "save-button" onClick = {handleClick}>Save Trip</button>
+            <button className = "save-button" onClick = {saveTrip}>Save Trip</button>
             <GoogleMap 
                 zoom ={10} 
                 center={center} 
