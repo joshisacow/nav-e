@@ -48,6 +48,11 @@ body {
   align-items: flex-start; /* Add this line to align elements to the left */
 }
 
+.combobox {
+  width: 100%;
+  padding: 0.5rem;
+}
+
 .search-bar {
   display: flex;
   align-items: center;

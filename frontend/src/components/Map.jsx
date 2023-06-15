@@ -71,7 +71,6 @@ const Map = (props) => {
                 mapContainerClassName = "map-container"
                 options = {options}
                 onLoad = {onLoad}
-
             >   
                 {pan && <LocationPin  position = {pan} icon = {"/blue-dot.png"} />}
                 <LocationPin 
@@ -87,7 +86,6 @@ const Map = (props) => {
             </GoogleMap>
         </div>
 
-        
     )
 }
 

@@ -29,13 +29,14 @@ const SearchBar = ({setPan, setTripArray}) => {
     }
 
     const selectedDest = async (val) => {
-
+      
         clearSuggestions();
 
         // turn address into latlng
         try {
             const results = await getGeocode({address: val});
             const {lat, lng} = await getLatLng(results[0]);
+          
             // center current address
             setPan({lat, lng});
             setCurrentAddress({lat, lng});
@@ -60,7 +61,7 @@ const SearchBar = ({setPan, setTripArray}) => {
                     disabled={!ready} 
                     placeholder="Search destinations"
                     className="combobox"/>
-                
+
                 <ComboboxPopover> 
                     <ComboboxList>
                         {status === "OK" && data.map(({id, description}) => (
