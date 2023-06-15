@@ -19,15 +19,15 @@ class Trips(Resource):
     def post(self, tripID):
 
         trips_post_args = reqparse.RequestParser()
-        trips_post_args.add_argument("trip", type = list, action = "append", location = 'json', help="trip is required", required=True)
+        trips_post_args.add_argument("trip", type = dict, action = "append", help="trip is required", required=True)
         args = trips_post_args.parse_args()
 
         # trip must have at least start and end
         if len(args['trip']) < 2:
             return "invalid trip", 400
         
-        args = json.dumps(args['trip'])
-        fs_post('trips', tripID, {'trip': args})
+        # args = json.dumps(args['trip'])
+        fs_post('trips', tripID, args)
         return "trip added", 200
     
     def delete(self, tripID):
@@ -61,11 +61,11 @@ class Route(Resource):
             "languageCode": "en-US"
         }
         # add origin and destination
-        json_data['origin']['location']['latLng']['latitude'] = arr[0][0]
-        json_data['origin']['location']['latLng']['longitude'] = arr[0][1]
+        json_data['origin']['location']['latLng']['latitude'] = arr[0].get("lat")
+        json_data['origin']['location']['latLng']['longitude'] = arr[0].get("lng")
 
-        json_data['destination']['location']['latLng']['latitude'] = arr[-1][0]
-        json_data['destination']['location']['latLng']['longitude'] = arr[-1][1]
+        json_data['destination']['location']['latLng']['latitude'] = arr[-1].get("lat")
+        json_data['destination']['location']['latLng']['longitude'] = arr[-1].get("lng")
 
         # add intermediates
         if len(arr) > 2:
@@ -73,15 +73,15 @@ class Route(Resource):
             json_data['intermediates'] = []
             while i != len(arr)-1:
                 json_data['intermediates'].append({'location': {'latLng': {}}})
-                json_data['intermediates'][i-1]['location']['latLng']['latitude'] = arr[i][0]
-                json_data['intermediates'][i-1]['location']['latLng']['longitude'] = arr[i][1]
+                json_data['intermediates'][i-1]['location']['latLng']['latitude'] = arr[i].get("lat")
+                json_data['intermediates'][i-1]['location']['latLng']['longitude'] = arr[i].get("lng")
                 i+=1
         return json_data
         
 
     def post(self):
         route_post_args = reqparse.RequestParser()
-        route_post_args.add_argument("trip", type=str, help="trip is required", required=True)
+        route_post_args.add_argument("trip", type=dict, action="append", help="trip is required", required=True)
         route_post_args.add_argument("mode", type=str, help="travel mode is required")
         route_post_args.add_argument("tolls", type=bool, help="toll preference is required")
         args = route_post_args.parse_args()
@@ -96,7 +96,7 @@ class Route(Resource):
         else:
             tolls = args["tolls"]
 
-        arr = json.loads(args['trip'])
+        arr = args['trip']
         json_data = self.build_json(arr, mode, tolls)
         # return json_data, 200
         return getRoute(json_data), 200
