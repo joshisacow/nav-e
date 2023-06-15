@@ -73,15 +73,15 @@ const Map = (props) => {
                 onLoad = {onLoad}
 
             >   
-                {pan && <LocationPin  position = {pan} icon = {"http://maps.google.com/mapfiles/ms/icons/blue-dot.png"} />}
+                {pan && <LocationPin  position = {pan} icon = {"/blue-dot.png"} />}
                 <LocationPin 
                     position = {center}
-                    icon = {"http://maps.google.com/mapfiles/ms/icons/red-dot.png"}
+                    icon = {"/red-dot.png"}
                 />
 
                 {/* mark locations in tripArray */}
                 {tripArray.map((position, index) => (
-                    <LocationPin key = {index} position = {position} icon = {"http://maps.google.com/mapfiles/ms/icons/blue-dot.png"} />
+                    <LocationPin key = {index} position = {position} icon = {"/blue-dot.png"} />
                 ))}
             
             </GoogleMap>
