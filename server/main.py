@@ -1,9 +1,11 @@
 from flask import Flask
 from flask_restful import Resource, Api, reqparse
 from firebase_admin import credentials, firestore, initialize_app
+from flask_cors import CORS
 
 app = Flask(__name__)
 api = Api(app)
+CORS(app)
 
 import json
 import base64
