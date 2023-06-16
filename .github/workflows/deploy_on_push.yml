@@ -25,33 +25,11 @@ jobs:
       - name: echo workspace
         run: echo $GITHUB_WORKSPACE
         shell: bash
-# TODO: add frontend built unit tests
-  # build-frontend:
-  #   runs-on: windows-latest
-  #   defaults: 
-  #     run:
-  #       working-directory: './frontend'
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - uses: actions/setup-python@v4
-  #       with: 
-  #         python-version: '3.11'
-  #     - name: Install requirements
-  #       run: pip install -r requirements.txt
-  #     - name: run unit test
-  #       run: python test_app.py
-  #       env:
-  #         SERVICE_ACCOUNT_KEY: ${{ secrets.FIREBASE_KEY }}
-  #         GMAPS_KEY: ${{ secrets.GMAPS_KEY }}
-  #     - name: echo workspace
-  #       run: echo $GITHUB_WORKSPACE
-  #       shell: bash
 
   deploy-app-engine:
     # only run if test is successful
     needs: 
       - test-server
-      # - test-frontend
     runs-on: windows-latest
     permissions:
       contents: 'read'
@@ -73,8 +51,12 @@ jobs:
           env_vars: |-
             SERVICE_ACCOUNT_KEY=${{ secrets.FIREBASE_KEY }}
             GMAPS_KEY=${{ secrets.GMAPS_KEY }}
+      - name: set up nodejs
+        uses: actions/setup-node@v1
+        with:
+          node-version: 18.x
       - name: build frontend
-        run: npm install && npm run build
+        run: npm install --legacy-peer-deps && npm run build
         working-directory: './frontend'
       - name: Deploy Frontend to App Engine
         uses: google-github-actions/deploy-appengine@v1.2.7
