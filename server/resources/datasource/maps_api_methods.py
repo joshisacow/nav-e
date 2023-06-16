@@ -3,8 +3,8 @@ from dotenv import load_dotenv, find_dotenv
 
 #initialize API key
 load_dotenv(find_dotenv())
-encoded_key = os.getenv("GMAPS_KEY")
-MAP_KEY = json.loads(base64.b64decode(encoded_key).decode('utf-8'))
+MAP_KEY = os.getenv("GMAPS_KEY")
+ 
 
 
 def getRoute(json_data):

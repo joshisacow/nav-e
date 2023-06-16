@@ -17,3 +17,6 @@
 __pycache__/
 # Ignored by the build system
 /setup.cfg
+
+gha-creds-*.json
+.env
