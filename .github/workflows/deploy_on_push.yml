@@ -56,7 +56,7 @@ jobs:
         with:
           node-version: 18.x
       - name: build frontend
-        run: npm install && npm run build
+        run: npm install --legacy-peer-deps && npm run build
         working-directory: './frontend'
       - name: Deploy Frontend to App Engine
         uses: google-github-actions/deploy-appengine@v1.2.7
