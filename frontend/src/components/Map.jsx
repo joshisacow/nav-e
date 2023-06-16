@@ -5,7 +5,8 @@ import SearchBar from '@/components/SearchBar'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const serverURL = 'https://nav-e-387904.uc.r.appspot.com/trips/1';
+// TODO: put in config file
+const serverURL = 'https://api-dot-nav-e-387904.uc.r.appspot.com/trips/1';
 
 // post method
 //TODO: check userID, generate tripID
