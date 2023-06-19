@@ -1,5 +1,5 @@
 import {useMemo, useCallback, useState, useRef, useEffect} from 'react'
-import {GoogleMap} from '@react-google-maps/api'
+import {GoogleMap, InfoWindow, Marker} from '@react-google-maps/api'
 import LocationPin from '@/components/LocationPin'
 import SearchBar from '@/components/SearchBar'
 import { ToastContainer, toast } from 'react-toastify';
@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 // TODO: put in config file
 const serverURL = 'https://api-dot-nav-e-387904.uc.r.appspot.com/trips/1';
+
 
 // post method
 //TODO: check userID, generate tripID
@@ -25,9 +26,11 @@ const postTrip = async (trip) => {
 }
 
 
-const Map = (props) => {
+const Map = props => {
+    
     const [pan, setPan] = useState();
     const [tripArray, setTripArray] = useState([]);
+    const [infoWindowMarker, setInfoWindowMarker] = useState("");
     const mapRef = useRef();
     const center = useMemo( () => ({
         lat: 33.68,
@@ -60,8 +63,7 @@ const Map = (props) => {
                         mapRef.current?.panTo(position);
                     }}
                     setTripArray = {(position) => {
-                        setTripArray([...tripArray, position]);
-                        <LocationPin position = {position} />
+                        setTripArray((prevTripArray) => [...prevTripArray, position]);
                     }}
                 />
             </div>
@@ -74,15 +76,41 @@ const Map = (props) => {
                 onLoad = {onLoad}
             >   
                 {pan && <LocationPin  position = {pan} icon = {"/blue-dot.png"} />}
-                <LocationPin 
-                    position = {center}
-                    icon = {"/red-dot.png"}
+                <LocationPin
+                    position = {center} label = "A"
                 />
+                
 
                 {/* mark locations in tripArray */}
                 {tripArray.map((position, index) => (
-                    <LocationPin key = {index} position = {position} icon = {"/blue-dot.png"} />
+                    <Marker 
+                        key = {index} 
+                        position = {position} 
+                        // icon = {"/blue-dot.png"} 
+                        label = {{
+                            text: (index+1).toString(),
+                            color: "white",
+                            fontsize: "16px",
+                            fontWeight: "bold",
+                            className: "pin-label"
+                        }}
+                        onClick = {() => {
+                            setInfoWindowMarker(position);
+                            console.log(position);
+                        }}
+                    />
                 ))}
+                {infoWindowMarker && (
+                    <InfoWindow 
+                        onCloseClick={() => {setInfoWindowMarker("")}}
+                        position = {infoWindowMarker}
+                    >
+                        <div className = "info-window-container">
+                            <h1>lat: {infoWindowMarker.lat}</h1>
+                            <h1>lng: {infoWindowMarker.lng}</h1>    
+                        </div>
+                    </InfoWindow>
+                )}
             
             </GoogleMap>
         </div>
