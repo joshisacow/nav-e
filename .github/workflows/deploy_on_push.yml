@@ -59,6 +59,7 @@ jobs:
       run:
         working-directory: './frontend'
     steps: 
+      - uses: actions/checkout@v3
       - name: set up nodejs
         uses: actions/setup-node@v3
         with:
