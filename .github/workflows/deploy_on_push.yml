@@ -37,6 +37,7 @@ jobs:
       contents: 'read'
       id-token: 'write'
     steps:
+      - uses: actions/checkout@v3
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v1.1.1
         with:
@@ -84,15 +85,6 @@ jobs:
           echo NEXT_PUBLIC_MAPS_ID=${{ secrets.MAPS_ID }} >> .env.local
       - name: build
         run: npm run build
-
-  deploy-frontend:
-    needs:
-      - build-frontend
-    runs-on: windows-latest
-    permissions:
-      contents: 'read'
-      id-token: 'write'
-    steps:
       - name: Deploy Frontend to App Engine
         uses: google-github-actions/deploy-appengine@v1.2.7
         with:
@@ -101,11 +93,5 @@ jobs:
           # env_vars: |-
           #   NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=${{ secrets.GMAPS_KEY }}
           #   NEXT_PUBLIC_MAPS_ID=${{ secrets.MAPS_ID }}
-
-
-      
-      
-    
-      
     
   
