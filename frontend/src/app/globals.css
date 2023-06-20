@@ -79,3 +79,11 @@ body {
   background: #000;
   color: #fff;
 }
+
+.pin-label {
+  z-index:1;
+}
+
+.info-window-container {
+  background-color: aquamarine;
+}

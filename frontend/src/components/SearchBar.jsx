@@ -23,7 +23,6 @@ const SearchBar = ({setPan, setTripArray}) => {
         }
         else {
             setTripArray(currentAddress);
-            toast.success("destination added!", {position: "top-center"});
         }
 
     }

@@ -8,12 +8,12 @@ import Map from '@/components/Map'
 export default function Home() {
   const { isLoaded, loadError } = useLoadScript({ 
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
-    libraries: ['places']
+    libraries: ['places', 'marker'],
   });
 
   if (!isLoaded) return 'Loading...';
   if (loadError) return 'Error loading maps';
 
   return ( <Map /> )
-}
 
+}
