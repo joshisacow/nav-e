@@ -2,6 +2,7 @@ on:
   pull_request:
     branches:
     - main
+  workflow_dispatch:
     
 jobs:
   test-flask:
@@ -30,7 +31,6 @@ jobs:
       run:
         working-directory: './frontend'
     steps:
-      - uses: actions/checkout@v3
       - name: set up nodejs
         uses: actions/setup-node@v1
         with:
