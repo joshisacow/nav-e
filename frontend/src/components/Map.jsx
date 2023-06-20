@@ -63,7 +63,16 @@ const Map = props => {
                         mapRef.current?.panTo(position);
                     }}
                     setTripArray = {(position) => {
+                        if (tripArray.length >= 15) {
+                            toast.error("max number of locations reached!", {position: "top-center"});
+                            return;
+                        }
+                        if (tripArray.includes(position)) {
+                            toast.error("location already added!", {position: "top-center"});
+                            return;
+                        }
                         setTripArray((prevTripArray) => [...prevTripArray, position]);
+                        toast.success("destination added!", {position: "top-center"});
                     }}
                 />
             </div>
@@ -75,9 +84,9 @@ const Map = props => {
                 options = {options}
                 onLoad = {onLoad}
             >   
-                {pan && <LocationPin  position = {pan} icon = {"/blue-dot.png"} />}
+                {pan && <LocationPin  position = {pan}   />}
                 <LocationPin
-                    position = {center} label = "A"
+                    position = {center} label = "A" 
                 />
                 
 
