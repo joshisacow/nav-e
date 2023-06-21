@@ -1,6 +1,8 @@
 import requests, json, base64, os
 from dotenv import load_dotenv, find_dotenv
 
+from flask import Flask
+
 #initialize API key
 load_dotenv(find_dotenv())
 MAP_KEY = os.getenv("GMAPS_KEY")
@@ -18,4 +20,21 @@ def getRoute(json_data):
     }
     
     r = requests.post(url, json=json_data, headers=headers)
+    return r.json()
+
+
+def getPlaceDetails(placeID):
+    url = 'https://maps.googleapis.com/maps/api/place/details/'
+
+    headers = {
+
+    }
+
+    payload = {
+        "place_id": placeID,
+        "fields": "formatted_address,name,photo,url,business_status,formatted_phone_number,website,price_level,rating,reviews,user_ratings_total,editorial_summary",
+        "key": MAP_KEY,
+    }
+
+    r = requests.get(url, headers = headers, params = payload)
     return r.json()
