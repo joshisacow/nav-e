@@ -56,9 +56,11 @@ jobs:
       
   build-and-deploy-frontend:
     runs-on: windows-latest
+    needs: 
+      - deploy-server
     defaults: 
       run:
-        working-directory: './frontend'
+        working-directory: 'frontend'
     steps: 
       - name: set up nodejs
         uses: actions/setup-node@v3
