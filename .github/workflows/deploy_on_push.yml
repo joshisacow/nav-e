@@ -59,6 +59,9 @@ jobs:
     defaults: 
       run:
         working-directory: './frontend'
+    permissions:
+      contents: 'read'
+      id-token: 'write'
     steps: 
       - uses: actions/checkout@v3
       - name: set up nodejs
