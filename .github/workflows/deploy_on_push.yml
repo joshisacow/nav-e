@@ -53,11 +53,14 @@ jobs:
             SERVICE_ACCOUNT_KEY=${{ secrets.FIREBASE_KEY }}
             GMAPS_KEY=${{ secrets.GMAPS_KEY }}
       
-  build-frontend:
+  build-and-deploy-frontend:
     runs-on: windows-latest
     defaults: 
       run:
         working-directory: './frontend'
+    permissions:
+      contents: 'read'
+      id-token: 'write'
     steps: 
       - uses: actions/checkout@v3
       - name: set up nodejs
@@ -84,28 +87,16 @@ jobs:
           echo NEXT_PUBLIC_MAPS_ID=${{ secrets.MAPS_ID }} >> .env.local
       - name: build
         run: npm run build
-
-  deploy-frontend:
-    needs:
-      - build-frontend
-    runs-on: windows-latest
-    permissions:
-      contents: 'read'
-      id-token: 'write'
-    steps:
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v1.1.1
+        with:
+          workload_identity_provider: 'projects/262102611503/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
+          service_account: 'nav-e-387904@appspot.gserviceaccount.com'
+          project_id: 'nav-e-387904'
       - name: Deploy Frontend to App Engine
         uses: google-github-actions/deploy-appengine@v1.2.7
         with:
           project_id: 'nav-e-387904'
           working_directory: './frontend'
-          # env_vars: |-
-          #   NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=${{ secrets.GMAPS_KEY }}
-          #   NEXT_PUBLIC_MAPS_ID=${{ secrets.MAPS_ID }}
-
-
-      
-      
-    
-      
     
   
