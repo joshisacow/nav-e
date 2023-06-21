@@ -15,7 +15,7 @@ import 'react-toastify/dist/ReactToastify.css';
 // TODO: put in config file
 const serverURL = 'https://api-dot-nav-e-387904.uc.r.appspot.com/place';
 
-const getAddDetails = async (address) => {
+const getAddrDetails = async (address) => {
     console.log(address)
     const response = await fetch(
         serverURL + new URLSearchParams({
@@ -56,6 +56,9 @@ const SearchBar = ({setPan, setTripArray}) => {
             setPan({lat, lng});
             setCurrentAddress({lat, lng});
             
+            // get address details
+            const det = await getAddrDetails(results[0].place_id);
+            setDetails(det);
             
         }
         catch(error) {
