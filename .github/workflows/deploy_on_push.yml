@@ -37,7 +37,6 @@ jobs:
       contents: 'read'
       id-token: 'write'
     steps:
-      - uses: actions/checkout@v3
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v1.1.1
         with:
@@ -99,8 +98,5 @@ jobs:
         with:
           project_id: 'nav-e-387904'
           working_directory: './frontend'
-          # env_vars: |-
-          #   NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=${{ secrets.GMAPS_KEY }}
-          #   NEXT_PUBLIC_MAPS_ID=${{ secrets.MAPS_ID }}
     
   
