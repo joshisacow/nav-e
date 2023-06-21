@@ -56,12 +56,11 @@ jobs:
       
   build-and-deploy-frontend:
     runs-on: windows-latest
-    needs: 
-      - deploy-server
     defaults: 
       run:
-        working-directory: 'frontend'
+        working-directory: './frontend'
     steps: 
+      - uses: actions/checkout@v3
       - name: set up nodejs
         uses: actions/setup-node@v3
         with:
@@ -86,6 +85,12 @@ jobs:
           echo NEXT_PUBLIC_MAPS_ID=${{ secrets.MAPS_ID }} >> .env.local
       - name: build
         run: npm run build
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v1.1.1
+        with:
+          workload_identity_provider: 'projects/262102611503/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
+          service_account: 'nav-e-387904@appspot.gserviceaccount.com'
+          project_id: 'nav-e-387904'
       - name: Deploy Frontend to App Engine
         uses: google-github-actions/deploy-appengine@v1.2.7
         with:
