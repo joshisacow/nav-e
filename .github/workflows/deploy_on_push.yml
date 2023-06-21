@@ -54,13 +54,12 @@ jobs:
             SERVICE_ACCOUNT_KEY=${{ secrets.FIREBASE_KEY }}
             GMAPS_KEY=${{ secrets.GMAPS_KEY }}
       
-  build-frontend:
+  build-and-deploy-frontend:
     runs-on: windows-latest
     defaults: 
       run:
         working-directory: './frontend'
     steps: 
-      - uses: actions/checkout@v3
       - name: set up nodejs
         uses: actions/setup-node@v3
         with:
