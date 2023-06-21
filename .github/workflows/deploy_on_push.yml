@@ -7,11 +7,14 @@ on:
 
     
 jobs:
-  test-server:
+  test-and-deploy-server:
     runs-on: windows-latest
     defaults: 
       run:
         working-directory: './server'
+    permissions:
+      contents: 'read'
+      id-token: 'write'
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
@@ -27,16 +30,6 @@ jobs:
       - name: echo workspace
         run: echo $GITHUB_WORKSPACE
         shell: bash
-
-  deploy-server:
-    # only run if test is successful
-    needs: 
-      - test-server
-    runs-on: windows-latest
-    permissions:
-      contents: 'read'
-      id-token: 'write'
-    steps:
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v1.1.1
         with:
