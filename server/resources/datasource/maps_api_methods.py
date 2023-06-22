@@ -24,7 +24,7 @@ def getRoute(json_data):
 
 
 def getPlaceDetails(placeID):
-    url = 'https://maps.googleapis.com/maps/api/place/details/'
+    url = 'https://maps.googleapis.com/maps/api/place/details/json'
 
     headers = {
 
@@ -32,9 +32,10 @@ def getPlaceDetails(placeID):
 
     payload = {
         "place_id": placeID,
-        "fields": "formatted_address,name,photo,url,business_status,formatted_phone_number,website,price_level,rating,reviews,user_ratings_total,editorial_summary",
+        
         "key": MAP_KEY,
     }
+    # "fields": "formatted_address,name,photo,url,business_status,formatted_phone_number,website,price_level,rating,reviews,user_ratings_total,editorial_summary",
 
     r = requests.get(url, headers = headers, params = payload)
     return r.json()
