@@ -55,9 +55,11 @@ const SearchBar = ({setPan, setTripArray}) => {
             // center current address
             setPan({lat, lng});
             setCurrentAddress({lat, lng});
+            console.log({lat, lng})
             
             // get address details
             const det = await getAddrDetails(results[0].place_id);
+            console.log(val)
             setDetails(det);
             
         }
@@ -82,6 +84,7 @@ const SearchBar = ({setPan, setTripArray}) => {
 
                 <ComboboxPopover> 
                     <ComboboxList>
+                        
                         {status === "OK" && data.map(({id, description}) => (
                             <ComboboxOption key={id} value={description} />
                         ))}
