@@ -23,6 +23,7 @@ default_app = initialize_app(cred)
 # import resources
 import resources.Trips as Trips 
 import resources.Login as Login
+import resources.Maps as Maps
 
 class Main(Resource):
     def get(self):
@@ -32,7 +33,8 @@ api.add_resource(Main, '/')
 api.add_resource(Trips.Trips, '/trips/<string:tripID>')
 api.add_resource(Login.Login, '/login')
 api.add_resource(Login.SignUp, '/signup')   
-api.add_resource(Trips.Route, '/route')
+api.add_resource(Maps.Route, '/route')
+api.add_resource(Maps.Place, '/place/<string:placeID>')
 
 
 # test route

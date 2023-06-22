@@ -4,6 +4,8 @@ import LocationPin from '@/components/LocationPin'
 import SearchBar from '@/components/SearchBar'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faLocationPin } from '@fortawesome/free-solid-svg-icons'
 
 // TODO: put in config file
 const serverURL = 'https://api-dot-nav-e-387904.uc.r.appspot.com/trips/1';
@@ -15,7 +17,7 @@ const serverURL = 'https://api-dot-nav-e-387904.uc.r.appspot.com/trips/1';
 const postTrip = async (trip) => {
     console.log(JSON.stringify({"trip": trip}))
     const response = await fetch(serverURL, {
-        method: 'POST',
+        method: "POST",
         headers: {
             'Content-Type': 'application/json'
         },
@@ -33,8 +35,8 @@ const Map = props => {
     const [infoWindowMarker, setInfoWindowMarker] = useState("");
     const mapRef = useRef();
     const center = useMemo( () => ({
-        lat: 33.68,
-        lng: -117.83,
+        lat: 33.7233519,
+        lng: -117.7753504,
         // TODO: change to user's location
     }), []);
 
@@ -84,25 +86,35 @@ const Map = props => {
                 options = {options}
                 onLoad = {onLoad}
             >   
-                {pan && <LocationPin  position = {pan}   />}
+                {pan && 
+                    <LocationPin  
+                        position = {pan} 
+                        color = "red"  
+                        shape = "dot"
+                    />
+                }
                 <LocationPin
-                    position = {center} label = "A" 
+                    position = {center}  
+                    label = "A"
+                    color = "red"
+                    shape = "pin"
                 />
                 
 
                 {/* mark locations in tripArray */}
                 {tripArray.map((position, index) => (
-                    <Marker 
+                    <LocationPin 
                         key = {index} 
                         position = {position} 
-                        // icon = {"/blue-dot.png"} 
                         label = {{
                             text: (index+1).toString(),
                             color: "white",
                             fontsize: "16px",
                             fontWeight: "bold",
-                            className: "pin-label"
+                            className: "pin-label",
                         }}
+                        shape = "pin"
+                        color = "blue"
                         onClick = {() => {
                             setInfoWindowMarker(position);
                             console.log(position);
