@@ -55,7 +55,6 @@ const Map = props => {
         toast.success("saved trip!", {position: "top-center"});
     }
 
-    console.log(faLocationPin)
     return (
         <div className="wrapper">
             <div className="search-bar-container">
@@ -87,11 +86,18 @@ const Map = props => {
                 options = {options}
                 onLoad = {onLoad}
             >   
-                {pan && <LocationPin  position = {pan} color = "red"  />}
+                {pan && 
+                    <LocationPin  
+                        position = {pan} 
+                        color = "red"  
+                        shape = "dot"
+                    />
+                }
                 <LocationPin
                     position = {center}  
                     label = "A"
                     color = "red"
+                    shape = "pin"
                 />
                 
 
@@ -107,6 +113,7 @@ const Map = props => {
                             fontWeight: "bold",
                             className: "pin-label",
                         }}
+                        shape = "pin"
                         color = "blue"
                         onClick = {() => {
                             setInfoWindowMarker(position);
