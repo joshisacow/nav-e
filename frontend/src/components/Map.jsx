@@ -25,10 +25,11 @@ const postTrip = async (trip) => {
     console.log(data);
 }
 
-
 const Map = props => {
     
     const [pan, setPan] = useState();
+
+    //TODO: change so that tripArray stores an array of position + place details / reconfigure firestore + server
     const [tripArray, setTripArray] = useState([]);
     const [infoWindowMarker, setInfoWindowMarker] = useState("");
     const [infoWindowDetails, setInfoWindowDetails] = useState({});
@@ -93,6 +94,10 @@ const Map = props => {
                         position = {pan} 
                         color = "red"  
                         shape = "dot"
+                        onClick = {() => {
+                            setInfoWindowMarker(position);
+                            console.log(position);
+                        }}
                     />
                 }
                 <LocationPin
