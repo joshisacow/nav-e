@@ -4,8 +4,6 @@ import LocationPin from '@/components/LocationPin'
 import SearchBar from '@/components/SearchBar'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faLocationPin } from '@fortawesome/free-solid-svg-icons'
 
 // TODO: put in config file
 const serverURL = 'https://api-dot-nav-e-387904.uc.r.appspot.com/trips/1';
@@ -33,6 +31,7 @@ const Map = props => {
     const [pan, setPan] = useState();
     const [tripArray, setTripArray] = useState([]);
     const [infoWindowMarker, setInfoWindowMarker] = useState("");
+    const [infoWindowDetails, setInfoWindowDetails] = useState({});
     const mapRef = useRef();
     const center = useMemo( () => ({
         lat: 33.7233519,
@@ -75,6 +74,9 @@ const Map = props => {
                         }
                         setTripArray((prevTripArray) => [...prevTripArray, position]);
                         toast.success("destination added!", {position: "top-center"});
+                    }}
+                    setInfoWindowDetails = {(details) => {
+                        setInfoWindowDetails(details);
                     }}
                 />
             </div>
@@ -128,7 +130,8 @@ const Map = props => {
                     >
                         <div className = "info-window-container">
                             <h1>lat: {infoWindowMarker.lat}</h1>
-                            <h1>lng: {infoWindowMarker.lng}</h1>    
+                            <h1>lng: {infoWindowMarker.lng}</h1>   
+                            <h1>{infoWindowDetails.result.formatted_address}</h1> 
                         </div>
                     </InfoWindow>
                 )}
