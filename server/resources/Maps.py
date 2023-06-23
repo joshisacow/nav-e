@@ -1,5 +1,5 @@
 from flask import Flask
-from flask_restful import Resource, reqparse
+from flask_restful import Resource, reqparse, request
 
 from resources.datasource.maps_api_methods import *
 
@@ -70,6 +70,9 @@ class Route(Resource):
         return getRoute(json_data), 200
     
 class Place(Resource):
-    def get(self, placeID):
-        
-        return getPlaceDetails(placeID), 200
+    def get(self):
+        # place_parser = reqparse.RequestParser()
+        # place_parser.add_argument("placeID", type=str, help="placeID is required", required=True)
+        # args = place_parser.parse_args()
+        args = request.args.get('placeID')
+        return getPlaceDetails(args), 200
