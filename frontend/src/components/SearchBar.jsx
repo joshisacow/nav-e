@@ -46,7 +46,7 @@ const SearchBar = ({setPan, setTripArray, setInfoWindowDetails}) => {
     }
 
     const selectedDest = async (val) => {
-      
+        
         clearSuggestions();
 
         // turn address into latlng
@@ -62,7 +62,6 @@ const SearchBar = ({setPan, setTripArray, setInfoWindowDetails}) => {
             // get address details
             const det = await getAddrDetails(results[0].place_id);
             setInfoWindowDetails(det);
-            console.log(det);
             
         }
         catch(error) {
@@ -87,8 +86,8 @@ const SearchBar = ({setPan, setTripArray, setInfoWindowDetails}) => {
                 <ComboboxPopover> 
                     <ComboboxList>
                         
-                        {status === "OK" && data.map(({id, description}) => (
-                            <ComboboxOption key={id} value={description} />
+                        {status === "OK" && data.map(({place_id, description}) => (
+                            <ComboboxOption key={place_id} value={description} />
                         ))}
                     </ComboboxList>
                 </ComboboxPopover>
