@@ -2,7 +2,6 @@ import {useMemo, useCallback, useState, useRef, useEffect} from 'react';
 import {GoogleMap, InfoWindow, Marker} from '@react-google-maps/api';
 import LocationPin from '@/components/LocationPin';
 import SearchBar from '@/components/SearchBar';
-import InfoWindowEx from '@/components/InfoWindowEx';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -26,7 +25,7 @@ const postTrip = async (trip) => {
     console.log(data);
 }
 
-const Map = props => {
+const Map = () => {
     
     const [pan, setPan] = useState();
 
@@ -69,8 +68,19 @@ const Map = props => {
             toast.error("location already added!", {position: "top-center"});
             return;
         }
+
+        // add to trip array
         setTripArray((prevTripArray) => [...prevTripArray, position]);
-        toast.success("destination added!", {position: "top-center"});
+
+        // remove from pointArray if exists
+        if (pointArray.includes(position)) {
+            setPointArray((prevPointArray) => prevPointArray.filter((item) => item !== position));
+        }
+
+        // close infoWindow
+        setInfoWindowMarker("");
+
+        toast.success("added to trip!", {position: "top-center"});
     }
 
     return (
@@ -82,16 +92,20 @@ const Map = props => {
                         setPan(position);
                         mapRef.current?.panTo(position);
                     }}
-                    setTripArray = {(position) => {
-                        if (tripArray.length >= 15) {
+                    setPointArray = {(position) => {
+                        if (pointArray.length >= 15) {
                             toast.error("max number of locations reached!", {position: "top-center"});
                             return;
                         }
-                        if (tripArray.includes(position)) {
+                        if (pointArray.includes(position)) {
                             toast.error("location already added!", {position: "top-center"});
                             return;
                         }
-                        setTripArray((prevTripArray) => [...prevTripArray, position]);
+                        setPointArray((prevPointArray) => [...prevPointArray, position]);
+                        
+                        // clear current pin
+                        setPan();
+
                         toast.success("destination added!", {position: "top-center"});
                     }}
                     setInfoWindowDetails = {(details) => {
@@ -118,13 +132,6 @@ const Map = props => {
                         }}
                     />
                 }
-                <LocationPin
-                    position = {center}  
-                    label = "A"
-                    color = "red"
-                    shape = "pin"
-                />
-                
 
                 {/* mark locations in tripArray */}
                 {tripArray.map((position, index) => (
@@ -148,7 +155,7 @@ const Map = props => {
                 ))}
 
                 {/* mark locations in pointArray */}
-                {/* {pointArray.map((position, index) => (
+                {pointArray.map((position, index) => (
                     <LocationPin 
                         key = {index} 
                         position = {position} 
@@ -159,7 +166,7 @@ const Map = props => {
                             console.log(position);
                         }}
                     />
-                ))} */}
+                ))}
 
                 {infoWindowMarker && (
                     <InfoWindow 
