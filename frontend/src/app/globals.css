@@ -70,6 +70,13 @@ body {
   color: #fff;
 }
 
+.add-button {
+  width: 100%;
+  padding: 0.5rem;
+  background: #0ab196ce;
+  color: #fff;
+}
+
 .save-button {
   position: absolute;
   top: 2.5rem;
