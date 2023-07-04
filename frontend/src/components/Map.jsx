@@ -4,17 +4,14 @@ import LocationPin from '@/components/LocationPin';
 import SearchBar from '@/components/SearchBar';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-// TODO: put in config file
-const serverURL = 'https://api-dot-nav-e-387904.uc.r.appspot.com/trips/1';
+import config from '../../config.json'
 
 
-// post method
 //TODO: check userID, generate tripID
 
 const postTrip = async (trip) => {
     console.log(JSON.stringify({"trip": trip}))
-    const response = await fetch(serverURL, {
+    const response = await fetch(config.saveTripURL, {
         method: "POST",
         headers: {
             'Content-Type': 'application/json'
