@@ -13,10 +13,10 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 // TODO: put in config file
-const serverURL = 'https://api-dot-nav-e-387904.uc.r.appspot.com/place';
+// const serverURL = 'https://api-dot-nav-e-387904.uc.r.appspot.com/place';
 
 // local test url
-// const serverURL = 'http://127.0.0.1:8080/place'
+const serverURL = 'http://127.0.0.1:8080/place'
 
 const getAddrDetails = async (address) => {
     const response = await fetch(
@@ -32,7 +32,7 @@ const getAddrDetails = async (address) => {
     return data;
 }
 
-const SearchBar = ({setPan, setPointArray, setInfoWindowDetails}) => {
+const SearchBar = ({setPan, setPointArray, setCurrentDetails}) => {
     const {ready, value, setValue, suggestions: {status, data}, clearSuggestions} = usePlacesAutocomplete();
     const [currentAddress, setCurrentAddress] = useState(null);
 
@@ -61,7 +61,7 @@ const SearchBar = ({setPan, setPointArray, setInfoWindowDetails}) => {
             
             // get address details
             const det = await getAddrDetails(results[0].place_id);
-            setInfoWindowDetails(det);
+            setCurrentDetails(det);
             
         }
         catch(error) {
