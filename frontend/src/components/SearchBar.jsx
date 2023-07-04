@@ -15,7 +15,7 @@ import config from '../../config.json';
 
 const getAddrDetails = async (address) => {
     const response = await fetch(
-        config.placeDetailsURL + "?" + new URLSearchParams({
+        config.baseURL + "place?" + new URLSearchParams({
             "placeID": address
         }), 
         {

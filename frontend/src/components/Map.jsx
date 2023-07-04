@@ -11,7 +11,7 @@ import config from '../../config.json'
 
 const postTrip = async (trip) => {
     console.log(JSON.stringify({"trip": trip}))
-    const response = await fetch(config.saveTripURL, {
+    const response = await fetch(config.baseURL + "trips/1", {
         method: "POST",
         headers: {
             'Content-Type': 'application/json'

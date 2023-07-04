@@ -1,4 +1,3 @@
 {
-    "saveTripURL": "https://api-dot-nav-e-387904.uc.r.appspot.com/trips/1",
-    "placeDetailsURL": "https://api-dot-nav-e-387904.uc.r.appspot.com/place"
+    "baseURL": "https://api-dot-nav-e-387904.uc.r.appspot.com/"
 }
