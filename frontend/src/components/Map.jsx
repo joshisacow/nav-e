@@ -77,10 +77,6 @@ const Map = () => {
 
     const addToPoints = (position) => {
         const placeObject = {position, details: currentDetails}
-        if (pointArray.length >= 15) {
-            toast.error("max number of locations reached!", {position: "top-center"});
-            return;
-        }
         if (pointArray.some((item) => item.position === position)) {
             toast.error("location already added!", {position: "top-center"});
             return;
