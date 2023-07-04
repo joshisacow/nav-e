@@ -28,12 +28,8 @@ const postTrip = async (trip) => {
 const Map = () => {
     
     const [pan, setPan] = useState();
-
-    //TODO: change so that tripArray stores an array of position + place details / reconfigure firestore + server
     const [tripArray, setTripArray] = useState([]);
     const [pointArray, setPointArray] = useState([]);
-
-    // TODO: change to only use details for curr marker, else check saved points array
     const [infoWindowMarker, setInfoWindowMarker] = useState("");
     const [infoWindowDetails, setInfoWindowDetails] = useState({});
     const [currentDetails, setCurrentDetails] = useState({});
@@ -78,8 +74,6 @@ const Map = () => {
         // close infoWindow
         setInfoWindowMarker("");
 
-        toast.success("added to trip!", {position: "top-center"});
-
         console.log(tripArray);
         console.log(pointArray);
     }
@@ -98,8 +92,6 @@ const Map = () => {
         
         // clear current pin
         setPan();
-
-        toast.success("destination added!", {position: "top-center"});
     }
 
     const handlePointClick = (placeObject) => {
@@ -174,7 +166,7 @@ const Map = () => {
                         key = {index} 
                         position = {placeObject.position} 
                         shape = "dot"
-                        color = "red"
+                        color = "orange"
                         onClick = {() => {
                             handlePointClick(placeObject);
                         }}
