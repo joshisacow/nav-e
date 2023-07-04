@@ -11,16 +11,11 @@ import {
 import "@reach/combobox/styles.css";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-// TODO: put in config file
-const serverURL = 'https://api-dot-nav-e-387904.uc.r.appspot.com/place';
-
-// local test url
-// const serverURL = 'http://127.0.0.1:8080/place'
+import config from '../../config.json';
 
 const getAddrDetails = async (address) => {
     const response = await fetch(
-        serverURL + "?" + new URLSearchParams({
+        config.baseURL + "place?" + new URLSearchParams({
             "placeID": address
         }), 
         {
@@ -32,7 +27,7 @@ const getAddrDetails = async (address) => {
     return data;
 }
 
-const SearchBar = ({setPan, setPointArray, setInfoWindowDetails}) => {
+const SearchBar = ({setPan, setPointArray, setCurrentDetails}) => {
     const {ready, value, setValue, suggestions: {status, data}, clearSuggestions} = usePlacesAutocomplete();
     const [currentAddress, setCurrentAddress] = useState(null);
 
@@ -61,7 +56,7 @@ const SearchBar = ({setPan, setPointArray, setInfoWindowDetails}) => {
             
             // get address details
             const det = await getAddrDetails(results[0].place_id);
-            setInfoWindowDetails(det);
+            setCurrentDetails(det);
             
         }
         catch(error) {
@@ -85,14 +80,13 @@ const SearchBar = ({setPan, setPointArray, setInfoWindowDetails}) => {
 
                 <ComboboxPopover> 
                     <ComboboxList>
-                        
                         {status === "OK" && data.map(({place_id, description}) => (
                             <ComboboxOption key={place_id} value={description} />
                         ))}
                     </ComboboxList>
                 </ComboboxPopover>
             </Combobox>
-            
+
             {/* search button */}
             <button onClick = {addDest} className="search-button">
                 Add
