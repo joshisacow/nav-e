@@ -1,5 +1,5 @@
 import React from 'react'
-import { DragDropContext } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import TripEntry from '@/components/TripEntry'
 
 const TripView = ({tripArray}) => {
@@ -11,13 +11,25 @@ const TripView = ({tripArray}) => {
   return (
     <div className = "trip-table-container">
         <DragDropContext onDragEnd = {onDragEnd}>
-          {tripArray.map((placeObject, index) => (
-            <TripEntry
-              key = {index}
-              index = {index}
-              placeObject = {placeObject}
-            />
-          ))}
+          <Droppable droppableId = "trip-table">
+            {(provided) => (
+              <div
+                {...provided.droppableProps}
+                ref = {provided.innerRef}
+
+              >
+                {tripArray.map((placeObject, index) => (
+                  <TripEntry
+                    key = {index}
+                    index = {index}
+                    placeObject = {placeObject}
+                  />
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+            
+          </Droppable>
         </DragDropContext>
 
     </div>

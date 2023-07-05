@@ -77,8 +77,7 @@ const SearchBar = ({setPan, setPointArray, setCurrentDetails}) => {
                     disabled={!ready} 
                     placeholder="Search destinations"
                     className="combobox"/>
-
-                <ComboboxPopover> 
+                <ComboboxPopover className = "combobox-popover"> 
                     <ComboboxList>
                         {status === "OK" && data.map(({place_id, description}) => (
                             <ComboboxOption key={place_id} value={description} />

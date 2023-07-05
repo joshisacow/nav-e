@@ -41,7 +41,7 @@ body {
   top: 0;
   left: 0; */
   position: relative;
-  z-index: 2;
+  z-index: 1;
   width: 100%;
   padding: 1rem;
   display: flex;
@@ -64,9 +64,14 @@ body {
   padding: 0.5rem;
 }
 
+.combobox-popover {
+  z-index: 3;
+}
+
 .search-button {
   width: 20%;
   padding: 0.5rem;
+  margin-left: 0.25rem;
   background: #000;
   color: #fff;
 }
@@ -89,7 +94,7 @@ body {
 }
 
 .pin-label {
-  z-index:1;
+  z-index: 1;
 }
 
 .info-window-container {
@@ -122,4 +127,6 @@ body {
 .trip-entry {
   background: #daddddce;
   color: black;
+  border: 1px solid light grey;
+  border-radius: 2px;
 }
