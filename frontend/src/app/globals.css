@@ -37,15 +37,16 @@ body {
 }
 
 .search-bar-container {
-  position: absolute;
+  /* position: absolute;
   top: 0;
-  left: 0;
+  left: 0; */
+  position: relative;
   z-index: 1;
   width: 100%;
   padding: 1rem;
   display: flex;
-  flex-direction: column; /* Add this line to make elements appear in a column */
-  align-items: flex-start; /* Add this line to align elements to the left */
+  flex-direction: column; 
+  align-items: flex-start; 
 }
 
 .combobox {
@@ -63,9 +64,14 @@ body {
   padding: 0.5rem;
 }
 
+.combobox-popover {
+  z-index: 3;
+}
+
 .search-button {
   width: 20%;
   padding: 0.5rem;
+  margin-left: 0.25rem;
   background: #000;
   color: #fff;
 }
@@ -88,9 +94,39 @@ body {
 }
 
 .pin-label {
-  z-index:1;
+  z-index: 1;
 }
 
 .info-window-container {
   background-color: aquamarine;
+}
+
+.trip-table-container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column; 
+  align-items: flex-start; 
+  margin-bottom: -1rem;
+}
+
+.search-box-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  width: 100%;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column; 
+  align-items: flex-start; 
+}
+
+.trip-entry {
+  background: #daddddce;
+  color: black;
+  border: 1px solid light grey;
+  border-radius: 2px;
 }

@@ -2,6 +2,7 @@ import {useMemo, useCallback, useState, useRef, useEffect} from 'react';
 import {GoogleMap, InfoWindow, Marker} from '@react-google-maps/api';
 import LocationPin from '@/components/LocationPin';
 import SearchBar from '@/components/SearchBar';
+import TripView from '@/components/TripView';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import config from '../../config.json'
@@ -70,9 +71,6 @@ const Map = () => {
 
         // close infoWindow
         setInfoWindowMarker("");
-
-        console.log(tripArray);
-        console.log(pointArray);
     }
 
     const addToPoints = (position) => {
@@ -94,25 +92,31 @@ const Map = () => {
 
     return (
         <div className="wrapper">
-            <div className="search-bar-container">
-                <h1>Nav-E</h1> 
-                <SearchBar 
-                    setPan = {(position) => {
-                        setPan(position);
-                        mapRef.current?.panTo(position);
-                    }}
-                    setPointArray = {(position) => addToPoints(position)}
-                    setCurrentDetails = {(details) => {
-                        setCurrentDetails(details);
-                    }}
+            <div className = "search-box-container">
+                <TripView
+                    tripArray = {tripArray}
+                    setTripArray = {setTripArray}   
                 />
+                <div className="search-bar-container">
+                    <h1>Nav-E</h1> 
+                    <SearchBar 
+                        setPan = {(position) => {
+                            setPan(position);
+                            mapRef.current?.panTo(position);
+                        }}
+                        setPointArray = {(position) => addToPoints(position)}
+                        setCurrentDetails = {(details) => {
+                            setCurrentDetails(details);
+                        }}
+                    />
+                    <button className = "save-button" 
+                        onClick = {() => {
+                            postTrip(tripArray);
+                            toast.success("saved trip!", {position: "top-center"});
+                        }
+                    }> Save Trip </button>
+                </div>
             </div>
-            <button className = "save-button" 
-                onClick = {() => {
-                    postTrip(tripArray);
-                    toast.success("saved trip!", {position: "top-center"});
-                }
-            }> Save Trip </button>
             <GoogleMap 
                 zoom ={10} 
                 center={center} 
@@ -166,7 +170,7 @@ const Map = () => {
                     />
                 ))}
 
-                {infoWindowMarker && (
+                {infoWindowMarker && infoWindowDetails && (
                     <InfoWindow 
                         onCloseClick={() => {setInfoWindowMarker("")}}
                         position = {infoWindowMarker}
