@@ -170,7 +170,7 @@ const Map = () => {
                     />
                 ))}
 
-                {infoWindowMarker && (
+                {infoWindowMarker && infoWindowDetails && (
                     <InfoWindow 
                         onCloseClick={() => {setInfoWindowMarker("")}}
                         position = {infoWindowMarker}

@@ -6,9 +6,9 @@ const TripEntry = ({placeObject, index}) => {
     console.log("hi");
     return (
         <Draggable
-            draggableId = {placeObject.details.result.name}
+            draggableId = {placeObject.details.result.place_id}
             index = {index}
-            key = {placeObject.details.result.name}
+            key = {placeObject.details.result.place_id}
         >
             {(provided) => (
                 <div 
