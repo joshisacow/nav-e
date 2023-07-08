@@ -3,7 +3,6 @@ import { Draggable } from 'react-beautiful-dnd';
 
 const TripEntry = ({placeObject, index}) => {
     console.log(placeObject);
-    console.log("hi");
     return (
         <Draggable
             draggableId = {placeObject.details.result.place_id}
