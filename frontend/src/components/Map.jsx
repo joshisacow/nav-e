@@ -26,16 +26,20 @@ const postTrip = async (trip) => {
 
 const Map = () => {
     
-    const [pan, setPan] = useState();
-    // const [currentMarker, setCurrentMarker] = useState({position: "", details: {}});
+    const [currentMarker, setCurrentMarker] = useState({position: null, details: null});
     const [tripArray, setTripArray] = useState([]);
     const [pointArray, setPointArray] = useState([]);
-    const [infoWindowMarker, setInfoWindowMarker] = useState("");
-    const [infoWindowDetails, setInfoWindowDetails] = useState({});
-    const [currentDetails, setCurrentDetails] = useState({});
+    const [infoW, setInfoW] = useState({position: null, details: null});
     const [detailsLoading, setDetailsLoading] = useState(false);
 
-    
+    // update infoWindow when details finishes fetch
+    useEffect (() => {
+        // check if infoWindow is showing current marker
+        if (infoW.position === currentMarker.position) {
+            setInfoW((prevInfoW) => ({...prevInfoW, details: currentMarker.details}));
+        }
+    }, [currentMarker.details]);
+
     const mapRef = useRef();
     const center = useMemo( () => ({
         lat: 33.7233519,
@@ -53,14 +57,13 @@ const Map = () => {
 
     const onLoad = useCallback((map) => (mapRef.current = map), []);
 
-    const addToTrip = (position, details) => {
-        const placeObject = {position, details}
+    const addToTrip = (placeObject) => {
 
         if (tripArray.length >= 15) {
-            toast.error("max number of locations reached!", {position: "top-center"});
+            toast.error("max number of locations reached!");
             return;
         }
-        if (tripArray.some((item) => item.position === position )) {
+        if (tripArray.some((item) => item.position === placeObject.position )) {
             toast.error("location already added!", {position: "top-center"});
             return;
         }
@@ -68,30 +71,38 @@ const Map = () => {
         // add to trip array
         setTripArray((prevTripArray) => [...prevTripArray, placeObject]);
 
+        // if adding current marker, clear
+        if (placeObject.position === currentMarker.position) {
+            setCurrentMarker({position: null, details: null});
+        }
         // remove from pointArray if exists
-        if (pointArray.some((item) => item.position === position)) {
-            setPointArray((prevPointArray) => prevPointArray.filter((item) => item.position !== position));
+        else if (pointArray.some((item) => item.position === placeObject.position)) {
+            setPointArray((prevPointArray) => prevPointArray.filter((item) => item.position !== placeObject.position));
         }
 
         // close infoWindow
-        setInfoWindowMarker("");
+        setInfoW((prevInfoW) => ({...prevInfoW, position: null}));;
     }
 
-    const addToPoints = (position) => {
-        const placeObject = {position, details: currentDetails}
-        if (pointArray.some((item) => item.position === position) || tripArray.some((item) => item.position === position)) {
+    const addToPoints = (placeObject) => {
+        if (placeObject.position === null) {
+            toast.error("Please enter a destination!", {position: "top-center"});
+            return;
+        }
+
+        if (pointArray.some((item) => item.position === placeObject.position) || tripArray.some((item) => item.position === placeObject.position)) {
             toast.error("location already added!", {position: "top-center"});
             return;
         }
+        console.log(placeObject);
         setPointArray((prevPointArray) => [...prevPointArray, placeObject]);
-        
+
         // clear current pin
-        setPan();
+        setCurrentMarker({position: null, details: null});
     }
 
     const handlePointClick = (placeObject) => {
-        setInfoWindowMarker(placeObject.position);
-        setInfoWindowDetails(placeObject.details);
+        setInfoW(placeObject);
     }
 
     return (
@@ -105,19 +116,24 @@ const Map = () => {
                     <h1>Nav-E</h1> 
                     <SearchBar 
                         setPan = {(position) => {
-                            setPan(position);
+                            setCurrentMarker((prevMarker) => ({...prevMarker, position}));
                             mapRef.current?.panTo(position);
                         }}
-                        setPointArray = {(position) => addToPoints(position)}
+                        addToPoints = {() => {addToPoints(currentMarker)}}
                         setCurrentDetails = {(details) => {
-                            setCurrentDetails(details);
+                            setCurrentMarker((prevMarker) => ({...prevMarker, details}));
                         }}
                         setDetailsLoading = {(bool) => setDetailsLoading(bool)}
+                        clearInfoW = {() => {
+                            if (infoW.position !== null) {
+                                setInfoW((prevInfoW) => ({...prevInfoW, position: null}));
+                            }
+                        }}
                     />
                     <button className = "save-button" 
                         onClick = {() => {
                             postTrip(tripArray);
-                            toast.success("saved trip!", {position: "top-center"});
+                            toast.success("saved trip!");
                         }
                     }> Save Trip </button>
                 </div>
@@ -129,14 +145,13 @@ const Map = () => {
                 options = {options}
                 onLoad = {onLoad}
             >   
-                {pan && 
+                {currentMarker.position && 
                     <LocationPin  
-                        position = {pan} 
+                        position = {currentMarker.position} 
                         color = "red"  
                         shape = "dot"
                         onClick = {() => {
-                            setInfoWindowMarker(pan);
-                            setInfoWindowDetails(currentDetails);
+                            handlePointClick(currentMarker);
                         }}
                     />
                 }
@@ -175,18 +190,20 @@ const Map = () => {
                     />
                 ))}
 
-                {infoWindowMarker && (
+                {infoW.position && (
                     <InfoWindow 
-                        onCloseClick={() => {setInfoWindowMarker("")}}
-                        position = {infoWindowMarker}
+                        onCloseClick={() => {
+                            setInfoW((prevInfoW) => ({...prevInfoW, position: null}))
+                        }}
+                        position = {infoW.position}
                     >
                         {/* if loading show spinner */}
-                        {detailsLoading ? <LoadingSpinner /> :
+                        {detailsLoading || !infoW.details ? <LoadingSpinner /> :
                             <div className = "info-window-container">
-                                <h1>lat: {infoWindowMarker.lat}</h1>
-                                <h1>lng: {infoWindowMarker.lng}</h1>   
-                                <h1>{infoWindowDetails.result.formatted_address}</h1> 
-                                <button onClick = {() => {addToTrip(infoWindowMarker, infoWindowDetails)}} className="add-button">
+                                <h1>lat: {infoW.position.lat}</h1>
+                                <h1>lng: {infoW.position.lng}</h1>   
+                                <h1>{infoW.details.result.formatted_address}</h1> 
+                                <button onClick = {() => {addToTrip(infoW)}} className="add-button">
                                     Add to Trip
                                 </button>
                             </div>
@@ -195,6 +212,8 @@ const Map = () => {
                 )}
             
             </GoogleMap>
+
+            <ToastContainer position = "top-center"/>
         </div>
 
     )

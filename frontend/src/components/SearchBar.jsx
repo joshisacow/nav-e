@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 import usePlacesAutocomplete, {getGeocode, getLatLng} from 'use-places-autocomplete'
 import {
     Combobox,
@@ -9,8 +9,6 @@ import {
     ComboboxOptionText,
   } from "@reach/combobox";
 import "@reach/combobox/styles.css";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import config from '../../config.json';
 
 const getAddrDetails = async (address) => {
@@ -27,22 +25,12 @@ const getAddrDetails = async (address) => {
     return data;
 }
 
-const SearchBar = ({setPan, setPointArray, setCurrentDetails, setDetailsLoading}) => {
+const SearchBar = ({setPan, setCurrentDetails, setDetailsLoading, addToPoints, clearInfoW}) => {
     const {ready, value, setValue, suggestions: {status, data}, clearSuggestions} = usePlacesAutocomplete();
-    const [currentAddress, setCurrentAddress] = useState(null);
-
-    const addDest = () => {
-        if (currentAddress == null) {
-            toast.error("Please enter a destination!", {position: "top-center"});
-        }
-        else {
-            setPointArray(currentAddress);
-        } 
-    }
 
     const selectedDest = async (val) => {
-        
         clearSuggestions();
+        clearInfoW();
 
         // turn address into latlng
         try {
@@ -52,10 +40,10 @@ const SearchBar = ({setPan, setPointArray, setCurrentDetails, setDetailsLoading}
           
             // center current address
             setPan({lat, lng});
-            setCurrentAddress({lat, lng});
             console.log({lat, lng})
             
             // loading spinner while fetching details
+            
             setDetailsLoading(true);
             const det = await getAddrDetails(results[0].place_id);
             setCurrentDetails(det);
@@ -90,10 +78,9 @@ const SearchBar = ({setPan, setPointArray, setCurrentDetails, setDetailsLoading}
             </Combobox>
 
             {/* search button */}
-            <button onClick = {addDest} className="search-button">
+            <button onClick = {addToPoints} className="search-button">
                 Add
             </button>
-            <ToastContainer />
             
         </div>
     )
