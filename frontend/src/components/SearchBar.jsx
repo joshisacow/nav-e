@@ -27,7 +27,7 @@ const getAddrDetails = async (address) => {
     return data;
 }
 
-const SearchBar = ({setPan, setPointArray, setCurrentDetails}) => {
+const SearchBar = ({setPan, setPointArray, setCurrentDetails, setDetailsLoading}) => {
     const {ready, value, setValue, suggestions: {status, data}, clearSuggestions} = usePlacesAutocomplete();
     const [currentAddress, setCurrentAddress] = useState(null);
 
@@ -46,6 +46,7 @@ const SearchBar = ({setPan, setPointArray, setCurrentDetails}) => {
 
         // turn address into latlng
         try {
+            
             const results = await getGeocode({address: val});
             const {lat, lng} = await getLatLng(results[0]);
           
@@ -54,9 +55,11 @@ const SearchBar = ({setPan, setPointArray, setCurrentDetails}) => {
             setCurrentAddress({lat, lng});
             console.log({lat, lng})
             
-            // get address details
+            // loading spinner while fetching details
+            setDetailsLoading(true);
             const det = await getAddrDetails(results[0].place_id);
             setCurrentDetails(det);
+            setDetailsLoading(false);
             
         }
         catch(error) {

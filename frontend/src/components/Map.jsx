@@ -1,11 +1,12 @@
 import {useMemo, useCallback, useState, useRef, useEffect} from 'react';
-import {GoogleMap, InfoWindow, Marker} from '@react-google-maps/api';
+import {GoogleMap, InfoWindow} from '@react-google-maps/api';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import config from '../../config.json';
 import LocationPin from '@/components/LocationPin';
 import SearchBar from '@/components/SearchBar';
 import TripView from '@/components/TripView';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import config from '../../config.json'
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 
 //TODO: check userID, generate tripID
@@ -26,11 +27,14 @@ const postTrip = async (trip) => {
 const Map = () => {
     
     const [pan, setPan] = useState();
+    // const [currentMarker, setCurrentMarker] = useState({position: "", details: {}});
     const [tripArray, setTripArray] = useState([]);
     const [pointArray, setPointArray] = useState([]);
     const [infoWindowMarker, setInfoWindowMarker] = useState("");
     const [infoWindowDetails, setInfoWindowDetails] = useState({});
     const [currentDetails, setCurrentDetails] = useState({});
+    const [detailsLoading, setDetailsLoading] = useState(false);
+
     
     const mapRef = useRef();
     const center = useMemo( () => ({
@@ -75,7 +79,7 @@ const Map = () => {
 
     const addToPoints = (position) => {
         const placeObject = {position, details: currentDetails}
-        if (pointArray.some((item) => item.position === position)) {
+        if (pointArray.some((item) => item.position === position) || tripArray.some((item) => item.position === position)) {
             toast.error("location already added!", {position: "top-center"});
             return;
         }
@@ -108,6 +112,7 @@ const Map = () => {
                         setCurrentDetails = {(details) => {
                             setCurrentDetails(details);
                         }}
+                        setDetailsLoading = {(bool) => setDetailsLoading(bool)}
                     />
                     <button className = "save-button" 
                         onClick = {() => {
@@ -170,19 +175,22 @@ const Map = () => {
                     />
                 ))}
 
-                {infoWindowMarker && infoWindowDetails && (
+                {infoWindowMarker && (
                     <InfoWindow 
                         onCloseClick={() => {setInfoWindowMarker("")}}
                         position = {infoWindowMarker}
                     >
-                        <div className = "info-window-container">
-                            <h1>lat: {infoWindowMarker.lat}</h1>
-                            <h1>lng: {infoWindowMarker.lng}</h1>   
-                            <h1>{infoWindowDetails.result.formatted_address}</h1> 
-                            <button onClick = {() => {addToTrip(infoWindowMarker, infoWindowDetails)}} className="add-button">
-                                Add to Trip
-                            </button>
-                        </div>
+                        {/* if loading show spinner */}
+                        {detailsLoading ? <LoadingSpinner /> :
+                            <div className = "info-window-container">
+                                <h1>lat: {infoWindowMarker.lat}</h1>
+                                <h1>lng: {infoWindowMarker.lng}</h1>   
+                                <h1>{infoWindowDetails.result.formatted_address}</h1> 
+                                <button onClick = {() => {addToTrip(infoWindowMarker, infoWindowDetails)}} className="add-button">
+                                    Add to Trip
+                                </button>
+                            </div>
+                        }
                     </InfoWindow>
                 )}
             
