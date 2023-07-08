@@ -35,7 +35,7 @@ const Map = () => {
     // update infoWindow when details finishes fetch
     useEffect (() => {
         // check if infoWindow is showing current marker
-        if (infoW.position === currentMarker.position) {
+        if (cmpPos(infoW.position, currentMarker.position)) {
             setInfoW((prevInfoW) => ({...prevInfoW, details: currentMarker.details}));
         }
     }, [currentMarker.details]);
@@ -57,13 +57,24 @@ const Map = () => {
 
     const onLoad = useCallback((map) => (mapRef.current = map), []);
 
+    const cmpPos = (pos1, pos2) => {
+        if (pos1 && pos2) {
+            return pos1.lat === pos2.lat && pos1.lng === pos2.lng;
+        }
+        return false;
+    }
+
+    const inArrays = (position) => {
+        return tripArray.some(e => cmpPos(e.position, position)) || pointArray.some(e => cmpPos(e.position, position));
+    } 
+
     const addToTrip = (placeObject) => {
 
         if (tripArray.length >= 15) {
             toast.error("max number of locations reached!");
             return;
         }
-        if (tripArray.some((item) => item.position === placeObject.position )) {
+        if (tripArray.some((e) => cmpPos(e.position, placeObject.position) )) {
             toast.error("location already added!", {position: "top-center"});
             return;
         }
@@ -72,11 +83,11 @@ const Map = () => {
         setTripArray((prevTripArray) => [...prevTripArray, placeObject]);
 
         // if adding current marker, clear
-        if (placeObject.position === currentMarker.position) {
+        if (cmpPos(placeObject.position, currentMarker.position)) {
             setCurrentMarker({position: null, details: null});
         }
         // remove from pointArray if exists
-        else if (pointArray.some((item) => item.position === placeObject.position)) {
+        else if (pointArray.some((e) => cmpPos(e.position, placeObject.position))) {
             setPointArray((prevPointArray) => prevPointArray.filter((item) => item.position !== placeObject.position));
         }
 
@@ -90,11 +101,10 @@ const Map = () => {
             return;
         }
 
-        if (pointArray.some((item) => item.position === placeObject.position) || tripArray.some((item) => item.position === placeObject.position)) {
+        if (inArrays(placeObject.position)) {
             toast.error("location already added!", {position: "top-center"});
             return;
         }
-        console.log(placeObject);
         setPointArray((prevPointArray) => [...prevPointArray, placeObject]);
 
         // clear current pin
@@ -116,7 +126,9 @@ const Map = () => {
                     <h1>Nav-E</h1> 
                     <SearchBar 
                         setPan = {(position) => {
-                            setCurrentMarker((prevMarker) => ({...prevMarker, position}));
+                            if (!inArrays(position)) {
+                                setCurrentMarker((prevMarker) => ({...prevMarker, position}));
+                            }
                             mapRef.current?.panTo(position);
                         }}
                         addToPoints = {() => {addToPoints(currentMarker)}}
@@ -197,8 +209,8 @@ const Map = () => {
                         }}
                         position = {infoW.position}
                     >
-                        {/* if loading show spinner */}
-                        {detailsLoading || !infoW.details ? <LoadingSpinner /> :
+                        {/* if loading currentMarker show spinner */}
+                        {(detailsLoading && cmpPos(infoW.position, currentMarker.position)) || !infoW.details ? <LoadingSpinner /> :
                             <div className = "info-window-container">
                                 <h1>lat: {infoW.position.lat}</h1>
                                 <h1>lng: {infoW.position.lng}</h1>   
