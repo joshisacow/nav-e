@@ -2,7 +2,7 @@ import React from 'react'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import TripEntry from '@/components/map/TripEntry'
 
-const TripView = ({tripArray, setTripArray}) => {
+const TripView = ({tripArray, setTripArray, removeFromTrip}) => {
   const onDragEnd = result => {
     const { destination, source, draggableId } = result;
 
@@ -29,29 +29,28 @@ const TripView = ({tripArray, setTripArray}) => {
     setTripArray(newTripArray);
   }
   return (
-    <div className = "trip-table-container">
-        <DragDropContext onDragEnd = {onDragEnd}>
-          <Droppable droppableId = "trip-table">
-            {(provided, snapshot) => (
-              <div
-                ref = {provided.innerRef}
-                {...provided.droppableProps}
-              >
-                {tripArray.map((placeObject, index) => (
-                  <TripEntry
-                    key = {index}
-                    index = {index}
-                    placeObject = {placeObject}
-                  />
-                ))}
-                {provided.placeholder}
-              </div>
-            )}
-            
-          </Droppable>
-        </DragDropContext>
-
-    </div>
+    <DragDropContext onDragEnd = {onDragEnd}>
+      <Droppable droppableId = "trip-table">
+        {(provided, snapshot) => (
+          <div
+            ref = {provided.innerRef}
+            {...provided.droppableProps}
+            className = "trip-table-container"
+          >
+            {tripArray.map((placeObject, index) => (
+              <TripEntry
+                key = {index}
+                index = {index}
+                placeObject = {placeObject}
+                removeFromTrip = {removeFromTrip}
+              />
+            ))}
+            {provided.placeholder}
+          </div>
+        )}
+        
+      </Droppable>
+    </DragDropContext>
   )
 }
 

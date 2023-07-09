@@ -88,7 +88,7 @@ const Map = () => {
         }
         // remove from pointArray if exists
         else if (pointArray.some((e) => cmpPos(e.position, placeObject.position))) {
-            setPointArray((prevPointArray) => prevPointArray.filter((item) => item.position !== placeObject.position));
+            setPointArray((prevPointArray) => prevPointArray.filter((item) => !cmpPos(item.position, placeObject.position)));
         }
 
         // close infoWindow
@@ -111,6 +111,10 @@ const Map = () => {
         setCurrentMarker({position: null, details: null});
     }
 
+    const removeFromTrip = (placeObject) => {
+        setTripArray((prevTripArray) => prevTripArray.filter((item) => !cmpPos(item.position, placeObject.position)));
+    }
+
     const handlePointClick = (placeObject) => {
         setInfoW(placeObject);
     }
@@ -120,7 +124,8 @@ const Map = () => {
             <div className = "search-box-container">
                 <TripView
                     tripArray = {tripArray}
-                    setTripArray = {setTripArray}   
+                    setTripArray = {setTripArray}  
+                    removeFromTrip = {removeFromTrip} 
                 />
                 <div className="search-bar-container">
                     <h1>Nav-E</h1> 

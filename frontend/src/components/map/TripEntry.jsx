@@ -2,8 +2,7 @@ import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import IconButton from '@/components/utils/IconButton';
 
-const TripEntry = ({placeObject, index}) => {
-    console.log(placeObject);
+const TripEntry = ({placeObject, index, removeFromTrip}) => {
     return (
         <Draggable
             draggableId = {placeObject.details.result.place_id}
@@ -20,7 +19,10 @@ const TripEntry = ({placeObject, index}) => {
                     <h1 className = "trip-entry-text">
                         {index + 1}. {placeObject.details.result.formatted_address}
                     </h1>
-                    <IconButton icon = "cow" />
+                    <IconButton 
+                        icon = "close" 
+                        onClick = {() => removeFromTrip(placeObject)} 
+                    />
                 </div>
             )}
         </Draggable>

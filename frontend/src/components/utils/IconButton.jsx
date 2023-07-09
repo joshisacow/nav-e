@@ -1,13 +1,15 @@
-import { faCow } from '@fortawesome/free-solid-svg-icons'
+import { faCow, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 
 const iconMap = {
     cow: faCow,
+    close: faXmark,
 };
 
 const IconButton = ({onClick, icon}) => {
     return (
-        <button onclick={onClick}>
+        <button onClick={onClick}>
             <FontAwesomeIcon icon={iconMap[icon]} />
         </button>
     )
