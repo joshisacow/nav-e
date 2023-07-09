@@ -9,7 +9,7 @@ import {
     ComboboxOptionText,
   } from "@reach/combobox";
 import "@reach/combobox/styles.css";
-import config from '../../config.json';
+import config from '../../../config.json';
 
 const getAddrDetails = async (address) => {
     const response = await fetch(

@@ -2,12 +2,12 @@ import {useMemo, useCallback, useState, useRef, useEffect} from 'react';
 import {GoogleMap, InfoWindow} from '@react-google-maps/api';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import config from '../../config.json';
-import LocationPin from '@/components/LocationPin';
-import SearchBar from '@/components/SearchBar';
-import TripView from '@/components/TripView';
-import LoadingSpinner from '@/components/LoadingSpinner';
-
+import config from '../../../config.json';
+import LocationPin from '@/components/map/LocationPin';
+import SearchBar from '@/components/map/SearchBar';
+import TripView from '@/components/map/TripView';
+import LoadingSpinner from '@/components/utils/LoadingSpinner';
+import IconButton from '@/components/utils/IconButton';
 
 //TODO: check userID, generate tripID
 
