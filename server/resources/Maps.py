@@ -6,8 +6,6 @@ from resources.datasource.maps_api_methods import *
 app = Flask(__name__)
 
 class Route(Resource):
-    def get(self):
-        return "hi", 200
 
     def build_json(self, arr, mode, tolls):
 
@@ -47,7 +45,7 @@ class Route(Resource):
         return json_data
         
 
-    def post(self):
+    def get(self):
         route_post_args = reqparse.RequestParser()
         route_post_args.add_argument("trip", type=dict, action="append", help="trip is required", required=True)
         route_post_args.add_argument("mode", type=str, help="travel mode is required")
@@ -69,6 +67,33 @@ class Route(Resource):
         # return json_data, 200
         return getRoute(json_data), 200
     
+
+    def post(self):
+        route_post_args = reqparse.RequestParser()
+        route_post_args.add_argument("trip", type=dict, action="append", help="trip is required", required=True)
+        args = route_post_args.parse_args()
+        arr = args["trip"]
+        init_length = getRoute(self.build_json(arr, 'DRIVE', False))
+
+        # 2-opt algorithm
+        improved = True
+        while improved:
+            improved = False
+            for i in range(1, len(arr)-2):
+                for j in range(i, len(arr)):
+                    if j-i == 1: continue
+                    new_path = arr[:i] + arr[i:j+1][::-1] + arr[j+1:]
+                    new_length = getRoute(self.build_json(new_path, 'DRIVE', False))
+
+                    # get trip duration and remove last 's' char
+                    if new_length["routes"][0]["duration"][:-1] < init_length["routes"][0]["duration"][:-1]:
+                        arr = new_path
+                        improved = True
+                        init_length = new_length
+        return [arr, init_length], 200
+
+
+
 class Place(Resource):
     def get(self):
         # place_parser = reqparse.RequestParser()

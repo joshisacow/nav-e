@@ -6,7 +6,7 @@ from flask import Flask
 #initialize API key
 load_dotenv(find_dotenv())
 MAP_KEY = os.getenv("GMAPS_KEY")
- 
+
 
 
 def getRoute(json_data):
