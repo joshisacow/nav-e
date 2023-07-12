@@ -22,6 +22,18 @@ def getRoute(json_data):
     r = requests.post(url, json=json_data, headers=headers)
     return r.json()
 
+def getRouteMatrix(json_data):
+    url = 'https://routes.googleapis.com/distanceMatrix/v2:computeRouteMatrix'
+
+    headers = {
+        'content-type': 'application/json',
+        'X-Goog-Api-Key': MAP_KEY,
+        'X-Goog-FieldMask': 'originIndex,destinationIndex,duration', #distanceMeters
+    }
+    
+    r = requests.post(url, json=json_data, headers=headers)
+    return r.json()
+
 
 def getPlaceDetails(placeID):
     url = 'https://maps.googleapis.com/maps/api/place/details/json'
