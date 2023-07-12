@@ -6,7 +6,7 @@ from flask import Flask
 #initialize API key
 load_dotenv(find_dotenv())
 MAP_KEY = os.getenv("GMAPS_KEY")
- 
+
 
 
 def getRoute(json_data):
@@ -17,6 +17,18 @@ def getRoute(json_data):
         'content-type': 'application/json',
         'X-Goog-Api-Key': MAP_KEY,
         'X-Goog-FieldMask': 'routes.duration,routes.distanceMeters,routes.polyline.encodedPolyline',
+    }
+    
+    r = requests.post(url, json=json_data, headers=headers)
+    return r.json()
+
+def getRouteMatrix(json_data):
+    url = 'https://routes.googleapis.com/distanceMatrix/v2:computeRouteMatrix'
+
+    headers = {
+        'content-type': 'application/json',
+        'X-Goog-Api-Key': MAP_KEY,
+        'X-Goog-FieldMask': 'originIndex,destinationIndex,duration', #distanceMeters
     }
     
     r = requests.post(url, json=json_data, headers=headers)

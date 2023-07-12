@@ -6,8 +6,6 @@ from resources.datasource.maps_api_methods import *
 app = Flask(__name__)
 
 class Route(Resource):
-    def get(self):
-        return "hi", 200
 
     def build_json(self, arr, mode, tolls):
 
@@ -45,9 +43,35 @@ class Route(Resource):
                 json_data['intermediates'][i-1]['location']['latLng']['longitude'] = arr[i].get("lng")
                 i+=1
         return json_data
+    
+    def build_matrix_json(self, arr):
+        points = []
+        for point in arr:
+            points.append(
+                {"waypoint": 
+                    {"location": 
+                        {"latLng": {
+                            "latitude": point.get("lat"), 
+                            "longitude":point.get("lng")
+                            }
+                        }
+                    }
+                })
+        json_data = {
+            "origins": points,
+            "destinations": points,
+            "travelMode": "DRIVE"
+        }
+        return json_data
+    
+    def calculate_path_length (self, arr, matrix):
+        length = 0
+        for i in range(len(arr)-1):
+            length += matrix[arr[i]][arr[i+1]]
+        return length
         
 
-    def post(self):
+    def get(self):
         route_post_args = reqparse.RequestParser()
         route_post_args.add_argument("trip", type=dict, action="append", help="trip is required", required=True)
         route_post_args.add_argument("mode", type=str, help="travel mode is required")
@@ -69,6 +93,49 @@ class Route(Resource):
         # return json_data, 200
         return getRoute(json_data), 200
     
+
+    def post(self):
+        route_post_args = reqparse.RequestParser()
+        route_post_args.add_argument("trip", type=dict, action="append", help="trip is required", required=True)
+        args = route_post_args.parse_args()
+        arr = args["trip"]
+        raw_matrix = getRouteMatrix(self.build_matrix_json(arr))
+
+        # initialize matrix
+        matrix = []
+        for i in range(len(arr)):
+            matrix.append([])
+            for j in range(len(arr)):
+                matrix[i].append(0)
+        
+        # fill matrix with durations
+        for point in raw_matrix:
+            matrix[point.get("originIndex")][point.get("destinationIndex")] = int(point.get("duration")[:-1]) # remove 's' from duration
+
+        # store original indices in array
+        index_arr = [i for i in range(len(arr))]
+
+        # 2-opt algorithm
+        init_length = self.calculate_path_length(index_arr, matrix)
+        improved = True
+        while improved:
+            improved = False
+            for i in range(1, len(index_arr)-2):
+                for j in range(i, len(index_arr)):
+                    if j-i == 1: continue
+                    new_path = index_arr[:i] + index_arr[i:j+1][::-1] + index_arr[j+1:]
+                    new_length = self.calculate_path_length(new_path, matrix)
+                    if new_length < init_length:
+                        index_arr = new_path
+                        improved = True
+                        init_length = new_length
+
+        # transform array of indices to array of coordinates
+        opt_route = [arr[i] for i in index_arr]
+        return [opt_route, getRoute(self.build_json(opt_route, 'DRIVE', False))], 200
+
+
+
 class Place(Resource):
     def get(self):
         # place_parser = reqparse.RequestParser()
