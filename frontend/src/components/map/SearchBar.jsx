@@ -7,23 +7,9 @@ import {
     ComboboxList,
     ComboboxOption,
     ComboboxOptionText,
-  } from "@reach/combobox";
+} from "@reach/combobox";
 import "@reach/combobox/styles.css";
-import config from '../../../config.json';
-
-const getAddrDetails = async (address) => {
-    const response = await fetch(
-        config.baseURL + "place?" + new URLSearchParams({
-            "placeID": address
-        }), 
-        {
-            method: "GET"
-        }
-    );
-    const data = await response.json();
-    console.log(data);
-    return data;
-}
+import { getAddrDetails } from '@/api/api-requests';
 
 const SearchBar = ({setPan, setCurrentDetails, setDetailsLoading, addToPoints, clearInfoW}) => {
     const {ready, value, setValue, suggestions: {status, data}, clearSuggestions} = usePlacesAutocomplete();

@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_restful import Resource, reqparse, request
+from itertools import permutations
 
 from resources.datasource.maps_api_methods import *
 
@@ -114,6 +115,17 @@ class Route(Resource):
 
         # store original indices in array
         index_arr = [i for i in range(len(arr))]
+
+        # test all possible permutations
+        # for permutation in list(permutations(range(1, len(arr)))):
+        #     new_path = [0]
+        #     for index in permutation:
+        #         new_path.append(index)
+        #         new_length = self.calculate_path_length(new_path, matrix)
+        #         if new_length < init_length:
+        #             index_arr = new_path
+        #             init_length = new_length
+
 
         # 2-opt algorithm
         init_length = self.calculate_path_length(index_arr, matrix)

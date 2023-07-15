@@ -2,27 +2,12 @@ import {useMemo, useCallback, useState, useRef, useEffect} from 'react';
 import {GoogleMap, InfoWindow} from '@react-google-maps/api';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import config from '../../../config.json';
 import LocationPin from '@/components/map/LocationPin';
 import SearchBar from '@/components/map/SearchBar';
 import TripView from '@/components/map/TripView';
 import LoadingSpinner from '@/components/utils/LoadingSpinner';
 import IconButton from '@/components/utils/IconButton';
-
-//TODO: check userID, generate tripID
-
-const postTrip = async (trip) => {
-    console.log(JSON.stringify({"trip": trip}))
-    const response = await fetch(config.baseURL + "trips/1", {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({"trip": trip})
-    });
-    const data = await response.json();
-    console.log(data);
-}
+import { postTrip, optimizeRoute } from "@/api/api-requests"
 
 const Map = () => {
     
@@ -54,7 +39,7 @@ const Map = () => {
         clickableIcons: false,
         mapId: process.env.NEXT_PUBLIC_MAPS_ID,
     }), []);
-
+    console.log(tripArray);
     const onLoad = useCallback((map) => (mapRef.current = map), []);
 
     const cmpPos = (pos1, pos2) => {
@@ -227,6 +212,19 @@ const Map = () => {
                         }
                     </InfoWindow>
                 )}
+                <div className = "opt-route-button-container">
+                    <IconButton icon = "rocket" className="opt-route-button" onClick={() => {
+                        const route = optimizeRoute(tripArray);
+                        toast.success("recommended route!");
+                        console.log(route);
+                        // setTripArray(route);
+                    }} />
+                    <span className="opt-route-text">Optimize Route</span>
+                </div>
+                <div className = "rec-button-container">
+                    <IconButton icon = "glass" className="rec-button" onClick={() => console.log("rec")} />
+                    <span className="rec-text">Recommend</span>
+                </div>
             
             </GoogleMap>
 
