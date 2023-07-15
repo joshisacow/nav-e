@@ -33,7 +33,7 @@ export const optimizeRoute = async (trip) => {
     if (trip.length < 3) {
         throw new Error("add more locations to optimize route!");
     }
-    const response = await fetch(config.baseURL + "route", {
+    const response = await fetch(config.testURL + "route", {
         method: "POST",
         headers: {
             'Content-Type': 'application/json'

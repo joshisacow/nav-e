@@ -16,6 +16,7 @@ const Map = () => {
     const [pointArray, setPointArray] = useState([]);
     const [infoW, setInfoW] = useState({position: null, details: null});
     const [detailsLoading, setDetailsLoading] = useState(false);
+    const [optimizeLoading, setOptimizeLoading] = useState(false);
 
     // update infoWindow when details finishes fetch
     useEffect (() => {
@@ -39,7 +40,7 @@ const Map = () => {
         clickableIcons: false,
         mapId: process.env.NEXT_PUBLIC_MAPS_ID,
     }), []);
-    
+
     const onLoad = useCallback((map) => (mapRef.current = map), []);
 
     const cmpPos = (pos1, pos2) => {
@@ -106,13 +107,16 @@ const Map = () => {
 
     const handleOptimizeRoute = async () => {
         try {
+            setOptimizeLoading(true);
             const route = await optimizeRoute(tripArray);
+            setOptimizeLoading(false);
             setTripArray(route[0]);
             toast.success("recommended route!");
         }
         catch (err) {
             toast.error(err.message);
             console.log(err);
+            setOptimizeLoading(false);
         }
     }
 
@@ -212,7 +216,7 @@ const Map = () => {
                         position = {infoW.position}
                     >
                         {/* if loading currentMarker show spinner */}
-                        {(detailsLoading && cmpPos(infoW.position, currentMarker.position)) || !infoW.details ? <LoadingSpinner /> :
+                        {(detailsLoading && cmpPos(infoW.position, currentMarker.position)) || !infoW.details ? <LoadingSpinner size="2x" /> :
                             <div className = "info-window-container">
                                 <h1>lat: {infoW.position.lat}</h1>
                                 <h1>lng: {infoW.position.lng}</h1>   
@@ -225,7 +229,7 @@ const Map = () => {
                     </InfoWindow>
                 )}
                 <div className = "opt-route-button-container">
-                    <IconButton icon = "rocket" className="opt-route-button" onClick={() => handleOptimizeRoute()} />
+                    <IconButton icon = "rocket" className="opt-route-button" onClick={() => handleOptimizeRoute()} loading={optimizeLoading} />
                     <span className="opt-route-text">Optimize Route</span>
                 </div>
                 <div className = "rec-button-container">
