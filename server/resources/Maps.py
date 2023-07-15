@@ -117,32 +117,31 @@ class Route(Resource):
 
         # store original indices in array
         index_arr = [i for i in range(len(arr))]
+        init_length = self.calculate_path_length(index_arr, matrix)
 
         # test all possible permutations
-        # for permutation in list(permutations(range(1, len(arr)))):
-        #     new_path = [0]
-        #     for index in permutation:
-        #         new_path.append(index)
-        #         new_length = self.calculate_path_length(new_path, matrix)
-        #         if new_length < init_length:
-        #             index_arr = new_path
-        #             init_length = new_length
-
+        for permutation in list(permutations(range(1, len(arr)))):
+            new_path = [0]
+            for index in permutation:
+                new_path.append(index)
+            new_length = self.calculate_path_length(new_path, matrix)
+            if new_length < init_length:
+                index_arr = new_path
+                init_length = new_length
 
         # 2-opt algorithm
-        init_length = self.calculate_path_length(index_arr, matrix)
-        improved = True
-        while improved:
-            improved = False
-            for i in range(1, len(index_arr)-2):
-                for j in range(i, len(index_arr)):
-                    if j-i == 1: continue
-                    new_path = index_arr[:i] + index_arr[i:j+1][::-1] + index_arr[j+1:]
-                    new_length = self.calculate_path_length(new_path, matrix)
-                    if new_length < init_length:
-                        index_arr = new_path
-                        improved = True
-                        init_length = new_length
+        # improved = True
+        # while improved:
+        #     improved = False
+        #     for i in range(1, len(index_arr)-2):
+        #         for j in range(i, len(index_arr)):
+        #             if j-i == 1: continue
+        #             new_path = index_arr[:i] + index_arr[i:j+1][::-1] + index_arr[j+1:]
+        #             new_length = self.calculate_path_length(new_path, matrix)
+        #             if new_length < init_length:
+        #                 index_arr = new_path
+        #                 improved = True
+        #                 init_length = new_length
 
         # transform array of indices to array of coordinates
         opt_route = [args["trip"][i] for i in index_arr]
