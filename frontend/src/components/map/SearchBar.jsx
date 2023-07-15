@@ -23,7 +23,7 @@ const SearchBar = ({setPan, setCurrentDetails, setDetailsLoading, addToPoints, c
             
             const results = await getGeocode({address: val});
             const {lat, lng} = await getLatLng(results[0]);
-          
+
             // center current address
             setPan({lat, lng});
             console.log({lat, lng})

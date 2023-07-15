@@ -99,7 +99,9 @@ class Route(Resource):
         route_post_args = reqparse.RequestParser()
         route_post_args.add_argument("trip", type=dict, action="append", help="trip is required", required=True)
         args = route_post_args.parse_args()
-        arr = args["trip"]
+        arr = []
+        for point in args['trip']:
+            arr.append(point["position"])
         raw_matrix = getRouteMatrix(self.build_matrix_json(arr))
 
         # initialize matrix
@@ -143,8 +145,11 @@ class Route(Resource):
                         init_length = new_length
 
         # transform array of indices to array of coordinates
-        opt_route = [arr[i] for i in index_arr]
-        return [opt_route, getRoute(self.build_json(opt_route, 'DRIVE', False))], 200
+        opt_route = [args["trip"][i] for i in index_arr]
+        opt_arr = []
+        for point in opt_route:
+            opt_arr.append(point["position"])
+        return [opt_route, getRoute(self.build_json(opt_arr, 'DRIVE', False))], 200
 
 
 

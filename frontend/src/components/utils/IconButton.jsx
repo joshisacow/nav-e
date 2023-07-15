@@ -6,7 +6,7 @@ const iconMap = {
     cow: faCow,
     close: faXmark,
     rocket: faRocket,
-    glass: faMagnifyingGlassLocation
+    glass: faMagnifyingGlassLocation,
 };
 
 const IconButton = ({onClick, icon, className}) => {

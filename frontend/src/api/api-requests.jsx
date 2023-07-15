@@ -1,6 +1,5 @@
 import config from '../../config.json';
 
-
 //TODO: check userID, generate tripID
 
 export const postTrip = async (trip) => {
@@ -31,6 +30,9 @@ export const getAddrDetails = async (address) => {
 }
 
 export const optimizeRoute = async (trip) => {
+    if (trip.length < 3) {
+        throw new Error("add more locations to optimize route!");
+    }
     const response = await fetch(config.baseURL + "route", {
         method: "POST",
         headers: {

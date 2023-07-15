@@ -39,7 +39,7 @@ const Map = () => {
         clickableIcons: false,
         mapId: process.env.NEXT_PUBLIC_MAPS_ID,
     }), []);
-    console.log(tripArray);
+    
     const onLoad = useCallback((map) => (mapRef.current = map), []);
 
     const cmpPos = (pos1, pos2) => {
@@ -102,6 +102,18 @@ const Map = () => {
 
     const handlePointClick = (placeObject) => {
         setInfoW(placeObject);
+    }
+
+    const handleOptimizeRoute = async () => {
+        try {
+            const route = await optimizeRoute(tripArray);
+            setTripArray(route[0]);
+            toast.success("recommended route!");
+        }
+        catch (err) {
+            toast.error(err.message);
+            console.log(err);
+        }
     }
 
     return (
@@ -213,12 +225,7 @@ const Map = () => {
                     </InfoWindow>
                 )}
                 <div className = "opt-route-button-container">
-                    <IconButton icon = "rocket" className="opt-route-button" onClick={() => {
-                        const route = optimizeRoute(tripArray);
-                        toast.success("recommended route!");
-                        console.log(route);
-                        // setTripArray(route);
-                    }} />
+                    <IconButton icon = "rocket" className="opt-route-button" onClick={() => handleOptimizeRoute()} />
                     <span className="opt-route-text">Optimize Route</span>
                 </div>
                 <div className = "rec-button-container">
