@@ -1,8 +1,8 @@
 from flask import Flask
 from flask_restful import Resource, reqparse, request
-from itertools import permutations
 
 from resources.datasource.maps_api_methods import *
+from resources.algorithms.trip_optimization import *
 
 app = Flask(__name__)
 
@@ -64,13 +64,6 @@ class Route(Resource):
             "travelMode": "DRIVE"
         }
         return json_data
-    
-    def calculate_path_length (self, arr, matrix):
-        length = 0
-        for i in range(len(arr)-1):
-            length += matrix[arr[i]][arr[i+1]]
-        return length
-        
 
     def get(self):
         route_post_args = reqparse.RequestParser()
@@ -117,31 +110,9 @@ class Route(Resource):
 
         # store original indices in array
         index_arr = [i for i in range(len(arr))]
-        init_length = self.calculate_path_length(index_arr, matrix)
-
-        # test all possible permutations
-        for permutation in list(permutations(range(1, len(arr)))):
-            new_path = [0]
-            for index in permutation:
-                new_path.append(index)
-            new_length = self.calculate_path_length(new_path, matrix)
-            if new_length < init_length:
-                index_arr = new_path
-                init_length = new_length
-
-        # 2-opt algorithm
-        # improved = True
-        # while improved:
-        #     improved = False
-        #     for i in range(1, len(index_arr)-2):
-        #         for j in range(i, len(index_arr)):
-        #             if j-i == 1: continue
-        #             new_path = index_arr[:i] + index_arr[i:j+1][::-1] + index_arr[j+1:]
-        #             new_length = self.calculate_path_length(new_path, matrix)
-        #             if new_length < init_length:
-        #                 index_arr = new_path
-        #                 improved = True
-        #                 init_length = new_length
+        
+        # choose route optimization algorithm
+        index_arr = brute(index_arr, matrix)
 
         # transform array of indices to array of coordinates
         opt_route = [args["trip"][i] for i in index_arr]

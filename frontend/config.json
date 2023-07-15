@@ -1,4 +1,3 @@
 {
-    "baseURL": "https://api-dot-nav-e-387904.uc.r.appspot.com/",
-    "testURL": "http://localhost:8080/"
+    "baseURL": "https://api-dot-nav-e-387904.uc.r.appspot.com/"
 }
