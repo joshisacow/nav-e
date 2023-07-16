@@ -206,3 +206,14 @@ body {
   display: none;
   white-space: nowrap;
 }
+
+.login-button {
+  position: absolute;
+  top: 2rem;
+  right: 1rem;
+  z-index: 1;
+  padding: 0.5rem;
+  background: #000;
+  color: #fff;
+}
+

@@ -18,6 +18,8 @@
     "autoprefixer": "10.4.14",
     "eslint": "8.42.0",
     "eslint-config-next": "13.4.4",
+    "firebase": "^10.0.0",
+    "firebaseui": "^6.0.2",
     "fontawesome-markers": "^4.6.1",
     "google-map-react": "^2.2.1",
     "next": "13.4.4",

@@ -7,10 +7,11 @@ import SearchBar from '@/components/map/SearchBar';
 import TripView from '@/components/map/TripView';
 import LoadingSpinner from '@/components/utils/LoadingSpinner';
 import IconButton from '@/components/utils/IconButton';
-import { postTrip, optimizeRoute } from "@/api/api-requests"
+import { postTrip, optimizeRoute } from "@/api/api-requests";
+import { useRouter } from 'next/navigation';
 
 const Map = () => {
-    
+    const router = useRouter();
     const [currentMarker, setCurrentMarker] = useState({position: null, details: null});
     const [tripArray, setTripArray] = useState([]);
     const [pointArray, setPointArray] = useState([]);
@@ -242,6 +243,9 @@ const Map = () => {
                     <IconButton icon = "glass" className="rec-button" onClick={() => console.log("rec")} />
                     <span className="rec-text">Recommend</span>
                 </div>
+                <button className="login-button" onClick={() => router.push('/login')}>
+                    Login
+                </button>
             
             </GoogleMap>
 
