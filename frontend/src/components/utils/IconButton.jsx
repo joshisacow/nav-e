@@ -1,17 +1,26 @@
-import { faCow, faXmark } from '@fortawesome/free-solid-svg-icons'
+import { faCow, faXmark, faRocket, faMagnifyingGlassLocation } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-
+import LoadingSpinner from './LoadingSpinner'
 
 const iconMap = {
     cow: faCow,
     close: faXmark,
+    rocket: faRocket,
+    glass: faMagnifyingGlassLocation,
 };
 
-const IconButton = ({onClick, icon}) => {
+const IconButton = ({onClick, icon, className, loading}) => {
     return (
-        <button onClick={onClick}>
-            <FontAwesomeIcon icon={iconMap[icon]} />
-        </button>
+        <>
+            {loading ? 
+                <div className={className}> 
+                    <LoadingSpinner /> 
+                </div> :
+                <button onClick={onClick} className={className}>
+                    <FontAwesomeIcon icon={iconMap[icon]} size="1x" />
+                </button>
+            }
+        </>
     )
 }
 

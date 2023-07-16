@@ -2,27 +2,12 @@ import {useMemo, useCallback, useState, useRef, useEffect} from 'react';
 import {GoogleMap, InfoWindow} from '@react-google-maps/api';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import config from '../../../config.json';
 import LocationPin from '@/components/map/LocationPin';
 import SearchBar from '@/components/map/SearchBar';
 import TripView from '@/components/map/TripView';
 import LoadingSpinner from '@/components/utils/LoadingSpinner';
 import IconButton from '@/components/utils/IconButton';
-
-//TODO: check userID, generate tripID
-
-const postTrip = async (trip) => {
-    console.log(JSON.stringify({"trip": trip}))
-    const response = await fetch(config.baseURL + "trips/1", {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({"trip": trip})
-    });
-    const data = await response.json();
-    console.log(data);
-}
+import { postTrip, optimizeRoute } from "@/api/api-requests"
 
 const Map = () => {
     
@@ -31,6 +16,7 @@ const Map = () => {
     const [pointArray, setPointArray] = useState([]);
     const [infoW, setInfoW] = useState({position: null, details: null});
     const [detailsLoading, setDetailsLoading] = useState(false);
+    const [optimizeLoading, setOptimizeLoading] = useState(false);
 
     // update infoWindow when details finishes fetch
     useEffect (() => {
@@ -119,6 +105,32 @@ const Map = () => {
         setInfoW(placeObject);
     }
 
+    const handleSaveTrip = async () => {
+        try {
+            await postTrip(tripArray);
+            toast.success("saved trip!");
+        }
+        catch (err) {
+            toast.error(err.message);
+            console.log(err);
+        }
+    }
+
+    const handleOptimizeRoute = async () => {
+        try {
+            setOptimizeLoading(true);
+            const route = await optimizeRoute(tripArray);
+            setOptimizeLoading(false);
+            setTripArray(route[0]);
+            toast.success("recommended route!");
+        }
+        catch (err) {
+            toast.error(err.message);
+            console.log(err);
+            setOptimizeLoading(false);
+        }
+    }
+
     return (
         <div className="wrapper">
             <div className = "search-box-container">
@@ -147,12 +159,7 @@ const Map = () => {
                             }
                         }}
                     />
-                    <button className = "save-button" 
-                        onClick = {() => {
-                            postTrip(tripArray);
-                            toast.success("saved trip!");
-                        }
-                    }> Save Trip </button>
+                    <button className = "save-button" onClick = {() => handleSaveTrip()}> Save Trip </button>
                 </div>
             </div>
             <GoogleMap 
@@ -215,7 +222,7 @@ const Map = () => {
                         position = {infoW.position}
                     >
                         {/* if loading currentMarker show spinner */}
-                        {(detailsLoading && cmpPos(infoW.position, currentMarker.position)) || !infoW.details ? <LoadingSpinner /> :
+                        {(detailsLoading && cmpPos(infoW.position, currentMarker.position)) || !infoW.details ? <LoadingSpinner size="2x" /> :
                             <div className = "info-window-container">
                                 <h1>lat: {infoW.position.lat}</h1>
                                 <h1>lng: {infoW.position.lng}</h1>   
@@ -227,6 +234,14 @@ const Map = () => {
                         }
                     </InfoWindow>
                 )}
+                <div className = "opt-route-button-container">
+                    <IconButton icon = "rocket" className="opt-route-button" onClick={() => handleOptimizeRoute()} loading={optimizeLoading} />
+                    <span className="opt-route-text">Optimize Route</span>
+                </div>
+                <div className = "rec-button-container">
+                    <IconButton icon = "glass" className="rec-button" onClick={() => console.log("rec")} />
+                    <span className="rec-text">Recommend</span>
+                </div>
             
             </GoogleMap>
 

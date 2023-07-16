@@ -1,7 +1,5 @@
-import requests, json, base64, os
+import requests, json, os
 from dotenv import load_dotenv, find_dotenv
-
-from flask import Flask
 
 #initialize API key
 load_dotenv(find_dotenv())
