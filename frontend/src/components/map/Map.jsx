@@ -105,6 +105,17 @@ const Map = () => {
         setInfoW(placeObject);
     }
 
+    const handleSaveTrip = async () => {
+        try {
+            await postTrip(tripArray);
+            toast.success("saved trip!");
+        }
+        catch (err) {
+            toast.error(err.message);
+            console.log(err);
+        }
+    }
+
     const handleOptimizeRoute = async () => {
         try {
             setOptimizeLoading(true);
@@ -148,12 +159,7 @@ const Map = () => {
                             }
                         }}
                     />
-                    <button className = "save-button" 
-                        onClick = {() => {
-                            postTrip(tripArray);
-                            toast.success("saved trip!");
-                        }
-                    }> Save Trip </button>
+                    <button className = "save-button" onClick = {() => handleSaveTrip()}> Save Trip </button>
                 </div>
             </div>
             <GoogleMap 

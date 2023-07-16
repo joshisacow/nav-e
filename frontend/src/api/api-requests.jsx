@@ -3,7 +3,9 @@ import config from '../../config.json';
 //TODO: check userID, generate tripID
 
 export const postTrip = async (trip) => {
-    console.log(JSON.stringify({"trip": trip}))
+    if (trip.length < 1) {
+        throw new Error("add more locations to save trip!");
+    }
     const response = await fetch(config.baseURL + "trips/1", {
         method: "POST",
         headers: {
@@ -31,7 +33,7 @@ export const getAddrDetails = async (address) => {
 
 export const optimizeRoute = async (trip) => {
     if (trip.length < 3) {
-        throw new Error("add more locations to optimize route!");
+        return trip;
     }
     const response = await fetch(config.baseURL + "route", {
         method: "POST",
