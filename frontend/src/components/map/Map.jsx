@@ -7,7 +7,7 @@ import SearchBar from '@/components/map/SearchBar';
 import TripView from '@/components/map/TripView';
 import LoadingSpinner from '@/components/utils/LoadingSpinner';
 import IconButton from '@/components/utils/IconButton';
-import { postTrip, optimizeRoute } from "@/api/api-requests";
+import { postTrip, optimizeRoute } from "@/services/api-requests";
 import { useRouter } from 'next/navigation';
 
 const Map = () => {
@@ -107,29 +107,25 @@ const Map = () => {
     }
 
     const handleSaveTrip = async () => {
-        try {
-            await postTrip(tripArray);
-            toast.success("saved trip!");
+        if (tripArray.length < 2) {
+            toast.error("add more locations to save trip!");
+            return;
         }
-        catch (err) {
-            toast.error(err.message);
-            console.log(err);
-        }
+        await postTrip(tripArray);
+        toast.success("saved trip!");
     }
 
     const handleOptimizeRoute = async () => {
-        try {
-            setOptimizeLoading(true);
-            const route = await optimizeRoute(tripArray);
-            setOptimizeLoading(false);
-            setTripArray(route[0]);
-            toast.success("recommended route!");
+        if (tripArray.length < 3) {
+            toast.error("add more locations to optimize route!");
+            return;
         }
-        catch (err) {
-            toast.error(err.message);
-            console.log(err);
-            setOptimizeLoading(false);
-        }
+        setOptimizeLoading(true);
+        const route = await optimizeRoute(tripArray);
+        setOptimizeLoading(false);
+        setTripArray(route[0]);
+        toast.success("recommended route!");
+        // TODO: show route on map
     }
 
     return (

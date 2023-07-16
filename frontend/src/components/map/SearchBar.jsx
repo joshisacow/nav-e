@@ -9,7 +9,7 @@ import {
     ComboboxOptionText,
 } from "@reach/combobox";
 import "@reach/combobox/styles.css";
-import { getAddrDetails } from '@/api/api-requests';
+import { getAddrDetails } from '@/services/api-requests';
 
 const SearchBar = ({setPan, setCurrentDetails, setDetailsLoading, addToPoints, clearInfoW}) => {
     const {ready, value, setValue, suggestions: {status, data}, clearSuggestions} = usePlacesAutocomplete();

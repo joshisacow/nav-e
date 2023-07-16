@@ -22,7 +22,10 @@ export default function Login() {
     const ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(auth);
     ui.start('#firebaseui-auth-container', {
       signInOptions: [
-        firebase.auth.EmailAuthProvider.PROVIDER_ID,
+        {
+          provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
+          requireDisplayName: false,
+        },
         firebase.auth.GoogleAuthProvider.PROVIDER_ID,
       ],
       signInSuccessUrl: '/',
@@ -30,9 +33,9 @@ export default function Login() {
   }, []);
 
   return (
-    <>
-      <h1>Login </h1>
+    <div>
+      <h1 className="text-center">Login </h1>
       <div id="firebaseui-auth-container"></div>
-    </>
+    </div>
   )
 }
