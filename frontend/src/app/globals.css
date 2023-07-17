@@ -168,7 +168,7 @@ body {
 .opt-route-text {
   position: absolute; /* Position the text absolutely */
   right: 60px; /* Adjust the distance from the button as needed */
-  top: 10px;
+  top: 6.5px;
   display: none;
   white-space: nowrap;
 }
@@ -202,7 +202,7 @@ body {
 .rec-text {
   position: absolute; /* Position the text absolutely */
   right: 60px; /* Adjust the distance from the button as needed */
-  top: 10px;
+  top: 6.5px;
   display: none;
   white-space: nowrap;
 }

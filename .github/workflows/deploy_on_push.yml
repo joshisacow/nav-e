@@ -78,6 +78,7 @@ jobs:
           touch .env.local
           echo NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=${{ secrets.GMAPS_KEY }} >> .env.local
           echo NEXT_PUBLIC_MAPS_ID=${{ secrets.MAPS_ID }} >> .env.local
+          echo NEXT_PUBLIC_FIREBASE_CONFIG=${{ secrets.FIREBASE_CONFIG }} >> .env.local
       - name: build
         run: npm run build
       - name: Authenticate to Google Cloud
