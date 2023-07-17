@@ -1,41 +1,21 @@
 "use client"
 
-import { useEffect } from 'react'
-import firebase from 'firebase/compat/app'
-import {
-  getAuth,
-  signInWithPopup,
-  GoogleAuthProvider,
-  signOut,
-} from "firebase/auth";
-import * as firebaseui from 'firebaseui'
+import dynamic from 'next/dynamic'
 import 'firebaseui/dist/firebaseui.css'
+import IconButton from '@/components/utils/IconButton'
+import { useRouter } from 'next/navigation';
 
-// decode json config 
-const firebaseConfig = JSON.parse(Buffer.from(process.env.NEXT_PUBLIC_FIREBASE_CONFIG, 'base64').toString('utf-8'));
-
-const app = firebase.initializeApp(firebaseConfig);
-const auth = getAuth(app);
+const FirebaseUIAuth = dynamic(() => import('@/components/auth/FirebaseUIAuth'), {
+  ssr: false
+})
 
 export default function Login() {
-  useEffect(() => {
-    const ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(auth);
-    ui.start('#firebaseui-auth-container', {
-      signInOptions: [
-        {
-          provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
-          requireDisplayName: false,
-        },
-        firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-      ],
-      signInSuccessUrl: '/',
-    });
-  }, []);
-
+  const router = useRouter();
   return (
-    <div>
-      <h1 className="text-center">Login </h1>
-      <div id="firebaseui-auth-container"></div>
+    <div className="bg-white">
+      <h1 className="text-center">Login</h1>
+      <IconButton icon="home" onClick={() => router.push('/')} className="text-lg bg-gray-200  rounded-lg border-8 box-content ml-6" />
+      <FirebaseUIAuth />
     </div>
   )
 }
