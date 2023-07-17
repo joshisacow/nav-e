@@ -9,6 +9,7 @@ import LoadingSpinner from '@/components/utils/LoadingSpinner';
 import IconButton from '@/components/utils/IconButton';
 import { postTrip, optimizeRoute } from "@/services/api-requests";
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/components/auth/AuthContext';
 
 const Map = () => {
     const router = useRouter();
@@ -18,6 +19,7 @@ const Map = () => {
     const [infoW, setInfoW] = useState({position: null, details: null});
     const [detailsLoading, setDetailsLoading] = useState(false);
     const [optimizeLoading, setOptimizeLoading] = useState(false);
+    const { currentUser, logOut } = useAuth();
 
     // update infoWindow when details finishes fetch
     useEffect (() => {
@@ -232,16 +234,23 @@ const Map = () => {
                     </InfoWindow>
                 )}
                 <div className = "opt-route-button-container">
-                    <IconButton icon = "rocket" className="opt-route-button shadow-2xl" onClick={() => handleOptimizeRoute()} loading={optimizeLoading} />
+                    <IconButton icon = "rocket" className="opt-route-button" onClick={() => handleOptimizeRoute()} loading={optimizeLoading} />
                     <span className="opt-route-text bg-gray-700 text-white text-sm opacity-100 rounded-full px-3 py-2">Optimize Route</span>
                 </div>
                 <div className = "rec-button-container">
-                    <IconButton icon = "glass" className="rec-button shadow-2xl" onClick={() => console.log("rec")} />
+                    <IconButton icon = "glass" className="rec-button" onClick={() => console.log("rec")} />
                     <span className="rec-text bg-gray-700 text-white text-sm opacity-100 rounded-full px-3 py-2">Recommend</span>
                 </div>
-                <button className="login-button" onClick={() => router.push('/login')}>
-                    Login
-                </button>
+
+                {/* render button based on login state */}
+                {currentUser ? 
+                    <button onClick={() => logOut()} className="absolute top-4 right-4 bg-indigo-600 rounded-lg shadow-xl text-white p-2 z-10 hover:bg-indigo-700">
+                        Log out
+                    </button> :
+                    <button onClick={() => router.push('/login')} class="absolute top-4 right-4 bg-indigo-600 rounded-lg shadow-xl text-white p-2 z-10 hover:bg-indigo-700">
+                        Login
+                    </button>
+                }
             
             </GoogleMap>
 
