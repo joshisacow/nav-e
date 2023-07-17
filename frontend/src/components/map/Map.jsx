@@ -232,12 +232,12 @@ const Map = () => {
                     </InfoWindow>
                 )}
                 <div className = "opt-route-button-container">
-                    <IconButton icon = "rocket" className="opt-route-button" onClick={() => handleOptimizeRoute()} loading={optimizeLoading} />
-                    <span className="opt-route-text">Optimize Route</span>
+                    <IconButton icon = "rocket" className="opt-route-button shadow-2xl" onClick={() => handleOptimizeRoute()} loading={optimizeLoading} />
+                    <span className="opt-route-text bg-gray-700 text-white text-sm opacity-100 rounded-full px-3 py-2">Optimize Route</span>
                 </div>
                 <div className = "rec-button-container">
-                    <IconButton icon = "glass" className="rec-button" onClick={() => console.log("rec")} />
-                    <span className="rec-text">Recommend</span>
+                    <IconButton icon = "glass" className="rec-button shadow-2xl" onClick={() => console.log("rec")} />
+                    <span className="rec-text bg-gray-700 text-white text-sm opacity-100 rounded-full px-3 py-2">Recommend</span>
                 </div>
                 <button className="login-button" onClick={() => router.push('/login')}>
                     Login

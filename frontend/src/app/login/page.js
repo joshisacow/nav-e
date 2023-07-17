@@ -14,7 +14,7 @@ export default function Login() {
   return (
     <div className="bg-white">
       <h1 className="text-center">Login</h1>
-      <IconButton icon="home" onClick={() => router.push('/')} className="text-lg bg-gray-200  rounded-lg border-8 box-content ml-6" />
+      <IconButton icon="home" onClick={() => router.push('/')} className="text-lg px-3 py-2 bg-gray-200  rounded-lg box-content ml-6" />
       <FirebaseUIAuth />
     </div>
   )
