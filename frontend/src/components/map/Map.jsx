@@ -252,7 +252,7 @@ const Map = () => {
                     // <button onClick={() => logOut()} className="absolute top-4 right-4 bg-indigo-600 rounded-lg shadow-xl text-white p-2 z-10 hover:bg-indigo-700">
                     //     Log out
                     // </button> 
-                    <ProfileMenu handleLogout={logOut} handleTripsClick={handleTripsClick} className="absolute top-4 right-4" />
+                    <ProfileMenu user={currentUser} handleLogout={logOut} handleTripsClick={handleTripsClick} className="absolute top-4 right-4" />
                     :
                     <button onClick={() => router.push('/login')} className="absolute top-4 right-4 bg-indigo-600 rounded-lg shadow-xl text-white p-2 z-10 hover:bg-indigo-700 active:bg-indigo-800">
                         Login

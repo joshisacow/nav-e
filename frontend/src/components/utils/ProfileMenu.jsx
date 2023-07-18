@@ -3,7 +3,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import IconButton from '@/components/utils/IconButton'
 
-const ProfileMenu = ({ handleLogout, handleTripsClick, className }) => {
+const ProfileMenu = ({ handleLogout, handleTripsClick, className, user }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -32,6 +32,6 @@ const ProfileMenu = ({ handleLogout, handleTripsClick, className }) => {
             </Menu>
         </div>
     )
-    }
+}
 
 export default ProfileMenu
