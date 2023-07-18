@@ -10,6 +10,7 @@ import IconButton from '@/components/utils/IconButton';
 import { postTrip, optimizeRoute } from "@/services/api-requests";
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/components/auth/AuthContext';
+import ProfileMenu from '@/components/utils/ProfileMenu';
 
 const Map = () => {
     const router = useRouter();
@@ -130,6 +131,10 @@ const Map = () => {
         // TODO: show route on map
     }
 
+    const handleTripsClick = () => {
+        router.push('/trips');
+    }
+
     return (
         <div className="wrapper">
             <div className = "search-box-container">
@@ -244,10 +249,12 @@ const Map = () => {
 
                 {/* render button based on login state */}
                 {currentUser ? 
-                    <button onClick={() => logOut()} className="absolute top-4 right-4 bg-indigo-600 rounded-lg shadow-xl text-white p-2 z-10 hover:bg-indigo-700">
-                        Log out
-                    </button> :
-                    <button onClick={() => router.push('/login')} class="absolute top-4 right-4 bg-indigo-600 rounded-lg shadow-xl text-white p-2 z-10 hover:bg-indigo-700">
+                    // <button onClick={() => logOut()} className="absolute top-4 right-4 bg-indigo-600 rounded-lg shadow-xl text-white p-2 z-10 hover:bg-indigo-700">
+                    //     Log out
+                    // </button> 
+                    <ProfileMenu handleLogout={logOut} handleTripsClick={handleTripsClick} className="absolute top-4 right-4" />
+                    :
+                    <button onClick={() => router.push('/login')} className="absolute top-4 right-4 bg-indigo-600 rounded-lg shadow-xl text-white p-2 z-10 hover:bg-indigo-700 active:bg-indigo-800">
                         Login
                     </button>
                 }
