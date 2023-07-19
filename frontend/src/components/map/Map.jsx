@@ -21,7 +21,7 @@ const Map = () => {
     const [detailsLoading, setDetailsLoading] = useState(false);
     const [optimizeLoading, setOptimizeLoading] = useState(false);
     const { currentUser, logOut } = useAuth();
-    console.log(currentUser);
+    
     // update infoWindow when details finishes fetch
     useEffect (() => {
         // check if infoWindow is showing current marker

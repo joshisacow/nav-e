@@ -13,25 +13,28 @@ const page = () => {
   const [savedTrips, setSavedTrips] = useState([]); // array of TripArrays
   const [loadingTrips, setLoadingTrips] = useState(false);  
   
+  async function fetchTrips() {
+    if (currentUser) {
+      setLoadingTrips(true);
+      const tripData = await getTrips(currentUser.uid);
+      setSavedTrips(tripData);
+      setLoadingTrips(false);
+    }
+  }
+
   useEffect(() => {
     // redirect to login if not logged in
     // if (!currentUser) {
     //   router.push('/login');
     // }
 
-    // fetch trip data
-    // TODO: rerender on delete trip press
-    async function fetchTrips() {
-      if (currentUser) {
-        setLoadingTrips(true);
-        const tripData = await getTrips(currentUser.uid);
-        setSavedTrips(tripData);
-        setLoadingTrips(false);
-      }
-    }
-
     fetchTrips();
   }, [currentUser])
+
+  async function handleDeleteTrip (index) {
+    await deleteTrip(currentUser.uid, index);
+    fetchTrips();
+  }
 
   return (
     <div>
@@ -66,7 +69,7 @@ const page = () => {
 
                   <IconButton
                     icon="close"
-                    onClick={() => deleteTrip(currentUser.uid, index)}
+                    onClick={() => handleDeleteTrip(index)}
                     className="text-lg px-3 py-2 bg-gray-200 rounded-lg box-content ml-6 hover:bg-gray-300 active:bg-gray-400"
                   />
                 </div>
