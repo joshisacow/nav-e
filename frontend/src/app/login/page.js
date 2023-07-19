@@ -1,9 +1,11 @@
 "use client"
 
-import dynamic from 'next/dynamic'
-import 'firebaseui/dist/firebaseui.css'
-import IconButton from '@/components/utils/IconButton'
+import dynamic from 'next/dynamic';
+import 'firebaseui/dist/firebaseui.css';
+import IconButton from '@/components/utils/IconButton';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/components/auth/AuthContext';
+import { useEffect } from 'react';
 
 const FirebaseUIAuth = dynamic(() => import('@/components/auth/FirebaseUIAuth'), {
   ssr: false
@@ -11,6 +13,15 @@ const FirebaseUIAuth = dynamic(() => import('@/components/auth/FirebaseUIAuth'),
 
 export default function Login() {
   const router = useRouter();
+  const { currentUser } = useAuth();
+
+  // redirect to home if logged in
+  useEffect(() => {
+    if (currentUser) {
+      router.push('/');
+    }
+  }, [currentUser]);
+
   return (
     <div className="bg-white">
       <h1 className="text-center">Login</h1>

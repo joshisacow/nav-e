@@ -2,7 +2,6 @@
 
 import { useLoadScript } from '@react-google-maps/api'
 import Map from '@/components/map/Map'
-import { AuthProvider } from '@/components/auth/AuthContext'
 
 const libraries = ['places']
 
@@ -17,9 +16,6 @@ export default function Home() {
   if (loadError) return 'Error loading maps';
 
   return (
-    <AuthProvider>
-      <Map /> 
-    </AuthProvider> 
+    <Map /> 
   )
-
 }
