@@ -2,8 +2,8 @@ import config from '../../config.json';
 
 //TODO: check userID, generate tripID
 
-export const postTrip = async (trip) => {
-    const response = await fetch(config.baseURL + "trips/1", {
+export const postTrip = async (trip, uid) => {
+    const response = await fetch(config.baseURL + "trips/" + uid, {
         method: "POST",
         headers: {
             'Content-Type': 'application/json'

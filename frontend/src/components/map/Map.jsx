@@ -21,7 +21,7 @@ const Map = () => {
     const [detailsLoading, setDetailsLoading] = useState(false);
     const [optimizeLoading, setOptimizeLoading] = useState(false);
     const { currentUser, logOut } = useAuth();
-
+    console.log(currentUser);
     // update infoWindow when details finishes fetch
     useEffect (() => {
         // check if infoWindow is showing current marker
@@ -109,12 +109,14 @@ const Map = () => {
         setInfoW(placeObject);
     }
 
-    const handleSaveTrip = async () => {
+    const handleBuildTrip = async () => {
         if (tripArray.length < 2) {
             toast.error("add more locations to save trip!");
             return;
         }
-        await postTrip(tripArray);
+        if (currentUser) {
+            await postTrip(tripArray, currentUser.uid);
+        }
         toast.success("saved trip!");
     }
 
@@ -163,7 +165,7 @@ const Map = () => {
                             }
                         }}
                     />
-                    <button className = "save-button" onClick = {() => handleSaveTrip()}> Save Trip </button>
+                    <button className = "save-button" onClick = {() => handleBuildTrip()}> Build Trip </button>
                 </div>
             </div>
             <GoogleMap 
