@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useAuth } from '@/components/auth/AuthContext';
 import IconButton from '@/components/utils/IconButton';
 import { useRouter } from 'next/navigation';
@@ -10,12 +10,12 @@ import LoadingSpinner from '@/components/utils/LoadingSpinner'
 import { faFileExport } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-const page = () => {
+const Trips = () => {
   const { currentUser } = useAuth();
   const router = useRouter();
   const [savedTrips, setSavedTrips] = useState([]); // array of TripArrays
   const [loadingTrips, setLoadingTrips] = useState(false);  
-  
+
   async function fetchTrips() {
     if (currentUser) {
       setLoadingTrips(true);
@@ -52,7 +52,7 @@ const page = () => {
       {loadingTrips 
         ? <LoadingSpinner /> 
 
-        : savedTrips.length > 0 
+        : savedTrips && savedTrips.length > 0 
 
         // Check if savedTrips is not empty
           ? ( 
@@ -100,4 +100,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Trips
