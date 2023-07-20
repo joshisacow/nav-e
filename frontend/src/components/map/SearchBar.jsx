@@ -10,6 +10,7 @@ import {
 } from "@reach/combobox";
 import "@reach/combobox/styles.css";
 import { getAddrDetails } from '@/services/api-requests';
+import IconButton from '@/components/utils/IconButton';
 
 const SearchBar = ({setPan, setCurrentDetails, setDetailsLoading, addToPoints, clearInfoW}) => {
     const {ready, value, setValue, suggestions: {status, data}, clearSuggestions} = usePlacesAutocomplete();
@@ -64,9 +65,7 @@ const SearchBar = ({setPan, setCurrentDetails, setDetailsLoading, addToPoints, c
             </Combobox>
 
             {/* search button */}
-            <button onClick = {addToPoints} className="search-button">
-                Add
-            </button>
+            <IconButton icon="plus" onClick = {() => {addToTrip(infoW)}} className="search-add-button" />
             
         </div>
     )

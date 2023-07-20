@@ -10,8 +10,10 @@ import IconButton from '@/components/utils/IconButton';
 import { postTrip, optimizeRoute } from "@/services/api-requests";
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/components/auth/AuthContext';
+import ProfileMenu from '@/components/utils/ProfileMenu';
+import { useSearchParams } from 'next/navigation';
 
-const Map = () => {
+const Map = ({ searchParams }) => {
     const router = useRouter();
     const [currentMarker, setCurrentMarker] = useState({position: null, details: null});
     const [tripArray, setTripArray] = useState([]);
@@ -20,7 +22,7 @@ const Map = () => {
     const [detailsLoading, setDetailsLoading] = useState(false);
     const [optimizeLoading, setOptimizeLoading] = useState(false);
     const { currentUser, logOut } = useAuth();
-
+    
     // update infoWindow when details finishes fetch
     useEffect (() => {
         // check if infoWindow is showing current marker
@@ -28,6 +30,13 @@ const Map = () => {
             setInfoW((prevInfoW) => ({...prevInfoW, details: currentMarker.details}));
         }
     }, [currentMarker.details]);
+
+    // update tripArray when searchParams changes
+    useEffect (() => {
+        if (searchParams.get("trip")) {
+            setTripArray(JSON.parse(searchParams.get("trip")));
+        }
+    }, [searchParams]);
 
     const mapRef = useRef();
     const center = useMemo( () => ({
@@ -108,12 +117,14 @@ const Map = () => {
         setInfoW(placeObject);
     }
 
-    const handleSaveTrip = async () => {
+    const handleBuildTrip = async () => {
         if (tripArray.length < 2) {
             toast.error("add more locations to save trip!");
             return;
         }
-        await postTrip(tripArray);
+        if (currentUser) {
+            await postTrip(tripArray, currentUser.uid);
+        }
         toast.success("saved trip!");
     }
 
@@ -128,6 +139,10 @@ const Map = () => {
         setTripArray(route[0]);
         toast.success("recommended route!");
         // TODO: show route on map
+    }
+
+    const handleTripsClick = () => {
+        router.push('/trips');
     }
 
     return (
@@ -158,7 +173,7 @@ const Map = () => {
                             }
                         }}
                     />
-                    <button className = "save-button" onClick = {() => handleSaveTrip()}> Save Trip </button>
+                    <button className = "save-button" onClick = {() => handleBuildTrip()}> Build Trip </button>
                 </div>
             </div>
             <GoogleMap 
@@ -244,10 +259,12 @@ const Map = () => {
 
                 {/* render button based on login state */}
                 {currentUser ? 
-                    <button onClick={() => logOut()} className="absolute top-4 right-4 bg-indigo-600 rounded-lg shadow-xl text-white p-2 z-10 hover:bg-indigo-700">
-                        Log out
-                    </button> :
-                    <button onClick={() => router.push('/login')} class="absolute top-4 right-4 bg-indigo-600 rounded-lg shadow-xl text-white p-2 z-10 hover:bg-indigo-700">
+                    // <button onClick={() => logOut()} className="absolute top-4 right-4 bg-indigo-600 rounded-lg shadow-xl text-white p-2 z-10 hover:bg-indigo-700">
+                    //     Log out
+                    // </button> 
+                    <ProfileMenu user={currentUser} handleLogout={logOut} handleTripsClick={handleTripsClick} className="absolute top-4 right-4" />
+                    :
+                    <button onClick={() => router.push('/login')} className="absolute top-4 right-4 bg-indigo-600 rounded-lg shadow-xl text-white p-2 z-10 hover:bg-indigo-700 active:bg-indigo-800">
                         Login
                     </button>
                 }

@@ -17,14 +17,19 @@
   }
 } */
 
+html {
+  height: 100%;
+}
+
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
+  /* background: linear-gradient(
       to bottom,
       transparent,
       rgb(var(--background-end-rgb))
     )
-    rgb(var(--background-start-rgb));
+    rgb(var(--background-start-rgb)); */
+  min-height: 100%;
 }
 
 .map-container{
@@ -69,7 +74,7 @@ body {
   z-index: 3;
 }
 
-.search-button {
+.search-add-button {
   width: 20%;
   padding: 0.5rem;
   margin-left: 0.25rem;

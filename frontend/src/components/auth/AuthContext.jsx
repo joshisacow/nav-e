@@ -1,3 +1,5 @@
+"use client"
+
 import { useState, useContext, createContext, useEffect } from 'react'
 import auth from '@/services/auth'
 

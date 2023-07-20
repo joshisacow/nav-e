@@ -2,7 +2,7 @@
 
 import { useLoadScript } from '@react-google-maps/api'
 import Map from '@/components/map/Map'
-import { AuthProvider } from '@/components/auth/AuthContext'
+import { useSearchParams } from 'next/navigation';
 
 const libraries = ['places']
 
@@ -13,13 +13,12 @@ export default function Home() {
     libraries,
   });
 
+  const searchParams = useSearchParams();
+
   if (!isLoaded) return 'Loading...';
   if (loadError) return 'Error loading maps';
 
   return (
-    <AuthProvider>
-      <Map /> 
-    </AuthProvider> 
+    <Map searchParams ={searchParams} /> 
   )
-
 }
