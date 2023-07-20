@@ -1,4 +1,4 @@
-import { faCow, faXmark, faRocket, faMagnifyingGlassLocation, faHouse } from '@fortawesome/free-solid-svg-icons'
+import { faCow, faXmark, faRocket, faMagnifyingGlassLocation, faHouse, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import LoadingSpinner from './LoadingSpinner'
 
@@ -8,6 +8,7 @@ const iconMap = {
     rocket: faRocket,
     glass: faMagnifyingGlassLocation,
     home: faHouse,
+    plus: faPlus,
 };
 
 const IconButton = ({onClick, icon, className, loading}) => {

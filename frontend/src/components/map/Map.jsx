@@ -11,8 +11,9 @@ import { postTrip, optimizeRoute } from "@/services/api-requests";
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/components/auth/AuthContext';
 import ProfileMenu from '@/components/utils/ProfileMenu';
+import { useSearchParams } from 'next/navigation';
 
-const Map = () => {
+const Map = ({ searchParams }) => {
     const router = useRouter();
     const [currentMarker, setCurrentMarker] = useState({position: null, details: null});
     const [tripArray, setTripArray] = useState([]);
@@ -29,6 +30,13 @@ const Map = () => {
             setInfoW((prevInfoW) => ({...prevInfoW, details: currentMarker.details}));
         }
     }, [currentMarker.details]);
+
+    // update tripArray when searchParams changes
+    useEffect (() => {
+        if (searchParams.get("trip")) {
+            setTripArray(JSON.parse(searchParams.get("trip")));
+        }
+    }, [searchParams]);
 
     const mapRef = useRef();
     const center = useMemo( () => ({
