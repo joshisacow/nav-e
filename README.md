@@ -1,4 +1,4 @@
-# nav-e
+# Nav-E
 Travel app for managing trips more efficiently.
 
 Visit the website at: https://nav-e-387904.uc.r.appspot.com/
