@@ -42,6 +42,18 @@ body {
   position: relative;
 }
 
+.search-box-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 30%;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column; 
+  align-items: flex-start; 
+}
+
 .search-bar-container {
   /* position: absolute;
   top: 0;
@@ -63,6 +75,7 @@ body {
 .search-bar {
   display: flex;
   align-items: center;
+  width: 100%;
 }
 
 .combobox {
@@ -105,18 +118,6 @@ body {
 
 .info-window-container {
   background-color: aquamarine;
-}
-
-.search-box-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1;
-  width: 30%;
-  padding: 1rem;
-  display: flex;
-  flex-direction: column; 
-  align-items: flex-start; 
 }
 
 .trip-table-container {

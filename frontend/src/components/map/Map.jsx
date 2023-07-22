@@ -173,7 +173,7 @@ const Map = ({ searchParams }) => {
                             }
                         }}
                     />
-                    <button className = "save-button" onClick = {() => handleBuildTrip()}> Build Trip </button>
+                    {/* <button className = "save-button" onClick = {() => handleBuildTrip()}> Build Trip </button> */}
                 </div>
             </div>
             <GoogleMap 
