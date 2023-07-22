@@ -9,7 +9,8 @@ import { debounce } from '@mui/material/utils';
 import { getAddrDetails } from '@/services/api-requests';
 import { faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {getGeocode, getLatLng} from 'use-places-autocomplete'
+import {getGeocode, getLatLng} from 'use-places-autocomplete';
+import IconButton from '@/components/utils/IconButton';
 
 
 const autocompleteService = { current: null };
@@ -90,64 +91,72 @@ export default function SearchBar({setPan, setCurrentDetails, setDetailsLoading,
     }
 
     return (
-        <Autocomplete
-        id="google-map"
-        sx={{ width: 300 }}
-        getOptionLabel={(option) =>
-            typeof option === 'string' ? option : option.description
-        }
-        filterOptions={(x) => x}
-        options={options}
-        autoComplete
-        includeInputInList
-        filterSelectedOptions
-        value={value}
-        noOptionsText="No locations"
-        clearOnEscape
-        onChange={(event, newValue) => {
-            setOptions(newValue ? [newValue, ...options] : options);
-            setValue(newValue);
-            if (newValue && newValue !== "") {
-                selectedDest(newValue.place_id);
-            }
-        }}
-        onInputChange={(event, newInputValue) => {
-            setInputValue(newInputValue)
-        }}
-        renderInput={(params) => <TextField {...params} label="Add a location" />}
-        renderOption={(props, option) => {
-            const matches =
-            option.structured_formatting.main_text_matched_substrings || [];
+        // search bar
+        <div className = "search-bar">
 
-            const parts = parse(
-            option.structured_formatting.main_text,
-            matches.map((match) => [match.offset, match.offset + match.length]),
-            );
+            <Autocomplete
+                id="google-map"
+                sx={{ width: 300 }}
+                getOptionLabel={(option) =>
+                    typeof option === 'string' ? option : option.description
+                }
+                filterOptions={(x) => x}
+                options={options}
+                autoComplete
+                includeInputInList
+                filterSelectedOptions
+                value={value}
+                noOptionsText="No locations"
+                clearOnEscape
+                onChange={(event, newValue) => {
+                    setOptions(newValue ? [newValue, ...options] : options);
+                    setValue(newValue);
+                    if (newValue && newValue !== "") {
+                        selectedDest(newValue.place_id);
+                    }
+                }}
+                onInputChange={(event, newInputValue) => {
+                    setInputValue(newInputValue)
+                }}
+                renderInput={(params) => <TextField {...params} label="Add a location" />}
+                renderOption={(props, option) => {
+                    const matches =
+                    option.structured_formatting.main_text_matched_substrings || [];
 
-            return (
-            <li {...props}>
-                <Grid container alignItems="center">
-                <Grid item sx={{ display: 'flex', width: 44 }}>
-                    <FontAwesomeIcon icon={faLocationDot} />
-                </Grid>
-                <Grid item sx={{ width: 'calc(100% - 44px)', wordWrap: 'break-word' }}>
-                    {parts.map((part, index) => (
-                    <Box
-                        key={index}
-                        component="span"
-                        sx={{ fontWeight: part.highlight ? 'bold' : 'regular' }}
-                    >
-                        {part.text}
-                    </Box>
-                    ))}
-                    <Typography variant="body2" color="text.secondary">
-                    {option.structured_formatting.secondary_text}
-                    </Typography>
-                </Grid>
-                </Grid>
-            </li>
-            );
-        }}
-        />
+                    const parts = parse(
+                    option.structured_formatting.main_text,
+                    matches.map((match) => [match.offset, match.offset + match.length]),
+                    );
+
+                    return (
+                    <li {...props}>
+                        <Grid container alignItems="center">
+                        <Grid item sx={{ display: 'flex', width: 44 }}>
+                            <FontAwesomeIcon icon={faLocationDot} />
+                        </Grid>
+                        <Grid item sx={{ width: 'calc(100% - 44px)', wordWrap: 'break-word' }}>
+                            {parts.map((part, index) => (
+                            <Box
+                                key={index}
+                                component="span"
+                                sx={{ fontWeight: part.highlight ? 'bold' : 'regular' }}
+                            >
+                                {part.text}
+                            </Box>
+                            ))}
+                            <Typography variant="body2" color="text.secondary">
+                            {option.structured_formatting.secondary_text}
+                            </Typography>
+                        </Grid>
+                        </Grid>
+                    </li>
+                    );
+                }}
+            />
+            {/* search button */}
+            <IconButton icon="plus" onClick = {() => {addToPoints()}} className="search-add-button" />
+
+        </div>
+
     );
     }

@@ -67,24 +67,10 @@ body {
   align-items: flex-start; 
 }
 
-.combobox {
-  width: 100%;
-  padding: 0.5rem;
-}
-
 .search-bar {
   display: flex;
   align-items: center;
   width: 100%;
-}
-
-.combobox {
-  width: 100%;
-  padding: 0.5rem;
-}
-
-.combobox-popover {
-  z-index: 3;
 }
 
 .search-add-button {
