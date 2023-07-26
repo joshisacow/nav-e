@@ -19,6 +19,8 @@ export default function Home() {
   if (loadError) return 'Error loading maps';
 
   return (
-    <Map searchParams ={searchParams} /> 
+    <>
+      <Map searchParams ={searchParams} /> 
+    </>
   )
 }

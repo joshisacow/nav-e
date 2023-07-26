@@ -6,6 +6,26 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+  /* set1 */
+  /* --background-one: #FED9B7;
+  --background-two: #F07167;
+  --background-three: #00AFB9;
+  --background-four: #0081A7;
+  --background-five: #FDFCDC; */
+
+  /* set2 */
+  /* --background-one: #003566;
+  --background-two: #001D3D;
+  --background-three: #000814;
+  --background-four: #FFC300;
+  --background-five: #FFD60A; */
+
+  /* set3 */
+  --background-one: #BCE784;
+  --background-two: #5DD39E;
+  --background-three: #348AA7;
+  --background-four: #525174;
+  --background-five: #513B56;
 }
 
 /* dark mode */
