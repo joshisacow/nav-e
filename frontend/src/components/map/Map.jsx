@@ -11,7 +11,7 @@ import { postTrip, optimizeRoute } from "@/services/api-requests";
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/components/auth/AuthContext';
 import ProfileMenu from '@/components/utils/ProfileMenu';
-import { useSearchParams } from 'next/navigation';
+import '@/styles/Map.css'
 
 const Map = ({ searchParams }) => {
     const router = useRouter();

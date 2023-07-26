@@ -1,6 +1,7 @@
 import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import IconButton from '@/components/utils/IconButton';
+import '@/styles/TripEntry.css'
 
 const TripEntry = ({placeObject, index, removeFromTrip}) => {
     return (

@@ -1,6 +1,7 @@
 import React from 'react'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import TripEntry from '@/components/map/TripEntry'
+import '@/styles/TripView.css'
 
 const TripView = ({tripArray, setTripArray, removeFromTrip}) => {
   const onDragEnd = result => {

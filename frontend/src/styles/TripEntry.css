@@ -1,0 +1,13 @@
+.trip-entry {
+    background: #daddddce;
+    border: 1px solid light grey;
+    border-radius: 2px;
+    display: inline-flex;
+    white-space: nowrap;
+}
+
+.trip-entry-text {
+    padding: 0.4rem;
+    margin-right: 0.5rem;
+    color: black;
+}

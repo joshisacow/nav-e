@@ -11,7 +11,7 @@ import { faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {getGeocode, getLatLng} from 'use-places-autocomplete';
 import IconButton from '@/components/utils/IconButton';
-
+import '@/styles/SearchBar.css'
 
 const autocompleteService = { current: null };
 
