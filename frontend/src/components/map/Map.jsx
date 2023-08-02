@@ -68,7 +68,6 @@ const Map = ({ searchParams }) => {
     } 
 
     const addToTrip = (placeObject) => {
-
         if (tripArray.length >= 15) {
             toast.error("max number of locations reached!");
             return;
@@ -146,15 +145,52 @@ const Map = ({ searchParams }) => {
         router.push('/trips');
     }
 
+    // Search Bar functions
+    const setPan = (position) => {
+        if (!inArrays(position)) {
+            setCurrentMarker((prevMarker) => ({...prevMarker, position}));
+        }
+        mapRef.current?.panTo(position);
+    }
+
+    const setCurrentDetails = (details) => {
+        setCurrentMarker((prevMarker) => ({...prevMarker, details}));
+    }
+
+    const clearInfoW = () => {
+        if (infoW.position !== null) {
+            setInfoW((prevInfoW) => ({...prevInfoW, position: null}));
+        }
+    }
+
+
+
     return (
         <div className="wrapper">
             {/* <div className="sidebar-container"> */}
-                <SideBar isOpen={false} />
-                <div className = "search-box-container">
+                <SideBar 
+                    tripArray = {tripArray}
+                    setTripArray = {setTripArray}  
+                    removeFromTrip = {removeFromTrip} 
+                    currentMarker = {currentMarker}
+                    setPan = {setPan}
+                    addToPoints = {addToPoints}
+                    setDetailsLoading = {setDetailsLoading}
+                    setCurrentDetails = {setCurrentDetails}
+                    clearInfoW = {clearInfoW}
+                />
+                {/* <div className = "search-box-container">
                     <TripView
                         tripArray = {tripArray}
                         setTripArray = {setTripArray}  
                         removeFromTrip = {removeFromTrip} 
+                        currentMarker = {currentMarker}
+                        setPan = {setPan}
+                        addToPoints = {addToPoints}
+                        setDetailsLoading = {setDetailsLoading}
+                        setCurrentDetails = {setCurrentDetails}
+                        clearInfoW = {clearInfoW}
+
                     />
                     <div className="search-bar-container">
                         <h1>Nav-E</h1> 
@@ -176,9 +212,9 @@ const Map = ({ searchParams }) => {
                                 }
                             }}
                         />
-                        {/* <button className = "save-button" onClick = {() => handleBuildTrip()}> Build Trip </button> */}
+                        <button className = "save-button" onClick = {() => handleBuildTrip()}> Build Trip </button>
                     </div>
-                </div>
+                </div> */}
             {/* </div> */}
 
             <div className="map">

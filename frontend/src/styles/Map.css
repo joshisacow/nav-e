@@ -19,30 +19,7 @@
     z-index: 1;
 }
 
-.search-box-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1;
-    width: 30%;
-    padding: 1rem;
-    display: flex;
-    flex-direction: column; 
-    align-items: flex-start; 
-}
 
-.search-bar-container {
-    /* position: absolute;
-    top: 0;
-    left: 0; */
-    position: relative;
-    z-index: 1;
-    width: 100%;
-    padding: 1rem;
-    display: flex;
-    flex-direction: column; 
-    align-items: flex-start; 
-}
 
 .info-window-container {
     background-color: aquamarine;
@@ -123,12 +100,3 @@
     color: #fff;
 }
 
-.save-button {
-    position: absolute;
-    top: 2.5rem;
-    left: 17rem;
-    z-index: 1;
-    padding: 0.5rem;
-    background: #000;
-    color: #fff;
-}

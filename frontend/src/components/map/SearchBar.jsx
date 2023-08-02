@@ -15,7 +15,7 @@ import '@/styles/SearchBar.css'
 
 const autocompleteService = { current: null };
 
-export default function SearchBar({setPan, setCurrentDetails, setDetailsLoading, addToPoints, clearInfoW}) {
+export default function SearchBar({setPan, setCurrentDetails, setDetailsLoading, addToPoints, clearInfoW, currentMarker}) {
     const [value, setValue] = React.useState(null);
     const [inputValue, setInputValue] = React.useState('');
     const [options, setOptions] = React.useState([]);
@@ -154,7 +154,7 @@ export default function SearchBar({setPan, setCurrentDetails, setDetailsLoading,
                 }}
             />
             {/* search button */}
-            <IconButton icon="plus" onClick = {() => {addToPoints()}} className="search-add-button" />
+            <IconButton icon="plus" onClick = {() => {addToPoints(currentMarker)}} className="search-add-button" />
 
         </div>
 
