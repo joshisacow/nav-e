@@ -1,6 +1,7 @@
 import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import IconButton from '@/components/utils/IconButton';
+import '@/styles/TripEntry.css'
 
 const TripEntry = ({placeObject, index, removeFromTrip}) => {
     return (
@@ -20,7 +21,8 @@ const TripEntry = ({placeObject, index, removeFromTrip}) => {
                         {index + 1}. {placeObject.details.result.formatted_address}
                     </h1>
                     <IconButton 
-                        icon = "close" 
+                        icon = "close"
+                        className = "trip-entry-button" 
                         onClick = {() => removeFromTrip(placeObject)} 
                     />
                 </div>

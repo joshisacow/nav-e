@@ -1,6 +1,7 @@
 import React from 'react'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import TripEntry from '@/components/map/TripEntry'
+import '@/styles/TripView.css'
 
 const TripView = ({tripArray, setTripArray, removeFromTrip}) => {
   const onDragEnd = result => {
@@ -30,6 +31,7 @@ const TripView = ({tripArray, setTripArray, removeFromTrip}) => {
   }
   return (
     <DragDropContext onDragEnd = {onDragEnd}>
+      <h1>Trip</h1>
       <Droppable droppableId = "trip-table">
         {(provided, snapshot) => (
           <div
