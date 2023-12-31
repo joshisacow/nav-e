@@ -8,6 +8,8 @@
 .map {
     height: 100vh;
     width:95%;
+    margin-right: 0;
+    margin-left: auto;
 }
 
 .map-container{

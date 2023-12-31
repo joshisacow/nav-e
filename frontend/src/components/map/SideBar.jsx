@@ -17,14 +17,10 @@ const SideBar = ({ tripArray, setTripArray, removeFromTrip, setPan, addToPoints,
             <div className="sidebar-toggle" onClick={() => {toggleSidebar()}}>
                 <div className="sidebar-toggle-icon"></div>
             </div>
-            <div className = "search-box-container">
-                    <TripView
-                        tripArray = {tripArray}
-                        setTripArray = {setTripArray}  
-                        removeFromTrip = {removeFromTrip} 
-                    />
-                    <div className="search-bar-container">
-                        <h1>Nav-E</h1> 
+            <h1 className="text-sm whitespace-nowrap">Nav-E</h1>
+            {isOpen &&
+                <div className = "search-box-container">
+                    <div className="search-bar-container"> 
                         <SearchBar 
                             setPan = {setPan}
                             addToPoints = {addToPoints}
@@ -34,8 +30,15 @@ const SideBar = ({ tripArray, setTripArray, removeFromTrip, setPan, addToPoints,
                             currentMarker = {currentMarker}
                         />
                         {/* <button className = "save-button" onClick = {() => handleBuildTrip()}> Build Trip </button> */}
+                        
+                        <TripView
+                            tripArray = {tripArray}
+                            setTripArray = {setTripArray}  
+                            removeFromTrip = {removeFromTrip} 
+                        />     
                     </div>
                 </div>
+            }
         </div>
     );
 };
