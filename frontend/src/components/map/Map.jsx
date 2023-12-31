@@ -3,14 +3,14 @@ import { GoogleMap, InfoWindow } from '@react-google-maps/api';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import LocationPin from '@/components/map/LocationPin';
-import SearchBar from '@/components/map/SearchBar';
-import TripView from '@/components/map/TripView';
 import LoadingSpinner from '@/components/utils/LoadingSpinner';
 import IconButton from '@/components/utils/IconButton';
 import { postTrip, optimizeRoute } from "@/services/api-requests";
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/components/auth/AuthContext';
 import ProfileMenu from '@/components/utils/ProfileMenu';
+import SideBar from '@/components/map/SideBar';
+import '@/styles/Map.css'
 
 const Map = ({ searchParams }) => {
     const router = useRouter();
@@ -66,7 +66,6 @@ const Map = ({ searchParams }) => {
     } 
 
     const addToTrip = (placeObject) => {
-
         if (tripArray.length >= 15) {
             toast.error("max number of locations reached!");
             return;
@@ -145,144 +144,186 @@ const Map = ({ searchParams }) => {
         router.push('/trips');
     }
 
+    // Search Bar functions
+    const setPan = (position) => {
+        if (!inArrays(position)) {
+            setCurrentMarker((prevMarker) => ({...prevMarker, position}));
+        }
+        mapRef.current?.panTo(position);
+    }
+
+    const setCurrentDetails = (details) => {
+        setCurrentMarker((prevMarker) => ({...prevMarker, details}));
+    }
+
+    const clearInfoW = () => {
+        if (infoW.position !== null) {
+            setInfoW((prevInfoW) => ({...prevInfoW, position: null}));
+        }
+    }
+
+
+
     return (
         <div className="wrapper">
-            <div className = "search-box-container">
-                <TripView
+            {/* <div className="sidebar-container"> */}
+                <SideBar 
                     tripArray = {tripArray}
                     setTripArray = {setTripArray}  
                     removeFromTrip = {removeFromTrip} 
+                    currentMarker = {currentMarker}
+                    setPan = {setPan}
+                    addToPoints = {addToPoints}
+                    setDetailsLoading = {setDetailsLoading}
+                    setCurrentDetails = {setCurrentDetails}
+                    clearInfoW = {clearInfoW}
                 />
-                <div className="search-bar-container">
-                    <h1>Nav-E</h1> 
-                    <SearchBar 
-                        setPan = {(position) => {
-                            if (!inArrays(position)) {
-                                setCurrentMarker((prevMarker) => ({...prevMarker, position}));
-                            }
-                            mapRef.current?.panTo(position);
-                        }}
-                        addToPoints = {() => {addToPoints(currentMarker)}}
-                        setCurrentDetails = {(details) => {
-                            setCurrentMarker((prevMarker) => ({...prevMarker, details}));
-                        }}
-                        setDetailsLoading = {(bool) => setDetailsLoading(bool)}
-                        clearInfoW = {() => {
-                            if (infoW.position !== null) {
-                                setInfoW((prevInfoW) => ({...prevInfoW, position: null}));
-                            }
-                        }}
+                {/* <div className = "search-box-container">
+                    <TripView
+                        tripArray = {tripArray}
+                        setTripArray = {setTripArray}  
+                        removeFromTrip = {removeFromTrip} 
+                        currentMarker = {currentMarker}
+                        setPan = {setPan}
+                        addToPoints = {addToPoints}
+                        setDetailsLoading = {setDetailsLoading}
+                        setCurrentDetails = {setCurrentDetails}
+                        clearInfoW = {clearInfoW}
+
                     />
-                    {/* <button className = "save-button" onClick = {() => handleBuildTrip()}> Build Trip </button> */}
-                </div>
+                    <div className="search-bar-container">
+                        <h1>Nav-E</h1> 
+                        <SearchBar 
+                            setPan = {(position) => {
+                                if (!inArrays(position)) {
+                                    setCurrentMarker((prevMarker) => ({...prevMarker, position}));
+                                }
+                                mapRef.current?.panTo(position);
+                            }}
+                            addToPoints = {() => {addToPoints(currentMarker)}}
+                            setCurrentDetails = {(details) => {
+                                setCurrentMarker((prevMarker) => ({...prevMarker, details}));
+                            }}
+                            setDetailsLoading = {(bool) => setDetailsLoading(bool)}
+                            clearInfoW = {() => {
+                                if (infoW.position !== null) {
+                                    setInfoW((prevInfoW) => ({...prevInfoW, position: null}));
+                                }
+                            }}
+                        />
+                        <button className = "save-button" onClick = {() => handleBuildTrip()}> Build Trip </button>
+                    </div>
+                </div> */}
+            {/* </div> */}
+
+            <div className="map">
+                <GoogleMap 
+                    zoom ={10} 
+                    center={center} 
+                    mapContainerClassName = "map-container"
+                    options = {options}
+                    onLoad = {onLoad}
+                >   
+                    {currentMarker.position && 
+                        <LocationPin  
+                            position = {currentMarker.position} 
+                            color = "red"  
+                            shape = "dot"
+                            onClick = {() => {
+                                handlePointClick(currentMarker);
+                            }}
+                        />
+                    }
+
+                    {/* mark locations in tripArray */}
+                    {tripArray.map((placeObject, index) => (
+                        <LocationPin 
+                            key = {index} 
+                            position = {placeObject.position} 
+                            label = {{
+                                text: (index+1).toString(),
+                                color: "white",
+                                fontsize: "16px",
+                                fontWeight: "bold",
+                                className: "pin-label",
+                            }}
+                            shape = "pin"
+                            color = "blue"
+                            onClick = {() => {
+                                // TODO: change to new info window without button
+                                handlePointClick(placeObject);
+                            }}
+                        />
+                    ))}
+
+                    {/* mark locations in pointArray */}
+                    {pointArray.map((placeObject, index) => (
+                        <LocationPin 
+                            key = {index} 
+                            position = {placeObject.position} 
+                            shape = "dot"
+                            color = "orange"
+                            onClick = {() => {
+                                handlePointClick(placeObject);
+                            }}
+                        />
+                    ))}
+
+                    {infoW.position && (
+                        <InfoWindow 
+                            onCloseClick={() => {
+                                setInfoW((prevInfoW) => ({...prevInfoW, position: null}))
+                            }}
+                            position = {infoW.position}
+                        >
+                            {/* if loading currentMarker show spinner */}
+                            {(detailsLoading && cmpPos(infoW.position, currentMarker.position)) || !infoW.details 
+                                ? <LoadingSpinner size="2x" /> 
+                                : (
+                                    <div className = "info-window-container">
+                                        <h1>{infoW.details.result.name}</h1>
+                                        <h1>{infoW.details.result.formatted_phone_number}</h1>
+                                        <h1>{infoW.details.result.formatted_address}</h1> 
+                                        <h1>{infoW.details.result.business_status}</h1>
+                                        <h2>{infoW.details.result.editorial_summary.overview}</h2>
+                                        <h3>{infoW.details.result.price_level}</h3>
+                                        <h3>{infoW.details.result.rating}</h3>
+                                        <h3>{infoW.details.result.user_ratings_total}</h3>
+                                        <h3>{infoW.details.result.website}</h3>
+                                        <h3>{infoW.details.result.url}</h3>
+                                        <h4>{infoW.details.result.opening_hours.weekday_text}</h4>
+
+                                        <button onClick = {() => {addToTrip(infoW)}} className="add-button">
+                                            Add to Trip
+                                        </button>
+                                    </div>
+                                )
+                            }
+                        </InfoWindow>
+                    )}
+                    <div className = "opt-route-button-container">
+                        <IconButton icon = "rocket" className="opt-route-button" onClick={() => handleOptimizeRoute()} loading={optimizeLoading} />
+                        <span className="opt-route-text bg-gray-700 text-white text-sm opacity-100 rounded-full px-3 py-2">Optimize Route</span>
+                    </div>
+                    <div className = "rec-button-container">
+                        <IconButton icon = "glass" className="rec-button" onClick={() => console.log("rec")} />
+                        <span className="rec-text bg-gray-700 text-white text-sm opacity-100 rounded-full px-3 py-2">Recommend</span>
+                    </div>
+
+                    {/* render button based on login state */}
+                    {currentUser ? 
+                        // <button onClick={() => logOut()} className="absolute top-4 right-4 bg-indigo-600 rounded-lg shadow-xl text-white p-2 z-10 hover:bg-indigo-700">
+                        //     Log out
+                        // </button> 
+                        <ProfileMenu user={currentUser} handleLogout={logOut} handleTripsClick={handleTripsClick} className="absolute top-4 right-4" />
+                        :
+                        <button onClick={() => router.push('/login')} className="absolute top-4 right-4 bg-indigo-600 rounded-lg shadow-xl text-white p-2 z-10 hover:bg-indigo-700 active:bg-indigo-800">
+                            Login
+                        </button>
+                    }
+                
+                </GoogleMap>
             </div>
-            <GoogleMap 
-                zoom ={10} 
-                center={center} 
-                mapContainerClassName = "map-container"
-                options = {options}
-                onLoad = {onLoad}
-            >   
-                {currentMarker.position && 
-                    <LocationPin  
-                        position = {currentMarker.position} 
-                        color = "red"  
-                        shape = "dot"
-                        onClick = {() => {
-                            handlePointClick(currentMarker);
-                        }}
-                    />
-                }
-
-                {/* mark locations in tripArray */}
-                {tripArray.map((placeObject, index) => (
-                    <LocationPin 
-                        key = {index} 
-                        position = {placeObject.position} 
-                        label = {{
-                            text: (index+1).toString(),
-                            color: "white",
-                            fontsize: "16px",
-                            fontWeight: "bold",
-                            className: "pin-label",
-                        }}
-                        shape = "pin"
-                        color = "blue"
-                        onClick = {() => {
-                            // TODO: change to new info window without button
-                            handlePointClick(placeObject);
-                        }}
-                    />
-                ))}
-
-                {/* mark locations in pointArray */}
-                {pointArray.map((placeObject, index) => (
-                    <LocationPin 
-                        key = {index} 
-                        position = {placeObject.position} 
-                        shape = "dot"
-                        color = "orange"
-                        onClick = {() => {
-                            handlePointClick(placeObject);
-                        }}
-                    />
-                ))}
-
-                {infoW.position && (
-                    <InfoWindow 
-                        onCloseClick={() => {
-                            setInfoW((prevInfoW) => ({...prevInfoW, position: null}))
-                        }}
-                        position = {infoW.position}
-                    >
-                        {/* if loading currentMarker show spinner */}
-                        {(detailsLoading && cmpPos(infoW.position, currentMarker.position)) || !infoW.details 
-                            ? <LoadingSpinner size="2x" /> 
-                            : (
-                                <div className = "info-window-container">
-                                    <h1>{infoW.details.result.name}</h1>
-                                    <h1>{infoW.details.result.formatted_phone_number}</h1>
-                                    <h1>{infoW.details.result.formatted_address}</h1> 
-                                    <h1>{infoW.details.result.business_status}</h1>
-                                    <h2>{infoW.details.result.editorial_summary.overview}</h2>
-                                    <h3>{infoW.details.result.price_level}</h3>
-                                    <h3>{infoW.details.result.rating}</h3>
-                                    <h3>{infoW.details.result.user_ratings_total}</h3>
-                                    <h3>{infoW.details.result.website}</h3>
-                                    <h3>{infoW.details.result.url}</h3>
-                                    <h4>{infoW.details.result.opening_hours.weekday_text}</h4>
-
-                                    <button onClick = {() => {addToTrip(infoW)}} className="add-button">
-                                        Add to Trip
-                                    </button>
-                                </div>
-                            )
-                        }
-                    </InfoWindow>
-                )}
-                <div className = "opt-route-button-container">
-                    <IconButton icon = "rocket" className="opt-route-button" onClick={() => handleOptimizeRoute()} loading={optimizeLoading} />
-                    <span className="opt-route-text bg-gray-700 text-white text-sm opacity-100 rounded-full px-3 py-2">Optimize Route</span>
-                </div>
-                <div className = "rec-button-container">
-                    <IconButton icon = "glass" className="rec-button" onClick={() => console.log("rec")} />
-                    <span className="rec-text bg-gray-700 text-white text-sm opacity-100 rounded-full px-3 py-2">Recommend</span>
-                </div>
-
-                {/* render button based on login state */}
-                {currentUser ? 
-                    // <button onClick={() => logOut()} className="absolute top-4 right-4 bg-indigo-600 rounded-lg shadow-xl text-white p-2 z-10 hover:bg-indigo-700">
-                    //     Log out
-                    // </button> 
-                    <ProfileMenu user={currentUser} handleLogout={logOut} handleTripsClick={handleTripsClick} className="absolute top-4 right-4" />
-                    :
-                    <button onClick={() => router.push('/login')} className="absolute top-4 right-4 bg-indigo-600 rounded-lg shadow-xl text-white p-2 z-10 hover:bg-indigo-700 active:bg-indigo-800">
-                        Login
-                    </button>
-                }
-            
-            </GoogleMap>
-
             <ToastContainer position = "top-center"/>
         </div>
 
