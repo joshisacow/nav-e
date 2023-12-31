@@ -31,6 +31,7 @@ const TripView = ({tripArray, setTripArray, removeFromTrip}) => {
   }
   return (
     <DragDropContext onDragEnd = {onDragEnd}>
+      <h1>Trip</h1>
       <Droppable droppableId = "trip-table">
         {(provided, snapshot) => (
           <div

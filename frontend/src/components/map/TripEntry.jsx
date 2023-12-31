@@ -21,7 +21,8 @@ const TripEntry = ({placeObject, index, removeFromTrip}) => {
                         {index + 1}. {placeObject.details.result.formatted_address}
                     </h1>
                     <IconButton 
-                        icon = "close" 
+                        icon = "close"
+                        className = "trip-entry-button" 
                         onClick = {() => removeFromTrip(placeObject)} 
                     />
                 </div>

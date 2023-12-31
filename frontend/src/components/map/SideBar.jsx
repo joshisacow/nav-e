@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import "@/styles/SideBar.css";
 import TripView from "@/components/map/TripView";

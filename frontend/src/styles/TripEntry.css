@@ -1,13 +1,19 @@
 .trip-entry {
     background: #daddddce;
-    border: 1px solid light grey;
+    border: 1px solid grey;
     border-radius: 2px;
     display: inline-flex;
-    white-space: nowrap;
+    white-space: pre-wrap;
+    width: 100%;
 }
 
 .trip-entry-text {
     padding: 0.4rem;
-    margin-right: 0.5rem;
     color: black;
+}
+
+.trip-entry-button {
+    padding: 0.4rem;
+    margin-left: auto;
+    justify-content: center;
 }

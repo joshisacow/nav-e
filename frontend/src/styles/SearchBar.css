@@ -2,8 +2,9 @@
     display: flex;
     align-items: center;
     width: 100%;
+    margin-bottom: 1rem;
 }
-  
+
 .search-add-button {
     width: 20%;
     padding: 0.5rem;
