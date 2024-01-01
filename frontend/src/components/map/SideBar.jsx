@@ -6,7 +6,7 @@ import TripView from "@/components/map/TripView";
 import SearchBar from "@/components/map/SearchBar";
 import IconButton from "@/components/utils/IconButton";
 
-const SideBar = ({ tripArray, setTripArray, removeFromTrip, setPan, addToPoints, currentMarker, setCurrentDetails, setDetailsLoading, clearInfoW }) => {
+const SideBar = ({ tripArray, setTripArray, removeFromTrip, setPan, addToPoints, currentMarker, setCurrentDetails, setDetailsLoading, clearInfoW, handleSavetrip }) => {
     const [isOpen, setIsOpen] = React.useState(false);
     const sidebarClass = isOpen ? "sidebar open" : "sidebar";
 
@@ -31,12 +31,12 @@ const SideBar = ({ tripArray, setTripArray, removeFromTrip, setPan, addToPoints,
                             clearInfoW = {clearInfoW}
                             currentMarker = {currentMarker}
                         />
-                        {/* <button className = "save-button" onClick = {() => handleBuildTrip()}> Build Trip </button> */}
                         
                         <TripView
                             tripArray = {tripArray}
                             setTripArray = {setTripArray}  
                             removeFromTrip = {removeFromTrip} 
+                            handleSaveTrip = {handleSavetrip}
                         />     
                     </div>
                 </div>

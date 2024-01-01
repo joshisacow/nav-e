@@ -1,15 +1,16 @@
 import { useMemo, useCallback, useState, useRef, useEffect } from 'react';
 import { GoogleMap, InfoWindow } from '@react-google-maps/api';
+import { useRouter } from 'next/navigation';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import LocationPin from '@/components/map/LocationPin';
 import LoadingSpinner from '@/components/utils/LoadingSpinner';
 import IconButton from '@/components/utils/IconButton';
 import { postTrip, optimizeRoute } from "@/services/api-requests";
-import { useRouter } from 'next/navigation';
 import { useAuth } from '@/components/auth/AuthContext';
 import ProfileMenu from '@/components/utils/ProfileMenu';
 import SideBar from '@/components/map/SideBar';
+import CustomWindow from '@/components/map/CustomWindow';
 import '@/styles/Map.css'
 
 const Map = ({ searchParams }) => {
@@ -91,6 +92,13 @@ const Map = ({ searchParams }) => {
         setInfoW((prevInfoW) => ({...prevInfoW, position: null}));;
     }
 
+    const addCurrentToTrip = () => {
+        if (infoW.position === null) {
+            return;
+        }
+        addToTrip(infoW);
+    }
+
     const addToPoints = (placeObject) => {
         if (placeObject.position === null) {
             toast.error("Please enter a destination!", {position: "top-center"});
@@ -116,16 +124,16 @@ const Map = ({ searchParams }) => {
     }
 
     // save trip to db
-    // const handleBuildTrip = async () => {
-    //     if (tripArray.length < 2) {
-    //         toast.error("add more locations to save trip!");
-    //         return;
-    //     }
-    //     if (currentUser) {
-    //         await postTrip(tripArray, currentUser.uid);
-    //     }
-    //     toast.success("saved trip!");
-    // }
+    const handleSaveTrip = async () => {
+        if (tripArray.length < 2) {
+            toast.error("add more locations to save trip!");
+            return;
+        }
+        if (currentUser) {
+            await postTrip(tripArray, currentUser.uid);
+        }
+        toast.success("saved trip!");
+    }
 
     const handleOptimizeRoute = async () => {
         if (tripArray.length < 3) {
@@ -166,55 +174,18 @@ const Map = ({ searchParams }) => {
 
     return (
         <div className="wrapper">
-            {/* <div className="sidebar-container"> */}
-                <SideBar 
-                    tripArray = {tripArray}
-                    setTripArray = {setTripArray}  
-                    removeFromTrip = {removeFromTrip} 
-                    currentMarker = {currentMarker}
-                    setPan = {setPan}
-                    addToPoints = {addToPoints}
-                    setDetailsLoading = {setDetailsLoading}
-                    setCurrentDetails = {setCurrentDetails}
-                    clearInfoW = {clearInfoW}
-                />
-                {/* <div className = "search-box-container">
-                    <TripView
-                        tripArray = {tripArray}
-                        setTripArray = {setTripArray}  
-                        removeFromTrip = {removeFromTrip} 
-                        currentMarker = {currentMarker}
-                        setPan = {setPan}
-                        addToPoints = {addToPoints}
-                        setDetailsLoading = {setDetailsLoading}
-                        setCurrentDetails = {setCurrentDetails}
-                        clearInfoW = {clearInfoW}
-
-                    />
-                    <div className="search-bar-container">
-                        <h1>Nav-E</h1> 
-                        <SearchBar 
-                            setPan = {(position) => {
-                                if (!inArrays(position)) {
-                                    setCurrentMarker((prevMarker) => ({...prevMarker, position}));
-                                }
-                                mapRef.current?.panTo(position);
-                            }}
-                            addToPoints = {() => {addToPoints(currentMarker)}}
-                            setCurrentDetails = {(details) => {
-                                setCurrentMarker((prevMarker) => ({...prevMarker, details}));
-                            }}
-                            setDetailsLoading = {(bool) => setDetailsLoading(bool)}
-                            clearInfoW = {() => {
-                                if (infoW.position !== null) {
-                                    setInfoW((prevInfoW) => ({...prevInfoW, position: null}));
-                                }
-                            }}
-                        />
-                        <button className = "save-button" onClick = {() => handleBuildTrip()}> Build Trip </button>
-                    </div>
-                </div> */}
-            {/* </div> */}
+            <SideBar 
+                tripArray = {tripArray}
+                setTripArray = {setTripArray}  
+                removeFromTrip = {removeFromTrip} 
+                currentMarker = {currentMarker}
+                setPan = {setPan}
+                addToPoints = {addToPoints}
+                setDetailsLoading = {setDetailsLoading}
+                setCurrentDetails = {setCurrentDetails}
+                clearInfoW = {clearInfoW}
+                handleSaveTrip = {handleSaveTrip}
+            />
 
             <div className="map">
                 <GoogleMap 
@@ -279,25 +250,7 @@ const Map = ({ searchParams }) => {
                             {/* if loading currentMarker show spinner */}
                             {(detailsLoading && cmpPos(infoW.position, currentMarker.position)) || !infoW.details 
                                 ? <LoadingSpinner size="2x" /> 
-                                : (
-                                    <div className = "info-window-container">
-                                        <h1>{infoW.details.result.name}</h1>
-                                        <h1>{infoW.details.result.formatted_phone_number}</h1>
-                                        <h1>{infoW.details.result.formatted_address}</h1> 
-                                        <h1>{infoW.details.result.business_status}</h1>
-                                        <h2>{infoW.details.result.editorial_summary.overview}</h2>
-                                        <h3>{infoW.details.result.price_level}</h3>
-                                        <h3>{infoW.details.result.rating}</h3>
-                                        <h3>{infoW.details.result.user_ratings_total}</h3>
-                                        <h3>{infoW.details.result.website}</h3>
-                                        <h3>{infoW.details.result.url}</h3>
-                                        <h4>{infoW.details.result.opening_hours.weekday_text}</h4>
-
-                                        <button onClick = {() => {addToTrip(infoW)}} className="add-button">
-                                            Add to Trip
-                                        </button>
-                                    </div>
-                                )
+                                : <CustomWindow info={infoW.details.result} addCurrentToTrip={addCurrentToTrip} />
                             }
                         </InfoWindow>
                     )}

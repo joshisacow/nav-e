@@ -1,0 +1,11 @@
+
+.info-window-container {
+    background-color: white;
+}
+
+.add-button {
+    width: 100%;
+    padding: 0.5rem;
+    background: #0ab196ce;
+    color: #fff;
+}

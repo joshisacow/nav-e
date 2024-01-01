@@ -3,7 +3,7 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import TripEntry from '@/components/map/TripEntry'
 import '@/styles/TripView.css'
 
-const TripView = ({tripArray, setTripArray, removeFromTrip}) => {
+const TripView = ({ tripArray, setTripArray, removeFromTrip, handleBuildTrip }) => {
   const onDragEnd = result => {
     const { destination, source, draggableId } = result;
 
@@ -31,7 +31,10 @@ const TripView = ({tripArray, setTripArray, removeFromTrip}) => {
   }
   return (
     <DragDropContext onDragEnd = {onDragEnd}>
-      <h1>Trip</h1>
+      <div className = "trip-title">
+        <h1>Trip</h1>
+        <button className = "save-button" onClick = {() => handleBuildTrip()}> Save Trip </button>
+      </div>
       <Droppable droppableId = "trip-table">
         {(provided, snapshot) => (
           <div
