@@ -185,9 +185,7 @@ const Map = ({ searchParams }) => {
                 tripArray = {tripArray}
                 setTripArray = {setTripArray}  
                 removeFromTrip = {removeFromTrip} 
-                currentMarker = {currentMarker}
                 setPan = {setPan}
-                addToPoints = {addToPoints}
                 setDetailsLoading = {setDetailsLoading}
                 setCurrentDetails = {setCurrentDetails}
                 clearInfoW = {clearInfoW}

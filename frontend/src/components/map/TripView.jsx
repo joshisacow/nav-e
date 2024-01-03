@@ -33,7 +33,7 @@ const TripView = ({ tripArray, setTripArray, removeFromTrip, handleBuildTrip }) 
     <DragDropContext onDragEnd = {onDragEnd}>
       <div className = "trip-title">
         <h1>Trip</h1>
-        <button className = "save-button" onClick = {() => handleBuildTrip()}> Save Trip </button>
+        <button className = "save-button" onClick = {() => handleBuildTrip()}> Save </button>
       </div>
       <Droppable droppableId = "trip-table">
         {(provided, snapshot) => (
