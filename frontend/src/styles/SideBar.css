@@ -1,5 +1,5 @@
 .sidebar {
-    width: 5%;
+    width: max(5%, 25px);
     height: 100%;
     padding: 1rem;
     background: rgb(233, 233, 233);

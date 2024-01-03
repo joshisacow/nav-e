@@ -118,8 +118,9 @@ const Map = ({ searchParams }) => {
         }
         setPointArray((prevPointArray) => [...prevPointArray, placeObject]);
 
-        // clear current pin
+        // clear current pin and close infoWindow
         setCurrentMarker({position: null, details: null});
+        clearInfoW();
     }
 
     const removeFromTrip = (placeObject) => {
@@ -167,8 +168,9 @@ const Map = ({ searchParams }) => {
         mapRef.current?.panTo(position);
     }
 
-    const setCurrentDetails = (details) => {
+    const setCurrentDetails = (position, details) => {
         setCurrentMarker((prevMarker) => ({...prevMarker, details}));
+        setInfoW({position, details});
     }
 
     const clearInfoW = () => {
@@ -176,8 +178,6 @@ const Map = ({ searchParams }) => {
             setInfoW((prevInfoW) => ({...prevInfoW, position: null}));
         }
     }
-
-
 
     return (
         <div className="wrapper">
@@ -190,6 +190,7 @@ const Map = ({ searchParams }) => {
                 setCurrentDetails = {setCurrentDetails}
                 clearInfoW = {clearInfoW}
                 handleSaveTrip = {handleSaveTrip}
+                setInfoW = {setInfoW}
             />
 
             <div className="map">
@@ -246,11 +247,13 @@ const Map = ({ searchParams }) => {
                     ))}
 
                     {infoW.position && (
-                        <InfoWindow 
+                        <InfoWindow
+                            options={{ minWidth: 250, maxWidth: 400 }}
                             onCloseClick={() => {
                                 setInfoW((prevInfoW) => ({...prevInfoW, position: null}))
                             }}
-                            position = {infoW.position}
+                            position={infoW.position}
+                            zIndex={20}
                         >
                             {/* if loading currentMarker show spinner */}
                             {(detailsLoading && cmpPos(infoW.position, currentMarker.position)) || !infoW.details 

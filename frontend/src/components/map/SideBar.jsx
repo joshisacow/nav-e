@@ -5,7 +5,7 @@ import "@/styles/SideBar.css";
 import TripView from "@/components/map/TripView";
 import SearchBar from "@/components/map/SearchBar";
 
-const SideBar = ({ tripArray, setTripArray, removeFromTrip, setPan, currentMarker, setCurrentDetails, setDetailsLoading, clearInfoW, handleSavetrip }) => {
+const SideBar = ({ tripArray, setTripArray, removeFromTrip, setPan, setCurrentDetails, setDetailsLoading, clearInfoW, handleSavetrip }) => {
     const [isOpen, setIsOpen] = React.useState(false);
     const sidebarClass = isOpen ? "sidebar open" : "sidebar";
 
@@ -26,7 +26,6 @@ const SideBar = ({ tripArray, setTripArray, removeFromTrip, setPan, currentMarke
                         setCurrentDetails = {setCurrentDetails}
                         setDetailsLoading = {setDetailsLoading}
                         clearInfoW = {clearInfoW}
-                        currentMarker = {currentMarker}
                     />
                     
                     <TripView

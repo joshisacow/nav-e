@@ -1,8 +1,6 @@
 
 .info-window-container {
     background-color: white;
-    min-width: 250px;
-    z-index: 2;
 }
 
 .info-header {

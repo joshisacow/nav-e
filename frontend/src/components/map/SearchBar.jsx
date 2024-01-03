@@ -14,7 +14,7 @@ import '@/styles/SearchBar.css'
 
 const autocompleteService = { current: null };
 
-export default function SearchBar({setPan, setCurrentDetails, setDetailsLoading, clearInfoW }) {
+export default function SearchBar({ setPan, setCurrentDetails, setDetailsLoading, clearInfoW }) {
     const [value, setValue] = React.useState(null);
     const [inputValue, setInputValue] = React.useState('');
     const [options, setOptions] = React.useState([]);
@@ -66,7 +66,7 @@ export default function SearchBar({setPan, setCurrentDetails, setDetailsLoading,
             // loading spinner while fetching details
             setDetailsLoading(true);
             const det = await getAddrDetails(val);
-            setCurrentDetails(det);
+            setCurrentDetails({lat, lng}, det);
             setDetailsLoading(false);
             
         } catch(error) {
