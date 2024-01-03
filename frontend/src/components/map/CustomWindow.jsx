@@ -14,12 +14,12 @@ const CustomWindow = ({ info, addCurrentToTrip, addCurrentToPoints }) => {
             <div className="info-header">
                 {info.name && info.website 
                     ? (
-                        <a href={info.website} className="text-xl font-medium hover:text-gray-500 active:text-gray-400">
+                        <a href={info.website} className="text-xl hover:text-gray-500 active:text-gray-400">
                             {info.name} 
                             <FontAwesomeIcon className="text-xs text-gray-500 ml-1 mr-5" icon={faArrowUpRightFromSquare} />
                         </a>
                     )
-                    : info.name && <div className="text-xl">{info.name}</div>
+                    : info.name && <div className="text-xl mr-5">{info.name}</div>
                 }
                 {info.rating && info.user_ratings_total && 
                     (
@@ -37,7 +37,7 @@ const CustomWindow = ({ info, addCurrentToTrip, addCurrentToPoints }) => {
                             </a>
                             {info.price_level && 
                                 [...Array(info.price_level)].map((e, i) =>(
-                                    <FontAwesomeIcon id={i+1} className="text-gray-500" icon={faDollarSign} />
+                                    <FontAwesomeIcon key={i+1} className="text-gray-500" icon={faDollarSign} />
                                 ))
                             }
                         </>
@@ -64,7 +64,7 @@ const CustomWindow = ({ info, addCurrentToTrip, addCurrentToPoints }) => {
                     </AccordionSummary>
                     <AccordionDetails>
                         {info.opening_hours.weekday_text.map((day, i) => (
-                            <Typography variant="body2" key={i}>{day}</Typography>
+                            <Typography variant="body2" key={i+1}>{day}</Typography>
                         ))}
                     </AccordionDetails>
                 </Accordion>
