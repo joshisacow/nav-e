@@ -3,7 +3,7 @@ import Rating from '@mui/material/Rating';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDollarSign } from '@fortawesome/free-solid-svg-icons';
 
-const CustomWindow = ({ info, addCurrentToTrip }) => {
+const CustomWindow = ({ info, addCurrentToTrip, addCurrentToPoints }) => {
 
     if (info.price_level) {
         const price = Array(info.price_level).fill(<FontAwesomeIcon icon={faDollarSign} />);
@@ -43,14 +43,25 @@ const CustomWindow = ({ info, addCurrentToTrip }) => {
             {info.url && <h1>{info.url}</h1>}
             {info.opening_hours && 
                 <>
-                    <h1>{info.opening_hours.open_now ? "Open" : "Closed"}</h1>
+                    <div className="open-hours">
+                        Hours:
+                        {info.opening_hours.open_now 
+                            ? <h1 className="text-green-500">Open</h1>  
+                            : <h1 className="text-red-700">Closed</h1>  
+                        }
+                    </div>
                     <h1>{info.opening_hours.weekday_text}</h1>
                 </>
             }
 
-            <button onClick = {() => addCurrentToTrip()} className="add-button">
-                Add to Trip
-            </button>
+            <div className="button-row">
+                <button onClick = {() => addCurrentToPoints()} className="consider-button">
+                    Considering
+                </button>
+                <button onClick = {() => addCurrentToTrip()} className="decided-button">
+                    Decided
+                </button>
+            </div>
         </div>
     )
 }

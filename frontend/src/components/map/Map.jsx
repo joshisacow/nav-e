@@ -99,6 +99,13 @@ const Map = ({ searchParams }) => {
         addToTrip(infoW);
     }
 
+    const addCurrentToPoints = () => {
+        if (infoW.position === null) {
+            return;
+        }
+        addToPoints(infoW);
+    }
+
     const addToPoints = (placeObject) => {
         if (placeObject.position === null) {
             toast.error("Please enter a destination!", {position: "top-center"});
@@ -250,7 +257,11 @@ const Map = ({ searchParams }) => {
                             {/* if loading currentMarker show spinner */}
                             {(detailsLoading && cmpPos(infoW.position, currentMarker.position)) || !infoW.details 
                                 ? <LoadingSpinner size="2x" /> 
-                                : <CustomWindow info={infoW.details.result} addCurrentToTrip={addCurrentToTrip} />
+                                : <CustomWindow 
+                                    info={infoW.details.result} 
+                                    addCurrentToTrip={addCurrentToTrip} 
+                                    addCurrentToPoints={addCurrentToPoints}
+                                />
                             }
                         </InfoWindow>
                     )}

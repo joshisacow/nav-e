@@ -10,9 +10,28 @@
     gap: 0.5rem;
 }
 
-.add-button {
-    width: 100%;
+.button-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.consider-button {
+    width: 50%;
     padding: 0.5rem;
-    background: #0ab196ce;
+    background: rgb(246, 209, 24);
     color: #fff;
+}
+
+.decided-button {
+    width: 50%;
+    padding: 0.5rem;
+    background: rgb(49, 209, 191);
+    color: #fff;
+}
+
+.open-hours {
+    display: flex;
+    flex-direction: row;
+    gap: 0.2rem;
 }
