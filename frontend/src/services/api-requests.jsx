@@ -4,6 +4,9 @@ export const getTrips = async (uid) => {
     const response = await fetch(config.baseURL + "trips/" + uid, {
         method: "GET"
     });
+    if (response.status === 404) {
+        return [];
+    }
     const data = await response.json();
     console.log(data);
     return data;

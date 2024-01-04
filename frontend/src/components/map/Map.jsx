@@ -262,10 +262,11 @@ const Map = ({ searchParams }) => {
                         <IconButton icon = "rocket" className="opt-route-button" onClick={() => handleOptimizeRoute()} loading={optimizeLoading} />
                         <span className="opt-route-text bg-gray-700 text-white text-sm opacity-100 rounded-full px-3 py-2">Optimize Route</span>
                     </div>
-                    <div className = "rec-button-container">
+                    {/* TODO: BUILD REC FUNCTIONALITY */}
+                    {/* <div className = "rec-button-container">
                         <IconButton icon = "glass" className="rec-button" onClick={() => console.log("rec")} />
                         <span className="rec-text bg-gray-700 text-white text-sm opacity-100 rounded-full px-3 py-2">Recommend</span>
-                    </div>
+                    </div> */}
 
                     {/* render button based on login state */}
                     {currentUser ? 

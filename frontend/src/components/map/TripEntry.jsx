@@ -18,8 +18,9 @@ const TripEntry = ({placeObject, index, removeFromTrip}) => {
                     ref = {provided.innerRef}
                 >
                     <h1 className = "trip-entry-text">
-                        {index + 1}. {placeObject.details.result.formatted_address}
+                        {index + 1}. {placeObject.details.result.name}
                     </h1>
+                    
                     <IconButton 
                         icon = "close"
                         className = "trip-entry-button" 

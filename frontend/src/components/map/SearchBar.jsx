@@ -78,7 +78,7 @@ export default function SearchBar({ setPan, setCurrentDetails, setDetailsLoading
         // search bar
         <Autocomplete
             id="google-map-search"
-            className="search-bar"
+            className="search-bar-container"
             getOptionLabel={(option) =>
                 typeof option === 'string' ? option : option.description
             }
@@ -113,10 +113,10 @@ export default function SearchBar({ setPan, setCurrentDetails, setDetailsLoading
                 return (
                 <li {...props}>
                     <Grid container alignItems="center">
-                        <Grid item sx={{ display: 'flex', width: 44 }}>
+                        <Grid className="pin-icon" item>
                             <FontAwesomeIcon icon={faLocationDot} />
                         </Grid>
-                        <Grid item sx={{ width: 'calc(100% - 44px)', wordWrap: 'break-word' }}>
+                        <Grid className="search-bar" item>
                             {parts.map((part, index) => (
                             <Box
                                 key={index}
