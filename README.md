@@ -12,4 +12,3 @@ includes features like:
 
 Features in development:
 - destination recommendations based on editable filters like category, distance, and more
-- more informative info windows
