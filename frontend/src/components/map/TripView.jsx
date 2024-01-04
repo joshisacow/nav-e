@@ -61,8 +61,8 @@ const TripView = ({ tripArray, setTripArray, removeFromTrip, buildTrip, saveTrip
       </DragDropContext>
       {tripInfo.duration && 
         <div className = "trip-info">
-          Total Distance: {tripInfo.distanceMeters}m <br/>
-          Total Time: {tripInfo.duration} <br/>
+          Total Distance: {tripInfo.distanceMeters/1000} km <br/>
+          Total Time: {Math.floor(tripInfo.duration / 3600)} hr {Math.ceil((tripInfo.duration % 3600) / 60)} min  <br/>
         </div>
       }
     </>

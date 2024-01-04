@@ -1,5 +1,5 @@
 import { useMemo, useCallback, useState, useRef, useEffect } from 'react';
-import { GoogleMap, InfoWindow } from '@react-google-maps/api';
+import { GoogleMap, InfoWindow, Polyline } from '@react-google-maps/api';
 import { useRouter } from 'next/navigation';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -22,6 +22,7 @@ const Map = ({ searchParams }) => {
     const [detailsLoading, setDetailsLoading] = useState(false);
     const [optimizeLoading, setOptimizeLoading] = useState(false);
     const [tripInfo, setTripInfo] = useState({distanceMeters: null, duration: null, polyline: null})
+    const [polyline, setPolyline] = useState([]);
     const { currentUser, logOut } = useAuth();
 
     // update tripArray when searchParams changes
@@ -158,10 +159,14 @@ const Map = ({ searchParams }) => {
         }
         const positions = tripArray.map(item => item.position);
         const route = await getRouteDetails(positions);
-        setTripInfo(route["routes"][0]);
+        const info = route["routes"][0];
+        info.duration = Number(info.duration.slice(0, -1))
+        setTripInfo(info);
+        setPolyline(google.maps.geometry.encoding.decodePath(info.polyline.encodedPolyline));
     }
 
     console.log(tripInfo)
+    console.log(polyline)
 
     const handleTripsClick = () => {
         router.push('/trips');
@@ -275,6 +280,22 @@ const Map = ({ searchParams }) => {
                             }
                         </InfoWindow>
                     )}
+
+                    {/* render polyline if tripInfo is not null */}
+                    {tripInfo.polyline && (
+                        <Polyline
+                            path={polyline}
+                            options={{
+                                strokeColor: "#0080FF",
+                                strokeOpacity: 0.7,
+                                strokeWeight: 3,
+                                zIndex: 10,
+                            }}
+                        />
+                    )}
+
+
+
                     <div className = "opt-route-button-container">
                         <IconButton icon = "rocket" className="opt-route-button" onClick={() => handleOptimizeRoute()} loading={optimizeLoading} />
                         <span className="opt-route-text bg-gray-700 text-white text-sm opacity-100 rounded-full px-3 py-2">Optimize Route</span>
