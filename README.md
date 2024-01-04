@@ -1,7 +1,7 @@
 # Nav-E
 Travel app for managing trips more efficiently.
 
-Visit the website at: https://nav-e-387904.uc.r.appspot.com/
+Visit the website at: https://nav-e.vercel.app
 
 Nav-E is a tool created to help manage trip planning for larger trips with multiple destinations
 includes features like:
