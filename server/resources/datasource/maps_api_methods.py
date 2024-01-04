@@ -43,8 +43,8 @@ def getPlaceDetails(placeID):
     payload = {
         "place_id": placeID,
         "key": MAP_KEY,
-        "fields": "formatted_address,name,url,business_status,formatted_phone_number,website,place_id",
+        "fields": "formatted_address,name,url,formatted_phone_number,website,place_id,price_level,rating,user_ratings_total,editorial_summary,opening_hours",
     }
-    # photo,price_level,rating,reviews,user_ratings_total,editorial_summary
+    #photo
     r = requests.get(url, headers = headers, params = payload)
     return r.json()

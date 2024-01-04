@@ -10,66 +10,52 @@ import { getAddrDetails } from '@/services/api-requests';
 import { faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {getGeocode, getLatLng} from 'use-places-autocomplete';
-import IconButton from '@/components/utils/IconButton';
 import '@/styles/SearchBar.css'
 
 const autocompleteService = { current: null };
 
-export default function SearchBar({setPan, setCurrentDetails, setDetailsLoading, addToPoints, clearInfoW, currentMarker}) {
+export default function SearchBar({ setPan, setCurrentDetails, setDetailsLoading, clearInfoW }) {
     const [value, setValue] = React.useState(null);
     const [inputValue, setInputValue] = React.useState('');
     const [options, setOptions] = React.useState([]);
 
     const fetch = React.useMemo(
         () =>
-        debounce((request, callback) => {
-            autocompleteService.current.getPlacePredictions(request, callback);
-        }, 400),
-        [],
+            debounce((request, callback) => {
+                autocompleteService.current.getPlacePredictions(request, callback);
+            }, 400), []
     );
     React.useEffect(() => {
         let active = true;
-
         if (!autocompleteService.current && window.google) {
-        autocompleteService.current =
-            new window.google.maps.places.AutocompleteService();
+            autocompleteService.current = new window.google.maps.places.AutocompleteService();
+        } if (!autocompleteService.current) {
+            return undefined;
+        } if (inputValue === '') {
+            setOptions(value ? [value] : []);
+            return undefined;
         }
-        if (!autocompleteService.current) {
-        return undefined;
-        }
-
-        if (inputValue === '') {
-        setOptions(value ? [value] : []);
-        return undefined;
-        }
-
         fetch({ input: inputValue }, (results) => {
-        if (active) {
-            let newOptions = [];
-
-            if (value) {
-            newOptions = [value];
+            if (active) {
+                let newOptions = [];
+                if (value) {
+                newOptions = [value];
+                }
+                if (results) {
+                newOptions = [...newOptions, ...results];
+                }
+                setOptions(newOptions);
             }
-
-            if (results) {
-            newOptions = [...newOptions, ...results];
-            }
-
-            setOptions(newOptions);
-        }
         });
-
         return () => {
-        active = false;
+            active = false;
         };
     }, [value, inputValue, fetch]);
 
     const selectedDest = async (val) => {
-
         clearInfoW();
         // turn address into latlng
         try {
-            
             const results = await getGeocode({placeId: val});
             const {lat, lng} = await getLatLng(results[0]);
 
@@ -78,59 +64,55 @@ export default function SearchBar({setPan, setCurrentDetails, setDetailsLoading,
             console.log({lat, lng})
             
             // loading spinner while fetching details
-            
             setDetailsLoading(true);
             const det = await getAddrDetails(val);
-            setCurrentDetails(det);
+            setCurrentDetails({lat, lng}, det);
             setDetailsLoading(false);
             
-        }
-        catch(error) {
+        } catch(error) {
             console.log("Error: ", error);
         }
     }
 
     return (
         // search bar
-        <div className = "search-bar">
-
-            <Autocomplete
-                id="google-map"
-                sx={{ width: 300 }}
-                getOptionLabel={(option) =>
-                    typeof option === 'string' ? option : option.description
+        <Autocomplete
+            id="google-map-search"
+            className="search-bar"
+            getOptionLabel={(option) =>
+                typeof option === 'string' ? option : option.description
+            }
+            filterOptions={(x) => x}
+            options={options}
+            autoComplete
+            includeInputInList
+            filterSelectedOptions
+            value={value}
+            noOptionsText="No locations"
+            clearOnEscape
+            onChange={(event, newValue) => {
+                setOptions(newValue ? [newValue, ...options] : options);
+                setValue(newValue);
+                if (newValue && newValue !== "") {
+                    selectedDest(newValue.place_id);
                 }
-                filterOptions={(x) => x}
-                options={options}
-                autoComplete
-                includeInputInList
-                filterSelectedOptions
-                value={value}
-                noOptionsText="No locations"
-                clearOnEscape
-                onChange={(event, newValue) => {
-                    setOptions(newValue ? [newValue, ...options] : options);
-                    setValue(newValue);
-                    if (newValue && newValue !== "") {
-                        selectedDest(newValue.place_id);
-                    }
-                }}
-                onInputChange={(event, newInputValue) => {
-                    setInputValue(newInputValue)
-                }}
-                renderInput={(params) => <TextField {...params} label="Add a location" />}
-                renderOption={(props, option) => {
-                    const matches =
-                    option.structured_formatting.main_text_matched_substrings || [];
+            }}
+            onInputChange={(event, newInputValue) => {
+                setInputValue(newInputValue)
+            }}
+            renderInput={(params) => <TextField {...params} label="Add a location" />}
+            renderOption={(props, option) => {
+                const matches =
+                option.structured_formatting.main_text_matched_substrings || [];
 
-                    const parts = parse(
-                    option.structured_formatting.main_text,
-                    matches.map((match) => [match.offset, match.offset + match.length]),
-                    );
+                const parts = parse(
+                option.structured_formatting.main_text,
+                matches.map((match) => [match.offset, match.offset + match.length]),
+                );
 
-                    return (
-                    <li {...props}>
-                        <Grid container alignItems="center">
+                return (
+                <li {...props}>
+                    <Grid container alignItems="center">
                         <Grid item sx={{ display: 'flex', width: 44 }}>
                             <FontAwesomeIcon icon={faLocationDot} />
                         </Grid>
@@ -145,18 +127,13 @@ export default function SearchBar({setPan, setCurrentDetails, setDetailsLoading,
                             </Box>
                             ))}
                             <Typography variant="body2" color="text.secondary">
-                            {option.structured_formatting.secondary_text}
+                                {option.structured_formatting.secondary_text}
                             </Typography>
                         </Grid>
-                        </Grid>
-                    </li>
-                    );
-                }}
-            />
-            {/* search button */}
-            <IconButton icon="plus" onClick = {() => {addToPoints(currentMarker)}} className="search-add-button" />
-
-        </div>
-
+                    </Grid>
+                </li>
+                );
+            }}
+        />
     );
-    }
+}

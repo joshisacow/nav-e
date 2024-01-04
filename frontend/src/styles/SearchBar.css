@@ -1,24 +1,6 @@
 .search-bar {
-    display: flex;
     align-items: center;
     width: 100%;
     margin-bottom: 1rem;
 }
 
-.search-add-button {
-    width: 20%;
-    padding: 0.5rem;
-    margin-left: 0.25rem;
-    background: #000;
-    color: #fff;
-}
-
-.save-button {
-    position: absolute;
-    top: 2.5rem;
-    left: 17rem;
-    z-index: 1;
-    padding: 0.5rem;
-    background: #000;
-    color: #fff;
-}
