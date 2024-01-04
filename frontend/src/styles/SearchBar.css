@@ -1,6 +1,25 @@
-.search-bar {
+.search-bar-container {
     align-items: center;
     width: 100%;
     margin-bottom: 1rem;
 }
 
+.pin-icon {
+    display: flex;
+    width: 30px;
+}
+
+.search-bar {
+    width: calc(100% - 30px);
+    word-wrap: break-word;
+}
+
+@media (max-width: 850px) {
+    .pin-icon {
+        display: none;
+    }
+
+    .search-bar {
+        width: 100%;
+    }
+}

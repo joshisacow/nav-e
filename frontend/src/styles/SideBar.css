@@ -1,5 +1,5 @@
 .sidebar {
-    width: max(5%, 25px);
+    width: max(5%, 50px);
     height: 100%;
     padding: 1rem;
     background: rgb(233, 233, 233);
@@ -38,7 +38,7 @@
 }
 
 .sidebar.open {
-    width: min(30%, 350px);
+    width: max(275px, min(30%, 350px));
 }
 
 .sidebar-item:last-child {
