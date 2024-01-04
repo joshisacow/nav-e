@@ -6,7 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import LocationPin from '@/components/map/LocationPin';
 import LoadingSpinner from '@/components/utils/LoadingSpinner';
 import IconButton from '@/components/utils/IconButton';
-import { postTrip, optimizeRoute } from "@/services/api-requests";
+import { optimizeRoute, getRouteDetails, postTrip } from "@/services/api-requests";
 import { useAuth } from '@/components/auth/AuthContext';
 import ProfileMenu from '@/components/utils/ProfileMenu';
 import SideBar from '@/components/map/SideBar';
@@ -21,6 +21,7 @@ const Map = ({ searchParams }) => {
     const [infoW, setInfoW] = useState({position: null, details: null});
     const [detailsLoading, setDetailsLoading] = useState(false);
     const [optimizeLoading, setOptimizeLoading] = useState(false);
+    const [tripInfo, setTripInfo] = useState({distanceMeters: null, duration: null, polyline: null})
     const { currentUser, logOut } = useAuth();
 
     // update tripArray when searchParams changes
@@ -123,18 +124,6 @@ const Map = ({ searchParams }) => {
         setInfoW(placeObject);
     }
 
-    // save trip to db
-    const handleSaveTrip = async () => {
-        if (tripArray.length < 2) {
-            toast.error("add more locations to save trip!");
-            return;
-        }
-        if (currentUser) {
-            await postTrip(tripArray, currentUser.uid);
-        }
-        toast.success("saved trip!");
-    }
-
     const handleOptimizeRoute = async () => {
         if (tripArray.length < 3) {
             toast.error("add more locations to optimize route!");
@@ -147,6 +136,32 @@ const Map = ({ searchParams }) => {
         toast.success("recommended route!");
         // TODO: show route on map
     }
+
+    // save trip to db
+    const saveTrip = async () => {
+        if (tripArray.length < 2) {
+            toast.error("add more locations to save trip!");
+            return;
+        }
+        if (currentUser) {
+            await postTrip(tripArray, currentUser.uid);
+            toast.success("saved trip!");
+        } else {
+            toast.error("please login to save trip!");
+        }
+    }
+
+    const buildTrip = async () => {
+        if (tripArray.length < 2) {
+            toast.error("add more locations to build trip!");
+            return;
+        }
+        const positions = tripArray.map(item => item.position);
+        const route = await getRouteDetails(positions);
+        setTripInfo(route["routes"][0]);
+    }
+
+    console.log(tripInfo)
 
     const handleTripsClick = () => {
         router.push('/trips');
@@ -181,8 +196,10 @@ const Map = ({ searchParams }) => {
                 setDetailsLoading = {setDetailsLoading}
                 setCurrentDetails = {setCurrentDetails}
                 clearInfoW = {clearInfoW}
-                handleSaveTrip = {handleSaveTrip}
                 setInfoW = {setInfoW}
+                buildTrip = {buildTrip}
+                saveTrip = {saveTrip}
+                tripInfo = {tripInfo}
             />
 
             <div className="map">
@@ -270,9 +287,6 @@ const Map = ({ searchParams }) => {
 
                     {/* render button based on login state */}
                     {currentUser ? 
-                        // <button onClick={() => logOut()} className="absolute top-4 right-4 bg-indigo-600 rounded-lg shadow-xl text-white p-2 z-10 hover:bg-indigo-700">
-                        //     Log out
-                        // </button> 
                         <ProfileMenu user={currentUser} handleLogout={logOut} handleTripsClick={handleTripsClick} className="absolute top-4 right-4" />
                         :
                         <button onClick={() => router.push('/login')} className="absolute top-4 right-4 bg-indigo-600 rounded-lg shadow-xl text-white p-2 z-10 hover:bg-indigo-700 active:bg-indigo-800">

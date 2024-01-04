@@ -3,7 +3,7 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import TripEntry from '@/components/map/TripEntry'
 import '@/styles/TripView.css'
 
-const TripView = ({ tripArray, setTripArray, removeFromTrip, handleSaveTrip }) => {
+const TripView = ({ tripArray, setTripArray, removeFromTrip, buildTrip, saveTrip, tripInfo }) => {
   const onDragEnd = result => {
     const { destination, source, draggableId } = result;
 
@@ -29,33 +29,44 @@ const TripView = ({ tripArray, setTripArray, removeFromTrip, handleSaveTrip }) =
     // update tripArray
     setTripArray(newTripArray);
   }
+
   return (
-    <DragDropContext onDragEnd = {onDragEnd}>
+    <>
       <div className = "trip-title">
         <h1>Trip</h1>
-        <button className = "save-button" onClick = {() => {handleSaveTrip()}}> Save </button>
+        <button className = "save-button" onClick = {() => {saveTrip()}}> Save </button>
+        <button className = "build-button" onClick = {() => {buildTrip()}}> Build </button>
       </div>
-      <Droppable droppableId = "trip-table">
-        {(provided, snapshot) => (
-          <div
-            ref = {provided.innerRef}
-            {...provided.droppableProps}
-            className = "trip-table-container"
-          >
-            {tripArray.map((placeObject, index) => (
-              <TripEntry
-                key = {index}
-                index = {index}
-                placeObject = {placeObject}
-                removeFromTrip = {removeFromTrip}
-              />
-            ))}
-            {provided.placeholder}
-          </div>
-        )}
-        
-      </Droppable>
-    </DragDropContext>
+      <DragDropContext onDragEnd = {onDragEnd}>
+        <Droppable droppableId = "trip-table">
+          {(provided, snapshot) => (
+            <div
+              ref = {provided.innerRef}
+              {...provided.droppableProps}
+              className = "trip-table-container"
+            >
+              {tripArray.map((placeObject, index) => (
+                <TripEntry
+                  key = {index}
+                  index = {index}
+                  placeObject = {placeObject}
+                  removeFromTrip = {removeFromTrip}
+                />
+              ))}
+              {provided.placeholder}
+            </div>
+          )}
+          
+        </Droppable>
+      </DragDropContext>
+      {tripInfo.duration && 
+        <div className = "trip-info">
+          Total Distance: {tripInfo.distanceMeters}m <br/>
+          Total Time: {tripInfo.duration} <br/>
+        </div>
+      }
+    </>
+    
   )
 }
 

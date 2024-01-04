@@ -65,22 +65,16 @@ class Route(Resource):
         }
         return json_data
 
-    def get(self):
+    def put(self):
         route_post_args = reqparse.RequestParser()
         route_post_args.add_argument("trip", type=dict, action="append", help="trip is required", required=True)
-        route_post_args.add_argument("mode", type=str, help="travel mode is required")
-        route_post_args.add_argument("tolls", type=bool, help="toll preference is required")
+        # route_post_args.add_argument("mode", type=str, help="travel mode is required")
+        # route_post_args.add_argument("tolls", type=bool, help="toll preference is required")
         args = route_post_args.parse_args()
 
         # check if params are provided
-        if args["mode"] is None:
-            mode = 'DRIVE'
-        else:
-            mode = args["mode"]
-        if args["tolls"] is None:
-            tolls = False
-        else:
-            tolls = args["tolls"]
+        mode = args.get("mode", "DRIVE")
+        tolls = args.get("tolls", True)
 
         arr = args['trip']
         json_data = self.build_json(arr, mode, tolls)

@@ -60,5 +60,18 @@ export const optimizeRoute = async (trip) => {
     return data;
 }
 
+export const getRouteDetails = async (trip) => {
+    const response = await fetch(config.baseURL + "route", {
+        method: "PUT",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({"trip": trip})
+    });
+    const data = await response.json();
+    console.log(data);
+    return data;
+}
+
 
 
