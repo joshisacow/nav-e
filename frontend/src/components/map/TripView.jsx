@@ -34,25 +34,42 @@ const TripView = ({ tripArray, setTripArray, removeFromTrip, buildTrip, saveTrip
   const exportToGMaps = () => {
     var url = "https://www.google.com/maps/dir/?api=1"
 
-    // add origin and dest
-    url += "&origin=" + tripArray[0].position.lat + "%2C" + tripArray[0].position.lng + "&origin_place_id=" + tripArray[0].details.result.place_id;
-    url += "&destination=" + tripArray[tripArray.length - 1].position.lat + "%2C" + tripArray[tripArray.length - 1].position.lng + "&destination_place_id=" + tripArray[tripArray.length - 1].details.result.place_id;
+    // address approach
+    url += "&origin=" + tripArray[0].details.result.formatted_address.replace(',', '%2C').replace(' ', '+');
+    url += "&destination=" + tripArray[tripArray.length - 1].details.result.formatted_address.replace(',', '%2C').replace(' ', '+');
     url += "&travelmode=driving"
 
     if (tripArray.length > 2) {
       // add waypoints
       var waypoints = "&waypoints=";
-      var waypoint_place_ids = "&waypoint_place_ids=";
       for (var i = 1; i < tripArray.length - 1; i++) {
-        waypoints += tripArray[i].position.lat + "%2C" + tripArray[i].position.lng + "%7C";
-        waypoint_place_ids += tripArray[i].details.result.place_id + "%7C";
+        waypoints += tripArray[i].details.result.formatted_address.replace(',', '%2C').replace(' ', '+') + "%7C";
       }
       // remove last pipe
       waypoints = waypoints.slice(0, -3);
-      waypoint_place_ids = waypoint_place_ids.slice(0, -3);
-      url += waypoints + waypoint_place_ids;
+      url += waypoints;
     }
 
+    // coordinates + place_id approach
+    // url += "&origin=" + tripArray[0].position.lat + "%2C" + tripArray[0].position.lng + "&origin_place_id=" + tripArray[0].details.result.place_id;
+    // url += "&destination=" + tripArray[tripArray.length - 1].position.lat + "%2C" + tripArray[tripArray.length - 1].position.lng + "&destination_place_id=" + tripArray[tripArray.length - 1].details.result.place_id;
+    // url += "&travelmode=driving"
+
+    // if (tripArray.length > 2) {
+    //   // add waypoints
+    //   var waypoints = "&waypoints=";
+    //   var waypoint_place_ids = "&waypoint_place_ids=";
+    //   for (var i = 1; i < tripArray.length - 1; i++) {
+    //     waypoints += tripArray[i].position.lat + "%2C" + tripArray[i].position.lng + "%7C";
+    //     waypoint_place_ids += tripArray[i].details.result.place_id + "%7C";
+    //   }
+    //   // remove last pipe
+    //   waypoints = waypoints.slice(0, -3);
+    //   waypoint_place_ids = waypoint_place_ids.slice(0, -3);
+    //   url += waypoints + waypoint_place_ids;
+    // }
+
+    console.log(url);
     document.getElementById('link').href = url;
   }
 
