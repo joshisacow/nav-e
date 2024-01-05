@@ -14,7 +14,7 @@ const CustomWindow = ({ info, addCurrentToTrip, addCurrentToPoints }) => {
             <div className="info-header">
                 {info.name && info.website 
                     ? (
-                        <a href={info.website} className="text-xl hover:text-gray-500 active:text-gray-400">
+                        <a href={info.website} className="text-xl hover:text-gray-500 active:text-gray-400" target="_blank" rel="noopener noreferrer">
                             {info.name} 
                             <FontAwesomeIcon className="text-xs text-gray-500 ml-1 mr-5" icon={faArrowUpRightFromSquare} />
                         </a>

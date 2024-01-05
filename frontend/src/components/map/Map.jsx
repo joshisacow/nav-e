@@ -166,7 +166,7 @@ const Map = ({ searchParams }) => {
         }
         const positions = trip.map(item => item.position);
         const route = await getRouteDetails(positions);
-        const info = route["routes"][0];
+        var info = route["routes"][0];
         info.duration = Number(info.duration.slice(0, -1))
         setTripInfo(info);
         setPolyline(google.maps.geometry.encoding.decodePath(info.polyline.encodedPolyline));
