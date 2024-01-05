@@ -111,7 +111,7 @@ export default function SearchBar({ setPan, setCurrentDetails, setDetailsLoading
                 );
 
                 return (
-                <li {...props}>
+                <li key={props.key} {...props}>
                     <Grid container alignItems="center">
                         <Grid className="pin-icon" item>
                             <FontAwesomeIcon icon={faLocationDot} />

@@ -4,7 +4,7 @@ import { useLoadScript } from '@react-google-maps/api'
 import Map from '@/components/map/Map'
 import { useSearchParams } from 'next/navigation';
 
-const libraries = ['places']
+const libraries = ['places', 'geometry']
 
 export default function Home() {
   // initialize google maps
