@@ -9,6 +9,7 @@ includes features like:
 - route optimization to find shortest route through all chosen destinations with a selected starting point
 - manual trip reordering and information about trips
 - trip saving capabilities
+- export trips directly to Google Maps
 
 Features in development:
 - destination recommendations based on editable filters like category, distance, and more
