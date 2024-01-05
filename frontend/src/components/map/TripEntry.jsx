@@ -8,7 +8,7 @@ const TripEntry = ({placeObject, index, removeFromTrip}) => {
         <Draggable
             draggableId = {placeObject.details.result.place_id}
             index = {index}
-            key = {placeObject.details.result.place_id}
+            key = {index}
         >
             {(provided) => (
                 <div 
