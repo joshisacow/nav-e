@@ -5,7 +5,7 @@ import "@/styles/SideBar.css";
 import TripView from "@/components/map/TripView";
 import SearchBar from "@/components/map/SearchBar";
 
-const SideBar = ({ tripArray, setTripArray, removeFromTrip, setPan, setCurrentDetails, setDetailsLoading, clearInfoW, buildTrip, saveTrip, tripInfo }) => {
+const SideBar = ({ tripArray, setTripArray, removeFromTrip, setPan, setCurrentDetails, setDetailsLoading, clearInfoW, buildTrip, saveTrip, tripInfo, togglePolyline, showPolyline }) => {
     const [isOpen, setIsOpen] = React.useState(false);
     const sidebarClass = isOpen ? "sidebar open" : "sidebar";
 
@@ -35,6 +35,8 @@ const SideBar = ({ tripArray, setTripArray, removeFromTrip, setPan, setCurrentDe
                         buildTrip = {buildTrip}
                         saveTrip = {saveTrip}
                         tripInfo = {tripInfo}
+                        togglePolyline = {togglePolyline}
+                        showPolyline = {showPolyline}
                     />     
                 </div>
             }

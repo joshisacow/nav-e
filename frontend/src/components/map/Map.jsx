@@ -23,6 +23,7 @@ const Map = ({ searchParams }) => {
     const [optimizeLoading, setOptimizeLoading] = useState(false);
     const [tripInfo, setTripInfo] = useState({distanceMeters: null, duration: null, polyline: null})
     const [polyline, setPolyline] = useState([]);
+    const [showPolyline, setShowPolyline] = useState(true);
     const { currentUser, logOut } = useAuth();
 
     // update tripArray when searchParams changes
@@ -31,6 +32,12 @@ const Map = ({ searchParams }) => {
             setTripArray(JSON.parse(searchParams.get("trip")));
         }
     }, [searchParams]);
+
+    // dont show tripinfo if trip changed
+    useEffect (() => {
+        setTripInfo({distanceMeters: null, duration: null, polyline: null});
+        setPolyline([]);
+    }, [tripArray]);
 
     const mapRef = useRef();
     const center = useMemo( () => ({
@@ -135,7 +142,7 @@ const Map = ({ searchParams }) => {
         setOptimizeLoading(false);
         setTripArray(route[0]);
         toast.success("recommended route!");
-        // TODO: show route on map
+        buildTrip(route[0]);
     }
 
     // save trip to db
@@ -152,12 +159,12 @@ const Map = ({ searchParams }) => {
         }
     }
 
-    const buildTrip = async () => {
-        if (tripArray.length < 2) {
+    const buildTrip = async (trip) => {
+        if (trip.length < 2) {
             toast.error("add more locations to build trip!");
             return;
         }
-        const positions = tripArray.map(item => item.position);
+        const positions = trip.map(item => item.position);
         const route = await getRouteDetails(positions);
         const info = route["routes"][0];
         info.duration = Number(info.duration.slice(0, -1))
@@ -165,8 +172,11 @@ const Map = ({ searchParams }) => {
         setPolyline(google.maps.geometry.encoding.decodePath(info.polyline.encodedPolyline));
     }
 
-    console.log(tripInfo)
-    console.log(polyline)
+    const togglePolyline = () => {
+        setShowPolyline((prevShowPolyline) => !prevShowPolyline);
+    }
+
+    console.log(showPolyline)
 
     const handleTripsClick = () => {
         router.push('/trips');
@@ -205,6 +215,8 @@ const Map = ({ searchParams }) => {
                 buildTrip = {buildTrip}
                 saveTrip = {saveTrip}
                 tripInfo = {tripInfo}
+                togglePolyline = {togglePolyline}
+                showPolyline = {showPolyline}
             />
 
             <div className="map">
@@ -282,7 +294,7 @@ const Map = ({ searchParams }) => {
                     )}
 
                     {/* render polyline if tripInfo is not null */}
-                    {tripInfo.polyline && (
+                    {tripInfo.polyline && showPolyline && (
                         <Polyline
                             path={polyline}
                             options={{

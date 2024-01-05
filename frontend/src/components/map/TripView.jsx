@@ -3,7 +3,7 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import TripEntry from '@/components/map/TripEntry'
 import '@/styles/TripView.css'
 
-const TripView = ({ tripArray, setTripArray, removeFromTrip, buildTrip, saveTrip, tripInfo }) => {
+const TripView = ({ tripArray, setTripArray, removeFromTrip, buildTrip, saveTrip, tripInfo, togglePolyline, showPolyline }) => {
   const onDragEnd = result => {
     const { destination, source, draggableId } = result;
 
@@ -35,7 +35,8 @@ const TripView = ({ tripArray, setTripArray, removeFromTrip, buildTrip, saveTrip
       <div className = "trip-title">
         <h1>Trip</h1>
         <button className = "save-button" onClick = {() => {saveTrip()}}> Save </button>
-        <button className = "build-button" onClick = {() => {buildTrip()}}> Build </button>
+        <button className = "build-button" onClick = {() => {buildTrip(tripArray)}}> Build </button>
+        
       </div>
       <DragDropContext onDragEnd = {onDragEnd}>
         <Droppable droppableId = "trip-table">
@@ -61,8 +62,12 @@ const TripView = ({ tripArray, setTripArray, removeFromTrip, buildTrip, saveTrip
       </DragDropContext>
       {tripInfo.duration && 
         <div className = "trip-info">
-          Total Distance: {tripInfo.distanceMeters/1000} km <br/>
-          Total Time: {Math.floor(tripInfo.duration / 3600)} hr {Math.ceil((tripInfo.duration % 3600) / 60)} min  <br/>
+          Distance: {(tripInfo.distanceMeters/1000).toFixed(2)} km <br/>
+          Time: {Math.floor(tripInfo.duration / 3600)} hr {Math.ceil((tripInfo.duration % 3600) / 60)} min  <br/>
+          {showPolyline 
+            ? <button className = "toggle-polyline-button" onClick = {() => {togglePolyline()}}> Hide </button>
+            : <button className = "toggle-polyline-button" onClick = {() => {togglePolyline()}}> Show </button>
+          }
         </div>
       }
     </>

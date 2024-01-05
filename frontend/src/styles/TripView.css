@@ -35,5 +35,15 @@
 
 .trip-info {
     width: 100%;
-    margin-top: 1rem;
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: row;
+}
+
+.toggle-polyline-button {
+    z-index: 1;
+    padding: 0.5rem;
+    background: #000;
+    color: #fff;
+    margin-left: auto;
 }
