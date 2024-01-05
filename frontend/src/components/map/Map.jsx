@@ -176,8 +176,6 @@ const Map = ({ searchParams }) => {
         setShowPolyline((prevShowPolyline) => !prevShowPolyline);
     }
 
-    console.log(showPolyline)
-
     const handleTripsClick = () => {
         router.push('/trips');
     }
