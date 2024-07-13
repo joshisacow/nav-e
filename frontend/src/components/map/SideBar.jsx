@@ -24,6 +24,7 @@ const SideBar = ({ tripArray, setTripArray, removeFromTrip, setPan, setCurrentDe
                         setCurrentDetails = {setCurrentDetails}
                         setDetailsLoading = {setDetailsLoading}
                         clearInfoW = {clearInfoW}
+                        toggleSidebar={toggleSidebar}
                     />
                     
                     <TripView
