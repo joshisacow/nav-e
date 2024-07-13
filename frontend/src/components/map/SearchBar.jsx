@@ -10,6 +10,7 @@ import { getAddrDetails } from '@/services/api-requests';
 import { faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {getGeocode, getLatLng} from 'use-places-autocomplete';
+import useWindowDimensions from "@/hooks/useWindowDimensions"
 import '@/styles/SearchBar.css'
 
 const autocompleteService = { current: null };
@@ -18,6 +19,8 @@ export default function SearchBar({ setPan, setCurrentDetails, setDetailsLoading
     const [value, setValue] = React.useState(null);
     const [inputValue, setInputValue] = React.useState('');
     const [options, setOptions] = React.useState([]);
+
+    const { height, width} = useWindowDimensions();
 
     const fetch = React.useMemo(
         () =>
@@ -65,7 +68,9 @@ export default function SearchBar({ setPan, setCurrentDetails, setDetailsLoading
             
             // loading spinner while fetching details
             setDetailsLoading(true);
-            toggleSidebar();
+            if (width < 1200) {
+                toggleSidebar();
+            }
             const det = await getAddrDetails(val);
             setCurrentDetails({lat, lng}, det);
             setDetailsLoading(false);

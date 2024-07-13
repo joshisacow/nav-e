@@ -6,7 +6,7 @@ import SearchBar from "@/components/map/SearchBar";
 const SideBar = ({ tripArray, setTripArray, removeFromTrip, setPan, setCurrentDetails, setDetailsLoading, clearInfoW, buildTrip, saveTrip, tripInfo, togglePolyline, showPolyline }) => {
     const [isOpen, setIsOpen] = React.useState(false);
     const sidebarClass = isOpen ? "sidebar open" : "sidebar";
-
+    
     const toggleSidebar = () => {
         setIsOpen(!isOpen);
     };
