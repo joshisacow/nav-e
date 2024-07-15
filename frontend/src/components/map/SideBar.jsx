@@ -23,18 +23,19 @@ const SideBar = ({ tripArray, setTripArray, removeFromTrip, setPan, setCurrentDe
             <div className="sidebar-toggle" onClick={() => {toggleSidebar()}}>
                 <div className="sidebar-toggle-icon"></div>
             </div>
-            <div>
+            <div className="sidebar-title">
                 <h1 className="text-base whitespace-nowrap">Nav-E</h1>
-                <HelpModal 
+                
+                <IconButton
+                    icon="help"
+                    onClick={toggleHelpModal}
+                    className="help-button"
+                />
+            </div>
+            <HelpModal 
                     openHelpModal={openHelpModal}
                     handleClose={toggleHelpModal}
                 />
-            </div>
-            <IconButton
-                icon="help"
-                onClick={toggleHelpModal}
-                className="help-button"
-            />
             {isOpen &&
                 <div className = "search-box-container">
                     <SearchBar 
