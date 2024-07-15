@@ -1,4 +1,5 @@
 import { faCow, faXmark, faRocket, faMagnifyingGlassLocation, faHouse, faPlus, faArrowRight } from '@fortawesome/free-solid-svg-icons'
+import { faCircleQuestion } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import LoadingSpinner from './LoadingSpinner'
 
@@ -10,6 +11,7 @@ const iconMap = {
     home: faHouse,
     plus: faPlus,
     arrow: faArrowRight,
+    help: faCircleQuestion
 };
 
 const IconButton = ({onClick, icon, className, loading}) => {
