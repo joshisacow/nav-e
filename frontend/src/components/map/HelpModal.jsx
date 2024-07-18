@@ -10,11 +10,13 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
+    width: '40%',
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
     p: 4,
+    maxHeight: '80vh',
+    overflowY: 'auto',
 };
 
 const HelpModal = ({ openHelpModal, handleClose }) => {
@@ -30,7 +32,9 @@ const HelpModal = ({ openHelpModal, handleClose }) => {
                     {EN_US.HELP_MODAL.TITLE}
                 </Typography>
                 <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                    {EN_US.HELP_MODAL.DESCRIPTION}
+                    {EN_US.HELP_MODAL.DESCRIPTION_1} <br /> <br />
+                    {EN_US.HELP_MODAL.DESCRIPTION_2} <br /> <br />
+                    {EN_US.HELP_MODAL.DESCRIPTION_3}
                 </Typography>
                 <IconButton
                     icon="close"
