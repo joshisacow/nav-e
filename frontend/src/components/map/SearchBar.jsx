@@ -4,6 +4,7 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
+import Paper from '@mui/material/Paper';
 import parse from 'autosuggest-highlight/parse';
 import { debounce } from '@mui/material/utils';
 import { getAddrDetails } from '@/services/api-requests';
@@ -96,6 +97,9 @@ export default function SearchBar({ setPan, setCurrentDetails, setDetailsLoading
             value={value}
             noOptionsText="No locations"
             clearOnEscape
+            PaperComponent={({ children }) => (
+                <Paper style={{ backgroundColor: 'var(--background-one)' }}>{children}</Paper>
+            )}
             onChange={(event, newValue) => {
                 setOptions(newValue ? [newValue, ...options] : options);
                 setValue(newValue);
@@ -117,8 +121,8 @@ export default function SearchBar({ setPan, setCurrentDetails, setDetailsLoading
                 );
 
                 return (
-                <li key={props.key} {...props}>
-                    <Grid container alignItems="center">
+                <li className="search-box" key={props.key} {...props}>
+                    <Grid className="search-box" container alignItems="center">
                         <Grid className="pin-icon" item>
                             <FontAwesomeIcon icon={faLocationDot} />
                         </Grid>

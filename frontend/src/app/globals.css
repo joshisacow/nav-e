@@ -21,11 +21,10 @@
   --background-five: #FFD60A; */
 
   /* set3 */
-  --background-one: #BCE784;
-  --background-two: #5DD39E;
-  --background-three: #348AA7;
-  --background-four: #525174;
-  --background-five: #513B56;
+  --background-one: #f7f2e5;
+  --background-two: #ae8e7e;
+  --background-three: #60a5fa;
+  --background-three-hover: #3b82f6;
 }
 
 /* dark mode */
@@ -51,17 +50,3 @@ body {
     rgb(var(--background-start-rgb)); */
   min-height: 100%;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

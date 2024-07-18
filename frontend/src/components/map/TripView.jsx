@@ -3,7 +3,8 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import TripEntry from '@/components/map/TripEntry'
 import '@/styles/TripView.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
+import { faArrowUpRightFromSquare, faFloppyDisk, faHammer } from '@fortawesome/free-solid-svg-icons';
+import { Typography } from '@mui/material';
 
 const TripView = ({ tripArray, setTripArray, removeFromTrip, buildTrip, saveTrip, tripInfo, togglePolyline, showPolyline }) => {
   const onDragEnd = result => {
@@ -77,14 +78,28 @@ const TripView = ({ tripArray, setTripArray, removeFromTrip, buildTrip, saveTrip
     <>
       <div className = "trip-title">
         {tripArray.length < 2 
-          ? <h1>Trip</h1>
-          : <a id="link" href="" onClick={exportToGMaps} target="_blank" rel="noopener noreferrer">
-              Trip 
-              <FontAwesomeIcon className="text-xs text-gray-500 ml-1" icon={faArrowUpRightFromSquare} />
+          ? <Typography sx={{ fontWeight: 500, fontSize: 16 }}>Trip</Typography>
+          : <a id="link" href="" onClick={exportToGMaps} className="trip-link" target="_blank" rel="noopener noreferrer">
+              <Typography sx={{ fontWeight: 500, fontSize: 16 }}>
+                Trip
+                <FontAwesomeIcon className="text-xs text-gray-500 ml-1 mb-0.5" icon={faArrowUpRightFromSquare} />
+              </Typography> 
             </a>
         }
-        <button className = "save-button" onClick = {() => {saveTrip()}}> Save </button>
-        <button className = "build-button" onClick = {() => {buildTrip(tripArray)}}> Build </button>
+        <button 
+          className = "save-button text-sm font-bold py-1.5 px-3 rounded-full" 
+          onClick = {() => {saveTrip()}}
+        > 
+          <FontAwesomeIcon className="text-xs mr-1" icon={faFloppyDisk} /> 
+          Save
+        </button>
+        <button 
+          className = "build-button text-sm font-bold py-1.5 px-3 rounded-full" 
+          onClick = {() => {buildTrip(tripArray)}}
+        > 
+          <FontAwesomeIcon className="text-xs mr-1" icon={faHammer} />
+          Build 
+        </button>
         
       </div>
       <DragDropContext onDragEnd = {onDragEnd}>
@@ -111,12 +126,16 @@ const TripView = ({ tripArray, setTripArray, removeFromTrip, buildTrip, saveTrip
       </DragDropContext>
       {tripInfo.duration && 
         <div className = "trip-info">
-          Distance: {(tripInfo.distanceMeters/1000).toFixed(2)} km <br/>
-          Time: {Math.floor(tripInfo.duration / 3600)} hr {Math.ceil((tripInfo.duration % 3600) / 60)} min  <br/>
-          {showPolyline 
-            ? <button className = "toggle-polyline-button" onClick = {() => {togglePolyline()}}> Hide </button>
-            : <button className = "toggle-polyline-button" onClick = {() => {togglePolyline()}}> Show </button>
-          }
+          <Typography variant='body2'>
+            Distance: {(tripInfo.distanceMeters/1000).toFixed(2)} km <br/>
+            Time: {Math.floor(tripInfo.duration / 3600)} hr {Math.ceil((tripInfo.duration % 3600) / 60)} min  <br/>
+          </Typography>
+          <button 
+            className = "bg-blue-400 hover:bg-blue-500 text-white text-sm font-bold py-1.5 px-3 ml-auto rounded" 
+            onClick = {() => {togglePolyline()}}
+          >
+            { showPolyline ? 'Show' : 'Hide' }
+          </button>
         </div>
       }
     </>
