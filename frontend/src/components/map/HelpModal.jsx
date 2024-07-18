@@ -29,12 +29,19 @@ const HelpModal = ({ openHelpModal, handleClose }) => {
         >
             <Box sx={style}>
                 <Typography id="modal-modal-title" variant="h6" component="h2">
-                    {EN_US.HELP_MODAL.TITLE}
+                    {EN_US.HELP_MODAL.TITLE_1}
                 </Typography>
-                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                    {EN_US.HELP_MODAL.DESCRIPTION_1} <br /> <br />
-                    {EN_US.HELP_MODAL.DESCRIPTION_2} <br /> <br />
-                    {EN_US.HELP_MODAL.DESCRIPTION_3}
+                <Typography id="modal-modal-description" sx={{ mt: 0.5 }}>
+                    {EN_US.HELP_MODAL.DESCRIPTION_1}
+                </Typography>
+                <Typography id="modal-modal-subtitle" variant="h6" sx={{ mt: 1 }}>
+                    {EN_US.HELP_MODAL.TITLE_2}
+                </Typography>
+                <Typography id="modal-modal-description2" sx={{ mt: 0.5 }}>
+                    {EN_US.HELP_MODAL.DESCRIPTION_2} 
+                </Typography>
+                <Typography id="modal-modal-description3" sx={{ mt: 1 }}>
+                    {EN_US.HELP_MODAL.DESCRIPTION_3} 
                 </Typography>
                 <IconButton
                     icon="close"

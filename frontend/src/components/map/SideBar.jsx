@@ -4,10 +4,12 @@ import TripView from "@/components/map/TripView";
 import SearchBar from "@/components/map/SearchBar";
 import IconButton from '@/components/utils/IconButton';
 import HelpModal from "@/components/map/HelpModal";
+import { Typography } from "@mui/material";
 
 const SideBar = ({ tripArray, setTripArray, removeFromTrip, setPan, setCurrentDetails, setDetailsLoading, clearInfoW, buildTrip, saveTrip, tripInfo, togglePolyline, showPolyline }) => {
     const [isOpen, setIsOpen] = useState(false);
     const sidebarClass = isOpen ? "sidebar open" : "sidebar";
+    const titleClass = isOpen ? "h6" : "";
     const [openHelpModal, setOpenHelpModal] = useState(false);
 
     const toggleSidebar = () => {
@@ -24,7 +26,10 @@ const SideBar = ({ tripArray, setTripArray, removeFromTrip, setPan, setCurrentDe
                 <div className="sidebar-toggle-icon"></div>
             </div>
             <div className="sidebar-title">
-                <h1 className="text-base whitespace-nowrap">Nav-E</h1>
+                {/* <h1 className="text-base whitespace-nowrap">Nav-E</h1> */}
+                <Typography variant={titleClass} sx={{ padding: 0, whiteSpace: 'nowrap' }}>
+                    Nav-E
+                </Typography>
                 
                 <IconButton
                     icon="help"

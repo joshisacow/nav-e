@@ -23,7 +23,7 @@ const TripEntry = ({placeObject, index, removeFromTrip}) => {
                     
                     <IconButton 
                         icon = "close"
-                        className = "trip-entry-button" 
+                        className = "trip-entry-remove-button" 
                         onClick = {() => removeFromTrip(placeObject)} 
                     />
                 </div>

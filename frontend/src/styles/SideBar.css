@@ -62,10 +62,16 @@
 .search-box-container {
     z-index: 1;
     width: 100%;
-    padding: 1rem;
+    padding-top: 0.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+
     display: flex;
     flex-direction: column; 
     align-items: flex-start; 
     position: relative;
 }
 
+.help-button {
+    margin-bottom: 0.2rem;
+}

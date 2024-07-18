@@ -12,18 +12,24 @@
 
 .save-button {
     z-index: 1;
-    padding: 0.5rem;
-    background: #000;
-    color: #fff;
     margin-left: 1rem;
+    background-color: var(--background-three);
+    color: white;
+}
+
+.save-button:hover {
+    background-color: var(--background-three-hover);
 }
 
 .build-button {
     z-index: 1;
-    padding: 0.5rem;
-    background: #000;
+    background-color: var(--background-three);
     color: #fff;
-    margin-left: 1rem;
+    margin-left: 0.5rem;
+}
+
+.build-button:hover {
+    background-color: var(--background-three-hover);
 }
 
 .trip-title {
@@ -38,6 +44,7 @@
     margin-top: 1.5rem;
     display: flex;
     flex-direction: row;
+    font-weight: 500;
 }
 
 .toggle-polyline-button {
@@ -46,4 +53,13 @@
     background: #000;
     color: #fff;
     margin-left: auto;
+}
+
+.trip-link {
+    color: var(--background-three);
+}
+
+.trip-link:hover {
+    text-decoration: underline;
+    color: var(--background-three-hover);
 }

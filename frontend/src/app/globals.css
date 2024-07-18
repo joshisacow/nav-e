@@ -21,7 +21,10 @@
   --background-five: #FFD60A; */
 
   /* set3 */
-  --background-one: rgb(245, 244, 244);
+  --background-one: #f7f2e5;
+  --background-two: #ae8e7e;
+  --background-three: #60a5fa;
+  --background-three-hover: #3b82f6;
 }
 
 /* dark mode */
